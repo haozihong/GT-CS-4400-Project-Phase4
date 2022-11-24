@@ -1,0 +1,4 @@
+rootProject.name = 'rse'
+include 'rse-api'
+include 'rse-db'
+
