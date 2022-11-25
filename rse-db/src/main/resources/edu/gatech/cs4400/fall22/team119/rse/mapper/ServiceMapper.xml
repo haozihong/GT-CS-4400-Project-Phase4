@@ -13,9 +13,8 @@
 
     </resultMap>
 
-    <!--        TODO: replace with correct sql -->
     <select id="displayServiceView" resultMap="ServiceMap">
-        select * from delivery_services;
+        SELECT * FROM restaurant_supply_express.display_service_view;
     </select>
 
 </mapper>

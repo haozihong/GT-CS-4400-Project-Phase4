@@ -20,7 +20,7 @@ public class ServiceController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping("/service_view")
+    @GetMapping("/services")
     public List<Service> displayServiceView() {
         return serviceService.displayServiceView();
     }

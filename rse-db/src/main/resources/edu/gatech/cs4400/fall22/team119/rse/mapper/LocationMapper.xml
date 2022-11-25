@@ -11,11 +11,7 @@
         <result column="num_delivery_services" property="numDeliveryServices"/>
     </resultMap>
     <select id="displayLocationView" resultMap="LocationMap">
-        select label, x_coord, y_coord,
-        (select count(*) from restaurants where label = location) as num_restaurants,
-        (select count(*) from delivery_services where label = home_base) as num_delivery_services,
-        (select count(*) from drones where label = hover) as num_drones
-        from locations;
+        SELECT * FROM restaurant_supply_express.display_location_view;
     </select>
 
 </mapper>

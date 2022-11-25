@@ -13,9 +13,8 @@
     <select id="getAllIngredients" resultMap="IngredientMap">
         select * from ingredients
     </select>
-<!--    TODO: replace with the correct sql-->
     <select id="displayIngredientView" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
-        select * from ingredients
+        SELECT * FROM restaurant_supply_express.display_ingredient_view;
     </select>
 
 </mapper>

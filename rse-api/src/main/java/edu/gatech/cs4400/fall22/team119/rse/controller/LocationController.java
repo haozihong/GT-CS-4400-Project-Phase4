@@ -20,7 +20,7 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping("/location_view")
+    @GetMapping("/locations")
     public List<Location> locationService() {
         return locationService.displayLocationView();
     }

@@ -9,17 +9,7 @@
         <result column="num_locations" property="numLocations"/>
     </resultMap>
     <select id="displayPilotView" resultMap="PilotMap">
-        select
-        username, licenseID, experience,
-        count(hover) as num_drones, count(distinct hover) as num_locations
-        from pilots
-        natural join users
-        left join
-        (select coalesce(d1.flown_by, d2.flown_by) as swarm_flown_by, d1.hover
-        from drones d1 left join drones d2
-        on d1.swarm_id = d2.id and d1.swarm_tag = d2.tag) as d
-        on d.swarm_flown_by = username
-        group by username;
+        SELECT * FROM restaurant_supply_express.display_pilot_view;
     </select>
 
 </mapper>

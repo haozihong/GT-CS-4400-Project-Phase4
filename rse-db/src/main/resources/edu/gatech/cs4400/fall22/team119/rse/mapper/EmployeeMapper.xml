@@ -10,12 +10,7 @@
         <result column="manager_status" property="managerStatus"/>
     </resultMap>
     <select id="displayEmployeeView" resultMap="EmployeeMap">
-        select employees.username as username, taxID, salary, hired, employees.experience as employee_experience,
-        IFNULL(licenseID, 'n/a') as licenseID, IFNULL(pilots.experience, 'n/a') as piloting_experience,
-        IF(manager IS NULL, 'no' , 'yes') as manager_status
-        from employees
-        left join pilots on employees.username = pilots.username
-        left join delivery_services on manager = employees.username;
+        SELECT * FROM restaurant_supply_express.display_employee_view;
     </select>
 
 </mapper>

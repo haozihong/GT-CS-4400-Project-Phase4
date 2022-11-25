@@ -20,7 +20,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employee_view")
+    @GetMapping("/employees")
     public List<Employee> displayEmployeeView() {
         return employeeService.displayEmployeeView();
     }

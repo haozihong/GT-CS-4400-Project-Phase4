@@ -20,7 +20,7 @@ public class PilotController {
         this.pilotService = pilotService;
     }
 
-    @GetMapping("/pilot_view")
+    @GetMapping("/pilots")
     public List<Pilot> displayPilotView() {
         return pilotService.displayPilotView();
     }

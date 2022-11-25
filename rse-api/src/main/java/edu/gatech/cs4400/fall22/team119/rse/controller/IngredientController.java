@@ -21,11 +21,11 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
+//    @GetMapping("/ingredients")
+//    public List<Ingredient> getAllIngredients() {
+//        return ingredientService.getAllIngredients();
+//    }
     @GetMapping("/ingredients")
-    public List<Ingredient> getAllIngredients() {
-        return ingredientService.getAllIngredients();
-    }
-    @GetMapping("/ingredient_view")
     public List<Ingredient> displayIngredientView() {
         return ingredientService.displayIngredientView();
     }

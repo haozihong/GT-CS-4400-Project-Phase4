@@ -13,24 +13,7 @@
 
     </resultMap>
     <select id="displayOwnerView" resultMap="OwnerMap">
-        SELECT
-        username,
-        first_name,
-        last_name,
-        address,
-        IFNULL(COUNT(long_name), 0) AS num_restaurants,
-        IFNULL(COUNT(DISTINCT location), 0) AS num_places,
-        IFNULL(MAX(rating), 0) AS highs,
-        IFNULL(MIN(rating), 0) AS lows,
-        IFNULL(SUM(spent), 0) AS debt
-        FROM
-        restaurant_owners
-        NATURAL JOIN
-        users
-        LEFT JOIN
-        restaurants ON funded_by = username
-        group by
-        username;
+        SELECT * FROM restaurant_supply_express.display_owner_view;
     </select>
 
 </mapper>

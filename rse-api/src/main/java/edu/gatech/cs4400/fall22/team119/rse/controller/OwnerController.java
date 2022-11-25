@@ -20,7 +20,7 @@ public class OwnerController {
         this.ownerService = ownerService;
     }
 
-    @GetMapping("/owner_view")
+    @GetMapping("/owners")
     public List<Owner> displayOwnerView() {
         return ownerService.displayOwnerView();
     }
