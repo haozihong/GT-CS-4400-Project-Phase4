@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.PilotMapper">
+    <resultMap id="PilotMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Pilot">
+        <result column="num_drones" property="numDrones"/>
+        <result column="num_locations" property="numLocations"/>
+    </resultMap>
+    <select id="displayPilotView" resultMap="PilotMap">
+        select
+        username, licenseID, experience,
+        count(hover) as num_drones, count(distinct hover) as num_locations
+        from pilots
+        natural join users
+        left join
+        (select coalesce(d1.flown_by, d2.flown_by) as swarm_flown_by, d1.hover
+        from drones d1 left join drones d2
+        on d1.swarm_id = d2.id and d1.swarm_tag = d2.tag) as d
+        on d.swarm_flown_by = username
+        group by username;
+    </select>
+
+</mapper>

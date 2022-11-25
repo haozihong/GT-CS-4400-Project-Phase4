@@ -25,4 +25,9 @@ public class IngredientController {
     public List<Ingredient> getAllIngredients() {
         return ingredientService.getAllIngredients();
     }
+    @GetMapping("/ingredient_view")
+    public List<Ingredient> displayIngredientView() {
+        return ingredientService.displayIngredientView();
+    }
+
 }

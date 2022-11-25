@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.LocationMapper">
+    <resultMap id="LocationMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Location">
+        <result column="x_coord" property="xCoord"/>
+        <result column="y_coord" property="yCoord"/>
+        <result column="num_restaurants" property="numRestaurants"/>
+        <result column="num_delivery_services" property="numDeliveryServices"/>
+    </resultMap>
+    <select id="displayLocationView" resultMap="LocationMap">
+        select label, x_coord, y_coord,
+        (select count(*) from restaurants where label = location) as num_restaurants,
+        (select count(*) from delivery_services where label = home_base) as num_delivery_services,
+        (select count(*) from drones where label = hover) as num_drones
+        from locations;
+    </select>
+
+</mapper>

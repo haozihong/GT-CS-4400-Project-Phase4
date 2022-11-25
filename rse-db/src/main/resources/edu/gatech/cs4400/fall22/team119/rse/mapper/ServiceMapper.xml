@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.ServiceMapper">
+    <resultMap id="ServiceMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Service">
+        <result column="long_name" property="longName"/>
+        <result column="home_base" property="homeBase"/>
+        <result column="ingredients_carried" property="ingredientsCarried"/>
+        <result column="cost_carried" property="costCarried"/>
+        <result column="weight_carried" property="weightCarried"/>
+
+    </resultMap>
+
+    <!--        TODO: replace with correct sql -->
+    <select id="displayServiceView" resultMap="ServiceMap">
+        select * from delivery_services;
+    </select>
+
+</mapper>

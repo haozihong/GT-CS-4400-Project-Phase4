@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.OwnerMapper">
+    <resultMap id="OwnerMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Owner">
+        <result column="first_name" property="firstName"/>
+        <result column="last_name" property="lastName"/>
+
+        <result column="num_restaurants" property="numRestaurants"/>
+        <result column="num_places" property="numPlaces"/>
+
+    </resultMap>
+    <select id="displayOwnerView" resultMap="OwnerMap">
+        SELECT
+        username,
+        first_name,
+        last_name,
+        address,
+        IFNULL(COUNT(long_name), 0) AS num_restaurants,
+        IFNULL(COUNT(DISTINCT location), 0) AS num_places,
+        IFNULL(MAX(rating), 0) AS highs,
+        IFNULL(MIN(rating), 0) AS lows,
+        IFNULL(SUM(spent), 0) AS debt
+        FROM
+        restaurant_owners
+        NATURAL JOIN
+        users
+        LEFT JOIN
+        restaurants ON funded_by = username
+        group by
+        username;
+    </select>
+
+</mapper>

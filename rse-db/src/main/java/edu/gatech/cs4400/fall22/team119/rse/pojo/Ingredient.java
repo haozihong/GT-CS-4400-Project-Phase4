@@ -17,4 +17,12 @@ public class Ingredient {
     private String iname;
 
     private Integer weight;
+
+    private String location;
+
+    private Integer amountAvailable;
+
+    private Integer lowPrice;
+
+    private Integer highPrice;
 }

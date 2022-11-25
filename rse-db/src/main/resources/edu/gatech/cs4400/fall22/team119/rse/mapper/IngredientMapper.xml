@@ -2,8 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.IngredientMapper">
-    <select id="getAllIngredients" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
+    <resultMap id="IngredientMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
+        <result column="amount_available" property="amountAvailable"/>
+        <result column="low_price" property="lowPrice"/>
+        <result column="high_price" property="highPrice"/>
+
+    </resultMap>
+    <select id="getAllIngredients" resultMap="IngredientMap">
         select * from ingredients
     </select>
+<!--    TODO: replace with the correct sql-->
+    <select id="displayIngredientView" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
+        select * from ingredients
+    </select>
+
 </mapper>
