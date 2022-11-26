@@ -23,4 +23,9 @@ public class IngredientService {
     public List<Ingredient> getAllIngredients() {
         return ingredientMapper.getAllIngredients();
     }
+
+    public List<Ingredient> displayIngredientView() {
+        return ingredientMapper.displayIngredientView();
+    }
+
 }

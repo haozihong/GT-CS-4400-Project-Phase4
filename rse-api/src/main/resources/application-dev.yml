@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:${MYSQLDBURL2:mysql://root:123456@localhost:3306/restaurant_supply_express}?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:${MYSQLDBURL2:mysql://root:12345678@localhost:3306/restaurant_supply_express}?useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
 server:
   port: ${PORT:8081}

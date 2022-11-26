@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.EmployeeMapper">
+    <resultMap id="EmployeeMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Employee">
+        <result column="employee_experience" property="employeeExperience"/>
+        <result column="piloting_experience" property="pilotingExperience"/>
+        <result column="manager_status" property="managerStatus"/>
+    </resultMap>
+    <select id="displayEmployeeView" resultMap="EmployeeMap">
+        SELECT * FROM restaurant_supply_express.display_employee_view;
+    </select>
+
+</mapper>

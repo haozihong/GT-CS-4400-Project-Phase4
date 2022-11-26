@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.OwnerMapper">
+    <resultMap id="OwnerMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Owner">
+        <result column="first_name" property="firstName"/>
+        <result column="last_name" property="lastName"/>
+
+        <result column="num_restaurants" property="numRestaurants"/>
+        <result column="num_places" property="numPlaces"/>
+
+    </resultMap>
+    <select id="displayOwnerView" resultMap="OwnerMap">
+        SELECT * FROM restaurant_supply_express.display_owner_view;
+    </select>
+
+</mapper>
