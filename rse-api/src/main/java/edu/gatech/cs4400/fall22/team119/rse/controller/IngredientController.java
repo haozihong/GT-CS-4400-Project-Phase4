@@ -4,6 +4,7 @@ import edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient;
 import edu.gatech.cs4400.fall22.team119.rse.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @date 2022/11/23 14:48
  */
 @RestController
+@RequestMapping("/api")
 public class IngredientController {
     private IngredientService ingredientService;
 
