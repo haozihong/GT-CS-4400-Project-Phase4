@@ -10,17 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location {
-    private String label;
-
-    private Integer xCoord;
-
-    private Integer yCoord;
-
-    private Integer numRestaurants;
-
-    private Integer numDeliveryServices;
-
-    private Integer space;
-
+public class Worker {
+    private String username;
 }

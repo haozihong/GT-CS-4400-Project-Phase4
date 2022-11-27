@@ -13,4 +13,15 @@
         SELECT * FROM restaurant_supply_express.display_employee_view;
     </select>
 
+    <insert id="addEmployee">
+        call add_employee (#{username},
+        #{firstName},
+        #{lastName},
+        #{address},
+        #{birthdate},
+        #{taxID},
+        #{hired},
+        #{employeeExperience},
+        #{salary});
+    </insert>
 </mapper>

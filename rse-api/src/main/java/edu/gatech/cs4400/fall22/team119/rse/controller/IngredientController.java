@@ -1,11 +1,10 @@
 package edu.gatech.cs4400.fall22.team119.rse.controller;
 
+import edu.gatech.cs4400.fall22.team119.rse.pojo.Employee;
 import edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient;
 import edu.gatech.cs4400.fall22.team119.rse.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,13 +22,14 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-//    @GetMapping("/ingredients")
-//    public List<Ingredient> getAllIngredients() {
-//        return ingredientService.getAllIngredients();
-//    }
     @GetMapping("/ingredients")
     public List<Ingredient> displayIngredientView() {
         return ingredientService.displayIngredientView();
     }
 
+    @PostMapping("/ingredients")
+    public Integer addIngredient(@RequestBody Ingredient ingredient) {
+        System.out.println(ingredient);
+        return ingredientService.addIngredient(ingredient);
+    }
 }

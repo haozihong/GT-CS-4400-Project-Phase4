@@ -16,5 +16,11 @@
     <select id="displayServiceView" resultMap="ServiceMap">
         SELECT * FROM restaurant_supply_express.display_service_view;
     </select>
+    <insert id="addService">
+        call add_service (#{id},
+        #{longName},
+        #{homeBase},
+        #{manager});
+    </insert>
 
 </mapper>

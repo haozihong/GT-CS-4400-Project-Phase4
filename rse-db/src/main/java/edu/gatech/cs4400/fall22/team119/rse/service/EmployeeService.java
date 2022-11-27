@@ -23,4 +23,9 @@ public class EmployeeService {
         return employeeMapper.displayEmployeeView();
     }
 
+    public Integer addEmployee(Employee employee) {
+        return employeeMapper.addEmployee(employee);
+    }
+
+
 }

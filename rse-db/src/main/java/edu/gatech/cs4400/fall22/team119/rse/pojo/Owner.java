@@ -19,6 +19,8 @@ public class Owner {
 
     private String address;
 
+    private String birthdate;
+
     private Integer numRestaurants;
 
     private Integer numPlaces;

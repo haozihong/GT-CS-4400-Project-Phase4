@@ -10,17 +10,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location {
-    private String label;
+public class Drone {
+    private String id;
 
-    private Integer xCoord;
+    private Integer tag;
 
-    private Integer yCoord;
+    private Integer fuel;
 
-    private Integer numRestaurants;
+    private Integer capacity;
 
-    private Integer numDeliveryServices;
+    private Integer sales;
 
-    private Integer space;
-
+    private String flownBy;
 }

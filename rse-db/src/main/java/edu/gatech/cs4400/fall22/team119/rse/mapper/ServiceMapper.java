@@ -11,4 +11,5 @@ import java.util.List;
 @Mapper
 public interface ServiceMapper {
     List<Service> displayServiceView();
+    Integer addService(Service service);
 }

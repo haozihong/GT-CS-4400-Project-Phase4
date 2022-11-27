@@ -10,11 +10,13 @@
         <result column="high_price" property="highPrice"/>
 
     </resultMap>
-    <select id="getAllIngredients" resultMap="IngredientMap">
-        select * from ingredients
-    </select>
+
     <select id="displayIngredientView" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
         SELECT * FROM restaurant_supply_express.display_ingredient_view;
     </select>
-
+    <insert id="addIngredient">
+        call add_ingredient (#{barcode},
+        #{iname},
+        #{weight});
+    </insert>
 </mapper>

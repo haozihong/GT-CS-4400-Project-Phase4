@@ -27,4 +27,12 @@ public class Employee {
 
     private String managerStatus;
 
+    private String firstName;
+
+    private String lastName;
+
+    private String address;
+
+    private String birthdate;
+
 }

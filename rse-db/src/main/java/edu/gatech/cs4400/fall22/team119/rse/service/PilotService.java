@@ -23,4 +23,8 @@ public class PilotService {
         return pilotMapper.displayPilotView();
     }
 
+    public Integer addPilot(Pilot pilot) {
+        return pilotMapper.addPilot(pilot);
+    }
+
 }
