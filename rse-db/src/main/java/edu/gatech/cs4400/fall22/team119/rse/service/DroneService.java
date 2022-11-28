@@ -22,4 +22,15 @@ public class DroneService {
         return droneMapper.addDrone(drone);
     }
 
+    public Integer takeoverDrone(Drone drone) {
+        return droneMapper.takeoverDrone(drone);
+    }
+
+    public Integer joinSwarm(Drone drone) {
+        return droneMapper.joinSwarm(drone);
+    }
+
+    public Integer leaveSwarm(Drone drone) {
+        return droneMapper.leaveSwarm(drone);
+    }
 }

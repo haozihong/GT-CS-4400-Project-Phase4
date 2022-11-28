@@ -32,4 +32,16 @@ public class EmployeeController {
         return employeeService.addEmployee(employee);
     }
 
+    @PutMapping("/employees")
+    public Integer hireEmployee(@RequestParam String username, @RequestParam String id) {
+        System.out.println(username);
+        System.out.println(id);
+        return employeeService.hireEmployee(username, id);
+    }
+
+    @DeleteMapping("/employees")
+    public Integer fireEmployee(@RequestParam String username, @RequestParam String id) {
+        return employeeService.fireEmployee(username, id);
+    }
+
 }

@@ -24,4 +24,14 @@
         #{employeeExperience},
         #{salary});
     </insert>
+
+    <insert id="hireEmployee">
+        call hire_employee (#{username},
+        #{id});
+    </insert>
+
+    <delete id="fireEmployee">
+        call fire_employee (#{username},
+        #{id});
+    </delete>
 </mapper>

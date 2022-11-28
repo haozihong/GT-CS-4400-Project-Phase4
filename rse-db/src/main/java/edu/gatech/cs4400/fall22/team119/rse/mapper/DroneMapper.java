@@ -9,4 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DroneMapper {
     Integer addDrone(Drone drone);
+    Integer takeoverDrone(Drone drone);
+    Integer joinSwarm(Drone drone);
+    Integer leaveSwarm(Drone drone);
 }

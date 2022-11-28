@@ -15,4 +15,24 @@
         #{flownBy});
     </insert>
 
+    <update id="takeoverDrone">
+        call takeover_drone(
+        #{flownBy},
+        #{id},
+        #{tag});
+    </update>
+
+    <update id="joinSwarm">
+        call join_swarm(
+        #{id},
+        #{tag},
+        #{swarmTag});
+    </update>
+
+    <update id="leaveSwarm">
+        call leave_swarm(
+        #{id},
+        #{swarmTag});
+    </update>
+
 </mapper>

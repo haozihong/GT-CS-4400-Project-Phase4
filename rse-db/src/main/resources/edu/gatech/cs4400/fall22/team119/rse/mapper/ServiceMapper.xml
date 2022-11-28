@@ -23,4 +23,8 @@
         #{manager});
     </insert>
 
+    <update id="manageService">
+        call manage_service (#{manager},
+        #{id});
+    </update>
 </mapper>

@@ -22,4 +22,10 @@ public class Drone {
     private Integer sales;
 
     private String flownBy;
+
+    private String swarmId;
+
+    private Integer swarmTag;
+
+
 }
