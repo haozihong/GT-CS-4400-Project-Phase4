@@ -22,4 +22,11 @@ public class ServiceService {
         return serviceMapper.displayServiceView();
     }
 
+    public Integer addService(edu.gatech.cs4400.fall22.team119.rse.pojo.Service service) {
+        return serviceMapper.addService(service);
+    }
+
+    public Integer manageService(edu.gatech.cs4400.fall22.team119.rse.pojo.Service service) {
+        return serviceMapper.manageService(service);
+    }
 }

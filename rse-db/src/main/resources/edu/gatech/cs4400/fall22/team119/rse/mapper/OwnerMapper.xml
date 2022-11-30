@@ -16,4 +16,11 @@
         SELECT * FROM restaurant_supply_express.display_owner_view;
     </select>
 
+    <insert id="addOwner">
+        call add_owner (#{username},
+        #{firstName},
+        #{lastName},
+        #{address},
+        #{birthdate});
+    </insert>
 </mapper>

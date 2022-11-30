@@ -12,4 +12,9 @@
         SELECT * FROM restaurant_supply_express.display_pilot_view;
     </select>
 
+    <insert id="addPilot">
+        call add_pilot_role (#{username},
+        #{licenseID},
+        #{experience});
+    </insert>
 </mapper>

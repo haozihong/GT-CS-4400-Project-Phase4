@@ -13,4 +13,25 @@
         SELECT * FROM restaurant_supply_express.display_employee_view;
     </select>
 
+    <insert id="addEmployee">
+        call add_employee (#{username},
+        #{firstName},
+        #{lastName},
+        #{address},
+        #{birthdate},
+        #{taxID},
+        #{hired},
+        #{employeeExperience},
+        #{salary});
+    </insert>
+
+    <insert id="hireEmployee">
+        call hire_employee (#{username},
+        #{id});
+    </insert>
+
+    <delete id="fireEmployee">
+        call fire_employee (#{username},
+        #{id});
+    </delete>
 </mapper>

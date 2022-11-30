@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.DroneMapper">
+
+    <insert id="addDrone">
+        call add_drone (
+        #{id},
+        #{tag},
+        #{fuel},
+        #{capacity},
+        #{sales},
+        #{flownBy});
+    </insert>
+
+    <update id="takeoverDrone">
+        call takeover_drone(
+        #{flownBy},
+        #{id},
+        #{tag});
+    </update>
+
+    <update id="joinSwarm">
+        call join_swarm(
+        #{id},
+        #{tag},
+        #{swarmTag});
+    </update>
+
+    <update id="leaveSwarm">
+        call leave_swarm(
+        #{id},
+        #{swarmTag});
+    </update>
+
+</mapper>

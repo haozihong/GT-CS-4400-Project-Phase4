@@ -23,4 +23,15 @@ public class EmployeeService {
         return employeeMapper.displayEmployeeView();
     }
 
+    public Integer addEmployee(Employee employee) {
+        return employeeMapper.addEmployee(employee);
+    }
+
+    public Integer hireEmployee(String username, String id) {
+        return employeeMapper.hireEmployee(username, id);
+    }
+
+    public Integer fireEmployee(String username, String id) {
+        return employeeMapper.fireEmployee(username, id);
+    }
 }

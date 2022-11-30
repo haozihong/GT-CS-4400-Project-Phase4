@@ -11,6 +11,7 @@ import java.util.List;
  */
 @Mapper
 public interface IngredientMapper {
-    List<Ingredient> getAllIngredients();
+
     List<Ingredient> displayIngredientView();
+    Integer addIngredient(Ingredient ingredient);
 }

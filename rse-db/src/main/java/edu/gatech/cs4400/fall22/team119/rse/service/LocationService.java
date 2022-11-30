@@ -23,4 +23,9 @@ public class LocationService {
         return locationMapper.displayLocationView();
     }
 
+    public Integer addLocation(Location location) {
+        return locationMapper.addLocation(location);
+    }
+
+
 }

@@ -23,4 +23,7 @@ public class OwnerService {
         return ownerMapper.displayOwnerView();
     }
 
+    public Integer addOwner(Owner owner) {
+        return ownerMapper.addOwner(owner);
+    }
 }

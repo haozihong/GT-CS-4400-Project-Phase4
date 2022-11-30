@@ -1,11 +1,11 @@
 package edu.gatech.cs4400.fall22.team119.rse.controller;
 
+
+import edu.gatech.cs4400.fall22.team119.rse.pojo.Owner;
 import edu.gatech.cs4400.fall22.team119.rse.pojo.Pilot;
 import edu.gatech.cs4400.fall22.team119.rse.service.PilotService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +25,11 @@ public class PilotController {
     @GetMapping("/pilots")
     public List<Pilot> displayPilotView() {
         return pilotService.displayPilotView();
+    }
+
+    @PostMapping("/pilots")
+    public Integer addPilot(@RequestBody Pilot pilot) {
+//        System.out.println(pilot);
+        return pilotService.addPilot(pilot);
     }
 }
