@@ -1,5 +1,37 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 dependencies {
     implementation project(":rse-db")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.register('copyWebApp', Copy) {
+    dependsOn(':rse-react:buildReactApp')
+    from "$rootDir/rse-react/build"
+//    into "$rootDir/rse-api/src/main/resources/static"
+    into "$rootDir/rse-api/build/resources/main/static"
+}
+
+//compileJava.dependsOn(copyWebApp)
+bootJar.dependsOn(copyWebApp)
+
+jar {
+    enabled = false
 }
