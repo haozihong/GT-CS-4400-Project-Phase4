@@ -3,13 +3,13 @@ import {
   DeploymentUnitOutlined,
   PieChartOutlined,
   TeamOutlined,
-  RocketOutlined,
+  // RocketOutlined,
   PushpinOutlined,
   GoldOutlined,
   SendOutlined,
   SmileOutlined,
   UserOutlined,
-  ShopOutlined
+  // ShopOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import 'antd/dist/reset.css';
@@ -29,7 +29,7 @@ const items = [
     getItem(<Link to='/u/owners'>Owners</Link>, '3', <SmileOutlined />)
   ]),
   getItem(<Link to='/services'>Services</Link>, '10', <PieChartOutlined />),
-  getItem(<Link to='/drones'>Drones</Link>, '11', <RocketOutlined />),
+  // getItem(<Link to='/drones'>Drones</Link>, '11', <RocketOutlined />),
   getItem(<Link to='/locations'>Locations</Link>, '12', <PushpinOutlined />),
   // getItem(<Link to='/restaurants'>Restaurants</Link>, '13', <ShopOutlined />),
   getItem(<Link to='/ingredients'>Ingredients</Link>, '14', <GoldOutlined />),
