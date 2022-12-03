@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Table, Space, Button, Col, Row } from 'antd';
+import {
+  UserOutlined,
+} from '@ant-design/icons';
 
 const columns = [
   { title: 'Username', dataIndex: 'username' },
@@ -29,12 +32,29 @@ export const Employees = () => {
     fetchData();
   }, []);
   return (
-    <Table
-      columns={columns}
-      rowKey={(record) => record.username}
-      dataSource={data}
-      loading={loading}
-    />
+    <>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Space style={{float: 'right'}}>
+            <Button type="primary" icon={<UserOutlined />}>
+              Add Employee
+            </Button>
+            <Button>
+              Placeholder
+            </Button>
+          </Space>
+        </Col>
+
+        <Col span={24}>
+          <Table
+            columns={columns}
+            rowKey={(record) => record.username}
+            dataSource={data}
+            loading={loading}
+          />
+        </Col>
+      </Row>
+    </>
   );
 }
 
