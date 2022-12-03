@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  DeploymentUnitOutlined,
   PieChartOutlined,
   TeamOutlined,
   RocketOutlined,
@@ -11,6 +12,8 @@ import {
   ShopOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
+import 'antd/dist/reset.css';
+import './App.css';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import routes from './router/routes'
 
@@ -55,12 +58,9 @@ const App = () => {
 
   return (
     <Layout
-      style={{
-        minHeight: '100vh',
-      }}
+      style={{ minHeight: '100vh', }}
     >
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div className="logo" />
         <Menu
           theme="dark"
           defaultOpenKeys={['sub1']}
@@ -70,38 +70,29 @@ const App = () => {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header
-          className="site-layout-background"
-          style={{
-            padding: 0,
-          }}
-        />
+        <Header>
+          <h1
+            style={{color: 'aliceblue'}}
+          >
+            <DeploymentUnitOutlined /> Restaurant Supply Express! Drone Delivery
+          </h1>
+        </Header>
         <Content
-          style={{
-            margin: '0 16px',
-          }}
+          style={{ margin: '0 16px', }}
         >
           <Breadcrumb
-            style={{
-              margin: '16px 0',
-            }}
+            style={{ margin: '16px 0', }}
           >
             {breadcrumbItems}
           </Breadcrumb>
           <div
-            className="site-layout-background"
-            style={{
-              padding: 24,
-              minHeight: 360,
-            }}
+            style={{ padding: 8, minHeight: 360, }}
           >
             <Outlet />
           </div>
         </Content>
         <Footer
-          style={{
-            textAlign: 'center',
-          }}
+          style={{ textAlign: 'center', }}
         >
           Restaurant Supply Express ©2022 Created by Team 119
         </Footer>
