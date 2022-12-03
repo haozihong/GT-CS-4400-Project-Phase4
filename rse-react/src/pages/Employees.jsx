@@ -4,13 +4,14 @@ import {
   PlusOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
+import { format } from 'date-fns'
 
 const columns = [
   { title: 'Username', dataIndex: 'username' },
   { title: 'Tax ID', dataIndex: 'taxID' },
-  { title: 'Salary ($)', dataIndex: 'salary' },
-  { title: 'Hired Datw', dataIndex: 'hired' },
-  { title: 'Experience (month)', dataIndex: 'employeeExperience' },
+  { title: 'Salary', dataIndex: 'salary', render: e => `\$${e}`, },
+  { title: 'Hired Date', dataIndex: 'hired', render: e => format(e, 'yyyy-MM-dd'), },
+  { title: 'Experience (month)', dataIndex: 'employeeExperience', render: e => `${e} mo.`, },
   { title: 'License ID', dataIndex: 'licenseID' },
   { title: 'Piloting Experience (trips)', dataIndex: 'pilotingExperience' },
   { title: 'Manager Status', dataIndex: 'managerStatus' },
@@ -56,6 +57,7 @@ export const Employees = () => {
     fetch(`/api/employees`)
       .then(res => res.json())
       .then(res => {
+        res.forEach(e => { e.hired = new Date(e.hired); });
         setData(res);
         setLoading(false);
       });
