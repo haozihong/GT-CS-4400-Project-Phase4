@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author Zhaodong Kang
  */
@@ -17,7 +19,7 @@ public class Employee {
 
     private Integer salary;
 
-    private String hired;
+    private Date hired;
 
     private Integer employeeExperience;
 
@@ -33,6 +35,6 @@ public class Employee {
 
     private String address;
 
-    private String birthdate;
+    private Date birthdate;
 
 }

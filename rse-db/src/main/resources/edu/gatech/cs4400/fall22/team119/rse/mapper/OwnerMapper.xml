@@ -21,6 +21,6 @@
         #{firstName},
         #{lastName},
         #{address},
-        #{birthdate});
+        #{birthdate}, jdbcType=DATE);
     </insert>
 </mapper>

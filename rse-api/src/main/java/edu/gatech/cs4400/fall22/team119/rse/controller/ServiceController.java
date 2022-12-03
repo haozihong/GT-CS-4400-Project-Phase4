@@ -29,14 +29,14 @@ public class ServiceController {
 
     @PostMapping("/services")
     public Integer addService(@RequestBody Service service) {
-        System.out.println(service);
+//        System.out.println(service);
         return serviceService.addService(service);
     }
 
 
     @PutMapping("/services")
     public Integer manageService(@RequestBody Service service) {
-        System.out.println(service);
+//        System.out.println(service);
         return serviceService.manageService(service);
     }
 }

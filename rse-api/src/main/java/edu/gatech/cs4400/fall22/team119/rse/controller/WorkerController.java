@@ -23,8 +23,6 @@ public class WorkerController {
 
     @PostMapping("/workers")
     public Integer addWorker(@RequestBody String username) {
-//        System.out.println(worker);
-//        System.out.println(username);
         return workerService.addWorker(username);
     }
 }
