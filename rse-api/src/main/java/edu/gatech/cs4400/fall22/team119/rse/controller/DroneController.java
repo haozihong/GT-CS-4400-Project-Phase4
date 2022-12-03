@@ -21,31 +21,31 @@ public class DroneController {
 
     @PostMapping("/drones")
     public Integer addDrone(@RequestBody Drone drone) {
-        System.out.println(drone);
+//        System.out.println(drone);
         return droneService.addDrone(drone);
     }
     @PutMapping("/drones")
     public Integer takeoverDrone(@RequestBody Drone drone) {
-        System.out.println((drone));
+//        System.out.println((drone));
         return droneService.takeoverDrone(drone);
     }
 
     @PutMapping("/drones/swarms")
     public Integer joinSwarm(@RequestBody Drone drone) {
-        System.out.println((drone));
+//        System.out.println((drone));
         return droneService.joinSwarm(drone);
     }
 
     @PutMapping("/drones/fuel")
     public Integer refuelDrone(@RequestBody Drone drone) {
-        System.out.println((drone));
+//        System.out.println((drone));
         return droneService.joinSwarm(drone);
     }
 
     // TODO: not sure should I use the DeleteMapping
     @DeleteMapping("/drones/swarms")
     public Integer leaveSwarm(@RequestBody Drone drone) {
-        System.out.println((drone));
+//        System.out.println((drone));
         return droneService.leaveSwarm(drone);
     }
 

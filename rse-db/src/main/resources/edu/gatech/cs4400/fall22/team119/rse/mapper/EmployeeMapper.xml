@@ -18,9 +18,9 @@
         #{firstName},
         #{lastName},
         #{address},
-        #{birthdate},
+        #{birthdate, jdbcType=DATE},
         #{taxID},
-        #{hired},
+        #{hired, jdbcType=DATE},
         #{employeeExperience},
         #{salary});
     </insert>

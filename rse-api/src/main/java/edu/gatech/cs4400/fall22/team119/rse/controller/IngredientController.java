@@ -34,7 +34,7 @@ public class IngredientController {
 
     @PostMapping("/ingredients")
     public Integer addIngredient(@RequestBody Ingredient ingredient) {
-        System.out.println(ingredient);
+//        System.out.println(ingredient);
         return ingredientService.addIngredient(ingredient);
     }
 
