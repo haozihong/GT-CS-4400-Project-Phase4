@@ -11,3 +11,8 @@ tasks.register('buildReactApp', NpmTask) {
     inputs.dir(fileTree("node_modules").exclude(".cache"))
     outputs.dir('build')
 }
+
+node {
+    download = true
+    version = "18.12.1"
+}
