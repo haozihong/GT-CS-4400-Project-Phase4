@@ -7,9 +7,9 @@ Finished **Employee view** and **Add Employee** form.
 
 
 # Visit
-Deployed on [https://cs4400rse.onrender.com](https://cs4400rse.onrender.com). Please wait for about 1.5 minutes for the server to start. 
+Deployed on [http://45.17.163.14](http://45.17.163.14). 
 
-Also deployed on [http://45.17.163.14](http://45.17.163.14). No need to wait on this one. 
+Also deployed on [https://cs4400rse.onrender.com](https://cs4400rse.onrender.com). Please wait for 1.5 minutes for the server to start. 
 
 # Framework and Tools Used
   
