@@ -98,7 +98,7 @@ export const Employees = () => {
         } else {
           fetchData();
           setNewEmpDialogOpen(false);
-          popMessage('Success', `${data} Employee added seccessfully!`, 'success');
+          popMessage('Success', `Employee added seccessfully!`, 'success');
           form.resetFields();
         }
       }, err => {
