@@ -21,29 +21,40 @@ Also deployed on [http://45.17.163.14](http://45.17.163.14). No need to wait on 
    | Build| Gradle 7.4, Docker |
 
 
-# Build and Run
-## Option 1: Build jar
+# Option 1: Build and Run
+
+## Option 1.1: Build jar
+### Prerequisite Installation
+- Gradle 7.4
+- Java 17
+
 #### Configuration
-Set the url to the MySQL database in environment variable `MYSQLDBURL2`. For example, `MYSQLDBURL2=mysql://root:123456@localhost:3306/restaurant_supply_express`
+Set the url to the MySQL database in environment variable `MYSQLDBURL2`. For example, set `MYSQLDBURL2` to `mysql://<username>:<passwd>@<mysql_server_address>:3306/restaurant_supply_express`, replacing `<username>`, `<passwd>`, and `<mysql_server_address>` with your MySQL config. 
 #### Build jar and Run
-Navigate to the project root directory and execute
+Navigate to the project root directory and execute the following. Fill `<PORT>` with desired listening port, e.g. 8080. 
 ```
 ./gradlew build
 java -Dserver.port=<PORT> -jar ./rse-api/build/libs/rse-api-1.0-SNAPSHOT.jar --spring.profiles.active=prod
 ```
-Fill `<PORT>` with desired listening port. 
+Then the frontend page should be available on [http://localhost:\<PORT\>](http://localhost:<PORT>) (the PORT number you just used). 
 
-## Option 2: Build Docker Image
-Navigate to the project root directory and execute
+## Option 1.2: Build Docker Image
+Make sure Docker installed. 
+
+Navigate to the project root directory and execute the following. Fill `<PORT>` with desired listening port (e.g. 8080) and `<url_to_database>` with the url to the MySQL database, e.g. `mysql://<username>:<passwd>@<mysql_server>:3306/restaurant_supply_express` (make sure `<username>`, `<passwd>`, and `<mysql_server_address>` are filled). 
 ```
 docker build . -t 'rse'
 docker run -d -p <PORT>:8080 -e MYSQLDBURL2=<url_to_database> rse
 ```
-Fill `<PORT>` with desired listening port and `<url_to_database>` with the url to the MySQL database. 
 
-# Run Locally
+# Option 2: Run Locally
+### Prerequisite Installation
+- Gradle 7.4
+- Java 17
+- Node 18.12.1
+
 ### Configuration
-Set the url to the MySQL database in environment variable `MYSQLDBURL2`. For example, `MYSQLDBURL2=mysql://root:123456@localhost:3306/restaurant_supply_express`
+Set the url to the MySQL database in environment variable `MYSQLDBURL2`. For example, set `MYSQLDBURL2` to `mysql://<username>:<passwd>@<mysql_server_address>:3306/restaurant_supply_express`, replacing `<username>`, `<passwd>`, and `<mysql_server_address>` with your MySQL config. 
 
 ### Backend - Spring Boot
 Navigate to the project root directory and execute
@@ -54,7 +65,7 @@ Navigate to the project root directory and execute
 ### Frontend - React
 Navigate to `./rse-react` directory and execute
 ```
-npm i
+npm install
 npm run start
 ```
-Then the frontend page should be available on [http://localhost:3000](http://localhost:3000)
+Then the frontend page should be available on [http://localhost:3000](http://localhost:3000). 
