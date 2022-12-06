@@ -15,6 +15,10 @@
     <select id="displayIngredientView" resultMap="IngredientMap">
         SELECT * FROM restaurant_supply_express.display_ingredient_view;
     </select>
+    <select id="displayIngredient" resultMap="IngredientMap">
+        SELECT * FROM restaurant_supply_express.ingredients;
+    </select>
+
     <insert id="addIngredient">
         call add_ingredient (#{barcode},
         #{iname},

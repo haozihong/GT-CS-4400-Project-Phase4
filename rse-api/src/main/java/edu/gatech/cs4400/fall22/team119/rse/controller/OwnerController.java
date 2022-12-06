@@ -21,9 +21,14 @@ public class OwnerController {
         this.ownerService = ownerService;
     }
 
-    @GetMapping("/owners")
+    @GetMapping("/owners/view")
     public List<Owner> displayOwnerView() {
         return ownerService.displayOwnerView();
+    }
+
+    @GetMapping("/owners")
+    public List<Owner> displayOwner() {
+        return ownerService.displayOwner();
     }
 
     @PostMapping("/owners")

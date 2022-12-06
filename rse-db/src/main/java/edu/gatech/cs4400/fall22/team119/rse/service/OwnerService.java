@@ -22,7 +22,7 @@ public class OwnerService {
     public List<Owner> displayOwnerView() {
         return ownerMapper.displayOwnerView();
     }
-
+    public List<Owner> displayOwner() {return ownerMapper.displayOwner();}
     public Integer addOwner(Owner owner) {
         return ownerMapper.addOwner(owner);
     }

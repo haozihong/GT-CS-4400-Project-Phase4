@@ -22,9 +22,14 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/employees")
+    @GetMapping("/employees/view")
     public List<Employee> displayEmployeeView() {
         return employeeService.displayEmployeeView();
+    }
+
+    @GetMapping("/employees")
+    public List<Employee> displayEmployee() {
+        return employeeService.displayEmployee();
     }
 
     @PostMapping("/employees")

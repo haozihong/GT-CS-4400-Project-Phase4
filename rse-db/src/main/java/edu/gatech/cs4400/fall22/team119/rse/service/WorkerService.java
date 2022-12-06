@@ -22,5 +22,4 @@ public class WorkerService {
     public Integer addWorker(String username) {
         return workerMapper.addWorker(username);
     }
-
 }

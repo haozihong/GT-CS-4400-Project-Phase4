@@ -13,6 +13,10 @@
         SELECT * FROM restaurant_supply_express.display_employee_view;
     </select>
 
+    <select id="displayEmployee" resultMap="EmployeeMap">
+        SELECT * FROM restaurant_supply_express.employees;
+    </select>
+
     <insert id="addEmployee">
         call add_employee (#{username},
         #{firstName},

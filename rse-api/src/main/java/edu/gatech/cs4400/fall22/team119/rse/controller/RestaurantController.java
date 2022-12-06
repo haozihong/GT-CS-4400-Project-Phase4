@@ -6,6 +6,8 @@ import edu.gatech.cs4400.fall22.team119.rse.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Zhaodong Kang
  */
@@ -19,6 +21,10 @@ public class RestaurantController {
         this.restaurantService = restaurantService;
     }
 
+    @GetMapping("/restaurants")
+    public List<Restaurant> displayRestaurant(){
+        return restaurantService.displayRestaurant();
+    }
     @PostMapping("/restaurants")
     public Integer addRestaurant(@RequestBody Restaurant restaurant) {
 //        System.out.println(restaurant);

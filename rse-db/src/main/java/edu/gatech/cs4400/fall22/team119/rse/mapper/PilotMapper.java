@@ -11,5 +11,6 @@ import java.util.List;
 @Mapper
 public interface PilotMapper {
     List<Pilot> displayPilotView();
+    List<Pilot> displayPilot();
     Integer addPilot(Pilot pilot);
 }

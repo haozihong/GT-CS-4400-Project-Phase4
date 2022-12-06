@@ -25,6 +25,10 @@ public class IngredientService {
         return ingredientMapper.displayIngredientView();
     }
 
+    public List<Ingredient> displayIngredient(){
+        return ingredientMapper.displayIngredient();
+    }
+
     public Integer addIngredient(Ingredient ingredient) {
         return ingredientMapper.addIngredient(ingredient);
     }

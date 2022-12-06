@@ -22,7 +22,9 @@ public class EmployeeService {
     public List<Employee> displayEmployeeView() {
         return employeeMapper.displayEmployeeView();
     }
-
+    public List<Employee> displayEmployee(){
+        return employeeMapper.displayEmployee();
+    }
     public Integer addEmployee(Employee employee) {
         return employeeMapper.addEmployee(employee);
     }
@@ -34,4 +36,5 @@ public class EmployeeService {
     public Integer fireEmployee(String username, String id) {
         return employeeMapper.fireEmployee(username, id);
     }
+
 }

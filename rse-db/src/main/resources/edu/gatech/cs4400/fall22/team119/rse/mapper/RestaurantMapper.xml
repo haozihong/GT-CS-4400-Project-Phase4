@@ -4,7 +4,13 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.RestaurantMapper">
-
+    <resultMap id="RestaurantMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Restaurant">
+        <result column="long_name" property="longName"/>
+        <result column="funded_by" property="fundedBy"/>
+    </resultMap>
+    <select id="displayRestaurant" resultMap="RestaurantMap">
+        SELECT * FROM restaurant_supply_express.restaurants;
+    </select>
     <insert id="addRestaurant">
         call add_restaurant (#{longName},
         #{rating},
@@ -16,5 +22,4 @@
         call start_funding (#{fundedBy},
         #{longName});
     </update>
-
 </mapper>
