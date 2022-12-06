@@ -18,7 +18,7 @@ export const Owners = () => {
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     setLoading(true);
-    fetch(`/api/owners`)
+    fetch(`/api/owners/view`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);

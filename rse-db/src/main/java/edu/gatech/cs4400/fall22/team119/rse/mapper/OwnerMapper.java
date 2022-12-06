@@ -11,5 +11,6 @@ import java.util.List;
 @Mapper
 public interface OwnerMapper {
     List<Owner> displayOwnerView();
+    List<Owner> displayOwner();
     Integer addOwner(Owner owner);
 }

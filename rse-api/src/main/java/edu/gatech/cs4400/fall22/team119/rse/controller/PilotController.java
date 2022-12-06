@@ -22,9 +22,14 @@ public class PilotController {
         this.pilotService = pilotService;
     }
 
-    @GetMapping("/pilots")
+    @GetMapping("/pilots/view")
     public List<Pilot> displayPilotView() {
         return pilotService.displayPilotView();
+    }
+
+    @GetMapping("/pilots")
+    public List<Pilot> displayPilot() {
+        return pilotService.displayPilot();
     }
 
     @PostMapping("/pilots")

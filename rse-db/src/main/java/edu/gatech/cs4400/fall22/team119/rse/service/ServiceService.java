@@ -21,6 +21,9 @@ public class ServiceService {
     public List<edu.gatech.cs4400.fall22.team119.rse.pojo.Service> displayServiceView() {
         return serviceMapper.displayServiceView();
     }
+    public List<edu.gatech.cs4400.fall22.team119.rse.pojo.Service> displayService() {
+        return serviceMapper.displayService();
+    }
 
     public Integer addService(edu.gatech.cs4400.fall22.team119.rse.pojo.Service service) {
         return serviceMapper.addService(service);

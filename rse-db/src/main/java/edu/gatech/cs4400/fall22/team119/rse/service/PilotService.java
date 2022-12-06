@@ -23,6 +23,10 @@ public class PilotService {
         return pilotMapper.displayPilotView();
     }
 
+    public List<Pilot> displayPilot() {
+        return pilotMapper.displayPilot();
+    }
+
     public Integer addPilot(Pilot pilot) {
         return pilotMapper.addPilot(pilot);
     }

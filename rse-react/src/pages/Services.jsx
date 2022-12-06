@@ -17,7 +17,7 @@ export const Services = () => {
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     setLoading(true);
-    fetch(`/api/services`)
+    fetch(`/api/services/view`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);

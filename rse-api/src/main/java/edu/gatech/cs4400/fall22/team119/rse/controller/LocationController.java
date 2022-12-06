@@ -22,9 +22,14 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @GetMapping("/locations")
-    public List<Location> locationService() {
+    @GetMapping("/locations/view")
+    public List<Location> displayLocationView() {
         return locationService.displayLocationView();
+    }
+
+    @GetMapping("/locations")
+    public List<Location> displayLocation() {
+        return locationService.displayLocation();
     }
 
 

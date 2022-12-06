@@ -4,7 +4,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.DroneMapper">
-
+    <resultMap id="DroneMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Drone">
+        <result column="flown_by" property="flownBy"/>
+        <result column="swarm_id" property="swarmId"/>
+        <result column="swarm_tag" property="swarmTag"/>
+    </resultMap>
+    <select id="displayDrone" resultMap="DroneMap">
+        SELECT * FROM restaurant_supply_express.drones;
+    </select>
     <insert id="addDrone">
         call add_drone (
         #{id},

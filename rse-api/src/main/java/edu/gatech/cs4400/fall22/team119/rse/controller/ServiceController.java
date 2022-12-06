@@ -21,9 +21,14 @@ public class ServiceController {
         this.serviceService = serviceService;
     }
 
-    @GetMapping("/services")
+    @GetMapping("/services/view")
     public List<Service> displayServiceView() {
         return serviceService.displayServiceView();
+    }
+
+    @GetMapping("/services")
+    public List<Service> displayService() {
+        return serviceService.displayService();
     }
 
 

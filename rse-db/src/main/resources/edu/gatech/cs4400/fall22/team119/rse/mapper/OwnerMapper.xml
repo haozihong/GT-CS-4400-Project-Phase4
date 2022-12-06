@@ -15,6 +15,10 @@
     <select id="displayOwnerView" resultMap="OwnerMap">
         SELECT * FROM restaurant_supply_express.display_owner_view;
     </select>
+    <select id="displayOwner" resultMap="OwnerMap">
+        SELECT * FROM restaurant_supply_express.restaurant_owners;
+    </select>
+
 
     <insert id="addOwner">
         call add_owner (#{username},

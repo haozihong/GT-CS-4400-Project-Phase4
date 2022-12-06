@@ -9,4 +9,8 @@
         call add_worker_role (#{username});
     </insert>
 
+    <select id="displayWorker" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Worker">
+        SELECT * FROM restaurant_supply_express.workers;
+    </select>
+
 </mapper>

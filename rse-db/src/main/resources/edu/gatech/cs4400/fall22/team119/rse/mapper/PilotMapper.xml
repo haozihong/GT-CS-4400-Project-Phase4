@@ -11,6 +11,10 @@
     <select id="displayPilotView" resultMap="PilotMap">
         SELECT * FROM restaurant_supply_express.display_pilot_view;
     </select>
+    <select id="displayPilot" resultMap="PilotMap">
+        SELECT * FROM restaurant_supply_express.pilots;
+    </select>
+
 
     <insert id="addPilot">
         call add_pilot_role (#{username},

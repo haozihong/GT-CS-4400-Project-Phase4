@@ -12,5 +12,6 @@ import java.util.List;
 @Mapper
 public interface LocationMapper {
     List<Location> displayLocationView();
+    List<Location> displayLocation();
     Integer addLocation(Location location);
 }

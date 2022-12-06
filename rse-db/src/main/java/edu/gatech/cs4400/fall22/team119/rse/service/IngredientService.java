@@ -20,9 +20,12 @@ public class IngredientService {
         this.ingredientMapper = ingredientMapper;
     }
 
-
     public List<Ingredient> displayIngredientView() {
         return ingredientMapper.displayIngredientView();
+    }
+
+    public List<Ingredient> displayIngredient(){
+        return ingredientMapper.displayIngredient();
     }
 
     public Integer addIngredient(Ingredient ingredient) {

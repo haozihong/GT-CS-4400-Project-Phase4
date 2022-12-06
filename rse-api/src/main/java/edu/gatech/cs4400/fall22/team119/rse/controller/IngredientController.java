@@ -26,10 +26,13 @@ public class IngredientController {
 //    public List<Ingredient> getAllIngredients() {
 //        return ingredientService.getAllIngredients();
 //    }
-    @GetMapping("/ingredients")
+    @GetMapping("/ingredients/view")
     public List<Ingredient> displayIngredientView() {
         return ingredientService.displayIngredientView();
-
+    }
+    @GetMapping("/ingredients")
+    public List<Ingredient> displayIngredient() {
+        return ingredientService.displayIngredient();
     }
 
     @PostMapping("/ingredients")

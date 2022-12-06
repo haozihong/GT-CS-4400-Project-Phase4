@@ -6,6 +6,8 @@ import edu.gatech.cs4400.fall22.team119.rse.pojo.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Zhaodong Kang
  */
@@ -18,6 +20,10 @@ public class RestaurantService {
         this.restaurantMapper = restaurantMapper;
     }
 
+    public List<Restaurant> displayRestaurant(){
+        return restaurantMapper.displayRestaurant();
+    }
+    
     public Integer addRestaurant(Restaurant restaurant) {
         return restaurantMapper.addRestaurant(restaurant);
     }

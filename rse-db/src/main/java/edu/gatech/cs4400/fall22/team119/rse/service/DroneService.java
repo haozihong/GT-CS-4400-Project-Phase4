@@ -6,6 +6,8 @@ import edu.gatech.cs4400.fall22.team119.rse.pojo.Drone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Zhaodong Kang
  */
@@ -18,6 +20,9 @@ public class DroneService {
         this.droneMapper = droneMapper;
     }
 
+    public List<Drone> displayDrone(){
+        return droneMapper.displayDrone();
+    }
     public Integer addDrone(Drone drone) {
         return droneMapper.addDrone(drone);
     }

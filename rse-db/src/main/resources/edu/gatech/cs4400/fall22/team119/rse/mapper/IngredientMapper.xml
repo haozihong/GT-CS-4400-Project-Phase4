@@ -8,13 +8,17 @@
         <result column="amount_available" property="amountAvailable"/>
         <result column="low_price" property="lowPrice"/>
         <result column="high_price" property="highPrice"/>
-
+        <result column="ingredient_name" property="iname"/>
     </resultMap>
 
 
-    <select id="displayIngredientView" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
+    <select id="displayIngredientView" resultMap="IngredientMap">
         SELECT * FROM restaurant_supply_express.display_ingredient_view;
     </select>
+    <select id="displayIngredient" resultMap="IngredientMap">
+        SELECT * FROM restaurant_supply_express.ingredients;
+    </select>
+
     <insert id="addIngredient">
         call add_ingredient (#{barcode},
         #{iname},

@@ -14,7 +14,7 @@ export const Pilots = () => {
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     setLoading(true);
-    fetch(`/api/pilots`)
+    fetch(`/api/pilots/view`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);

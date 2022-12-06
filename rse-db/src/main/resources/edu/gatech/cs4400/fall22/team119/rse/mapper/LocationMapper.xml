@@ -9,10 +9,18 @@
         <result column="y_coord" property="yCoord"/>
         <result column="num_restaurants" property="numRestaurants"/>
         <result column="num_delivery_services" property="numDeliveryServices"/>
+        <result column="num_drones" property="numDrone"/>
+
+
     </resultMap>
     <select id="displayLocationView" resultMap="LocationMap">
         SELECT * FROM restaurant_supply_express.display_location_view;
     </select>
+    <select id="displayLocation" resultMap="LocationMap">
+        SELECT * FROM restaurant_supply_express.locations;
+    </select>
+
+
     <insert id="addLocation">
         call add_location (#{label},
         #{xCoord},

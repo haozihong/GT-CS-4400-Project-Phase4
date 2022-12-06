@@ -23,9 +23,12 @@ public class LocationService {
         return locationMapper.displayLocationView();
     }
 
+    public List<Location> displayLocation(){
+        return locationMapper.displayLocation();
+    }
+
     public Integer addLocation(Location location) {
         return locationMapper.addLocation(location);
     }
-
 
 }

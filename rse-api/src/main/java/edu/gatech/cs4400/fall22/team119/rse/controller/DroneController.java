@@ -6,6 +6,8 @@ import edu.gatech.cs4400.fall22.team119.rse.service.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author Zhaodong Kang
  */
@@ -18,7 +20,10 @@ public class DroneController {
     public DroneController(DroneService droneService) {
         this.droneService = droneService;
     }
-
+    @GetMapping("/drones")
+    public List<Drone> displayDrone(){
+        return droneService.displayDrone();
+    }
     @PostMapping("/drones")
     public Integer addDrone(@RequestBody Drone drone) {
 //        System.out.println(drone);

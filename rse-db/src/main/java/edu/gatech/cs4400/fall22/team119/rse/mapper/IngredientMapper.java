@@ -13,5 +13,6 @@ import java.util.List;
 public interface IngredientMapper {
 
     List<Ingredient> displayIngredientView();
+    List<Ingredient> displayIngredient();
     Integer addIngredient(Ingredient ingredient);
 }
