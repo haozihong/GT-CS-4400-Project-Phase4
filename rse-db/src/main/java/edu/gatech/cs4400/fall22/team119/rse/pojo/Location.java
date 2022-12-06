@@ -23,4 +23,6 @@ public class Location {
 
     private Integer space;
 
+    private Integer numDrone;
+
 }
