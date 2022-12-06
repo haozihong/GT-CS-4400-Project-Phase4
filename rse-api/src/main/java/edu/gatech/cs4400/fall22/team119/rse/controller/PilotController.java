@@ -27,7 +27,7 @@ public class PilotController {
         return pilotService.displayPilotView();
     }
 
-    @GetMapping("/pilots/view")
+    @GetMapping("/pilots")
     public List<Pilot> displayPilot() {
         return pilotService.displayPilot();
     }
