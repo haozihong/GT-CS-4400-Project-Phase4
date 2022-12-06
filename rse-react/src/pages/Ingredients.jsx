@@ -4,9 +4,9 @@ import { Table } from 'antd';
 const columns = [
   { title: 'Ingredient Name', dataIndex: 'iname' },
   { title: 'Location', dataIndex: 'location' },
-  { title: 'Amount Available', dataIndex: 'amount_available' },
-  { title: 'Low Price', dataIndex: 'low_price' },
-  { title: 'High Price', dataIndex: 'high_price' },
+  { title: 'Amount Available', dataIndex: 'amountAvailable' },
+  { title: 'Low Price', dataIndex: 'lowPrice' },
+  { title: 'High Price', dataIndex: 'highPrice' },
 ];
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     setLoading(true);
-    fetch(`/api/ingredients`)
+    fetch(`/api/ingredients/view`)
       .then((res) => res.json())
       .then((res) => {
         setData(res);

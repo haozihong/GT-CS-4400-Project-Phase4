@@ -9,7 +9,7 @@ import { format } from 'date-fns'
 const columns = [
   { title: 'Username', dataIndex: 'username' },
   { title: 'Tax ID', dataIndex: 'taxID' },
-  { title: 'Salary', dataIndex: 'salary', render: e => `\$${e}`, },
+  { title: 'Salary', dataIndex: 'salary', render: e => `$${e}`, },
   { title: 'Hired Date', dataIndex: 'hired', render: e => format(e, 'yyyy-MM-dd'), },
   { title: 'Experience (month)', dataIndex: 'employeeExperience', render: e => `${e} mo.`, },
   { title: 'License ID', dataIndex: 'licenseID' },
@@ -54,7 +54,7 @@ export const Employees = () => {
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     setLoading(true);
-    fetch(`/api/employees`)
+    fetch(`/api/employees/view`)
       .then(res => res.json())
       .then(res => {
         res.forEach(e => { e.hired = new Date(e.hired); });
