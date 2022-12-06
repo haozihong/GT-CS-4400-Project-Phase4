@@ -21,4 +21,8 @@
         #{licenseID},
         #{experience});
     </insert>
+
+    <delete id="removePilotsRole">
+        call remove_pilot_role(#{username});
+    </delete>
 </mapper>

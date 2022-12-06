@@ -15,4 +15,5 @@ public interface IngredientMapper {
     List<Ingredient> displayIngredientView();
     List<Ingredient> displayIngredient();
     Integer addIngredient(Ingredient ingredient);
+    Integer removeIngredient(String barcode);
 }

@@ -30,4 +30,8 @@ public class PilotService {
     public Integer addPilot(Pilot pilot) {
         return pilotMapper.addPilot(pilot);
     }
+
+    public Integer removePilotsRole(String username){
+        return pilotMapper.removePilotsRole(username);
+    }
 }

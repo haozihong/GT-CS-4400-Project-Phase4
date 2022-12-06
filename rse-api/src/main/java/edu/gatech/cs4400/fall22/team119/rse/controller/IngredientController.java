@@ -40,5 +40,9 @@ public class IngredientController {
 //        System.out.println(ingredient);
         return ingredientService.addIngredient(ingredient);
     }
+    @DeleteMapping("/ingredients")
+    public Integer removeIngredient(@RequestParam String barcode){
+        return ingredientService.removeIngredient(barcode);
+    }
 
 }

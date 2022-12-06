@@ -37,4 +37,8 @@ public class PilotController {
 //        System.out.println(pilot);
         return pilotService.addPilot(pilot);
     }
+    @DeleteMapping("/pilots/role")
+    public Integer removePilotsRole(@RequestParam String username){
+        return pilotService.removePilotsRole(username);
+    }
 }

@@ -13,4 +13,5 @@ public interface RestaurantMapper {
     List<Restaurant> displayRestaurant();
     Integer addRestaurant(Restaurant restaurant);
     Integer startFunding(Restaurant restaurant);
+    Integer purchaseIngredient(String longName, String id, Integer tag, String barcode, Integer quantity);
 }

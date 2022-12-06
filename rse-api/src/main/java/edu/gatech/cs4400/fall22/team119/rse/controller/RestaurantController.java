@@ -36,4 +36,10 @@ public class RestaurantController {
         System.out.println(restaurant);
         return restaurantService.startFunding(restaurant);
     }
+
+    @PutMapping("/restaurants/purchase")
+    public Integer purchaseIngredient(@RequestParam String longName, @RequestParam String id, @RequestParam Integer tag,
+                                      @RequestParam String barcode, @RequestParam Integer quantity){
+        return restaurantService.purchaseIngredient(longName, id, tag, barcode, quantity);
+    }
 }

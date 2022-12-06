@@ -29,4 +29,6 @@ public class Drone {
 
     private String hover;
 
+    private String destination;
+
 }

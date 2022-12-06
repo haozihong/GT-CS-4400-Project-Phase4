@@ -32,4 +32,7 @@ public class IngredientService {
         return ingredientMapper.addIngredient(ingredient);
     }
 
+    public Integer removeIngredient(String barcode){
+        return ingredientMapper.removeIngredient(barcode);
+    }
 }

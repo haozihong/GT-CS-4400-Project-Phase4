@@ -42,4 +42,27 @@
         #{swarmTag});
     </update>
 
+    <delete id="removeDrone">
+        call remove_drone(#{id},
+        #{tag});
+    </delete>
+
+    <update id="flyDrone">
+        call fly_drone(#{id},
+        #{tag},
+        #{destination})
+    </update>
+
+    <update id="refuelDrone">
+        call refuel_drone(#{id},
+        #{tag},
+        #{moreFuel});
+    </update>
+    <update id="loadDrone">
+        call load_drone( #{id},
+        #{tag},
+        #{barcode},
+        #{morePackages},
+        #{price});
+    </update>
 </mapper>
