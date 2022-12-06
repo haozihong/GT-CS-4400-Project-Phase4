@@ -9,7 +9,7 @@
         call add_worker_role (#{username});
     </insert>
 
-    <select id="displayDrone">
+    <select id="displayWorker">
         SELECT * FROM restaurant_supply_express.workers;
     </select>
 
