@@ -45,7 +45,7 @@ public class EmployeeController {
         return employeeService.hireEmployee(username, id);
     }
 
-    @DeleteMapping("/employees/hire")
+    @DeleteMapping("/employees/fire")
     public Integer fireEmployee(@RequestParam String username, @RequestParam String id) {
         return employeeService.fireEmployee(username, id);
     }

@@ -37,14 +37,17 @@ public class DroneController {
 
     @PutMapping("/drones/swarms")
     public Integer joinSwarm(@RequestBody Drone drone) {
-//        System.out.println((drone));
+        System.out.println((drone));
         return droneService.joinSwarm(drone);
     }
 
-    @PutMapping("/drones/fuel")
-    public Integer refuelDrone(@RequestBody Drone drone, @RequestParam Integer moreFuel) {
-//        System.out.println((drone));
-        return droneService.refuelDrone(drone, moreFuel);
+    @PutMapping("/drones/fuel/{id}/{tag}")
+    public Integer refuelDrone(@PathVariable("id") String id, @PathVariable("tag") Integer tag, @RequestParam Integer moreFuel) {
+//        System.out.println((id));
+//        System.out.println((tag));
+//        System.out.println((moreFuel));
+
+        return droneService.refuelDrone(id, tag, moreFuel);
     }
 
     @PutMapping("/drones/fly")
@@ -53,22 +56,21 @@ public class DroneController {
     }
 
     // TODO
-    @PutMapping("/drones/loading")
-    public Integer loadDrone(@RequestParam String id, @RequestParam Integer tag, @RequestParam String barcode,
+    @PutMapping("/drones/loading/{id}/{tag}")
+    public Integer loadDrone(@PathVariable("id") String id, @PathVariable("tag") Integer tag, @RequestParam String barcode,
                              @RequestParam Integer morePackages, @RequestParam Integer price){
         return droneService.loadDrone(id, tag, barcode, morePackages, price);
     }
     // TODO: not sure should I use the DeleteMapping
     @DeleteMapping("/drones/swarms")
     public Integer leaveSwarm(@RequestBody Drone drone) {
-//        System.out.println((drone));
+        System.out.println((drone));
         return droneService.leaveSwarm(drone);
     }
 
-    @DeleteMapping("/drones")
-    public Integer removeDrone(@RequestBody Drone drone) {
-//        System.out.println((drone));
-        return droneService.removeDrone(drone);
+    @DeleteMapping("/drones/{id}/{tag}")
+    public Integer removeDrone(@PathVariable("id") String id, @PathVariable("tag") Integer tag) {
+        return droneService.removeDrone(id, tag);
     }
 
 
