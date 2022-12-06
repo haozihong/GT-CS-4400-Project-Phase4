@@ -38,4 +38,15 @@ public class DroneService {
     public Integer leaveSwarm(Drone drone) {
         return droneMapper.leaveSwarm(drone);
     }
+
+    public Integer removeDrone(String id, Integer tag){
+        return droneMapper.removeDrone(id, tag);
+    }
+
+    public Integer flyDrone(Drone drone){return droneMapper.flyDrone(drone);}
+
+    public Integer refuelDrone(String id, Integer tag, Integer moreFuel){return droneMapper.refuelDrone(id, tag, moreFuel);}
+    public Integer loadDrone(String id, Integer tag, String barcode, Integer morePackages, Integer price){
+        return droneMapper.loadDrone(id, tag, barcode, morePackages, price);
+    }
 }

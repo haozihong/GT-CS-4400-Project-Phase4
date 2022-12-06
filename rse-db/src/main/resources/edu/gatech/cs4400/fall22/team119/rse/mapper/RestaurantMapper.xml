@@ -22,4 +22,12 @@
         call start_funding (#{fundedBy},
         #{longName});
     </update>
+    <update id="purchaseIngredient">
+        call purchase_ingredient(#{longName},
+        #{id},
+        #{tag},
+        #{barcode},
+        #{quantity}
+        );
+    </update>
 </mapper>

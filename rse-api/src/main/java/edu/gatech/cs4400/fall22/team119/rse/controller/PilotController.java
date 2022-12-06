@@ -37,4 +37,10 @@ public class PilotController {
 //        System.out.println(pilot);
         return pilotService.addPilot(pilot);
     }
+
+    @DeleteMapping("/pilots/role/{username}")
+    public Integer removePilotsRole(@PathVariable("username") String username){
+        System.out.println(username);
+        return pilotService.removePilotsRole(username);
+    }
 }

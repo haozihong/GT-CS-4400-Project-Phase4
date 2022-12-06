@@ -13,4 +13,5 @@ public interface PilotMapper {
     List<Pilot> displayPilotView();
     List<Pilot> displayPilot();
     Integer addPilot(Pilot pilot);
+    Integer removePilotsRole(String username);
 }

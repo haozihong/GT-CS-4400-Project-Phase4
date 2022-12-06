@@ -24,4 +24,8 @@
         #{iname},
         #{weight});
     </insert>
+
+    <delete id="removeIngredient">
+        call remove_ingredient(#{barcode});
+    </delete>
 </mapper>

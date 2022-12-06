@@ -32,4 +32,8 @@ public class RestaurantService {
         return restaurantMapper.startFunding(restaurant);
     }
 
-}
+    public Integer purchaseIngredient( String longName,  String id,  Integer tag,
+                                       String barcode,  Integer quantity){
+        return restaurantMapper.purchaseIngredient(longName, id, tag, barcode, quantity);}
+    }
+
