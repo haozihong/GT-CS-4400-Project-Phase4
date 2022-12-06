@@ -6,7 +6,7 @@
 <mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.DroneMapper">
     <resultMap id="DroneMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Drone">
         <result column="flown_by" property="flownBy"/>
-        <result column="swarm_id" property="swarmDd"/>
+        <result column="swarm_id" property="swarmId"/>
         <result column="swarm_tag" property="swarmTag"/>
     </resultMap>
     <select id="displayDrone" resultMap="DroneMap">

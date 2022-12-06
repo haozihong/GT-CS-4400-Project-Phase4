@@ -20,7 +20,6 @@ public class IngredientService {
         this.ingredientMapper = ingredientMapper;
     }
 
-
     public List<Ingredient> displayIngredientView() {
         return ingredientMapper.displayIngredientView();
     }

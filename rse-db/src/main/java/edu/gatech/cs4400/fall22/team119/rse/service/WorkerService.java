@@ -22,6 +22,7 @@ public class WorkerService {
     public List<Worker> displayWorker(){
         return workerMapper.displayWorker();
     }
+    
     public Integer addWorker(String username) {
         return workerMapper.addWorker(username);
     }

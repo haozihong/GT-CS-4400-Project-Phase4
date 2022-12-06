@@ -19,9 +19,11 @@ public class RestaurantService {
     public RestaurantService(RestaurantMapper restaurantMapper) {
         this.restaurantMapper = restaurantMapper;
     }
+
     public List<Restaurant> displayRestaurant(){
         return restaurantMapper.displayRestaurant();
     }
+    
     public Integer addRestaurant(Restaurant restaurant) {
         return restaurantMapper.addRestaurant(restaurant);
     }

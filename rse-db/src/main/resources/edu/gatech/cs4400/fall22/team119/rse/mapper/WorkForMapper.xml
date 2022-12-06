@@ -5,7 +5,7 @@
 
 <mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.WorkForMapper">
 
-    <select id="displayWorkFor">
+    <select id="displayWorkFor" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.WorkFor">
         SELECT * FROM restaurant_supply_express.work_for;
     </select>
 
