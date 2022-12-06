@@ -27,5 +27,6 @@ public class Drone {
 
     private Integer swarmTag;
 
+    private String hover;
 
 }
