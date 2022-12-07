@@ -1,12 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Input, InputNumber, notification, Tooltip } from 'antd';
-import {
-  PlusOutlined,
-  ReloadOutlined,
-} from '@ant-design/icons';
-
-
-
+import React from 'react'
 
 const Restaurants = () => {
   return (
