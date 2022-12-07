@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { format } from 'date-fns'
 
+// columns of employeeView table
 const columns = [
   { title: 'Username', dataIndex: 'username' },
   { title: 'Tax ID', dataIndex: 'taxID' },
@@ -17,38 +18,40 @@ const columns = [
   { title: 'Manager Status', dataIndex: 'managerStatus' },
 ];
 
+// fields in the addEmployee pop-up
 const newEmpFormFields = [
   { name: "username", label: "Username", formItem: <Input />, },
   { name: "firstName", label: "First Name", formItem: <Input />, },
   { name: "lastName", label: "Last Name", formItem: <Input />, },
   { name: "address", label: "Address", formItem: <Input />, },
   { name: "birthdate", label: "Birthdate", formItem: <DatePicker />, },
-  { 
-    name: "taxID", 
-    label: "Tax ID", 
+  {
+    name: "taxID",
+    label: "Tax ID",
     formItem: <Input />,
     rules: [
-      { required: true, }, 
-      { 
-        pattern: /^\d{3}-\d{2}-\d{4}$/, 
+      { required: true, },
+      {
+        pattern: /^\d{3}-\d{2}-\d{4}$/,
         message: 'Tax ID should be in "xxx-xx-xxxx" format'
-      }, 
+      },
     ],
   },
   { name: "hired", label: "Hired Date", formItem: <DatePicker />, },
-  { 
-    name: "employeeExperience", 
-    label: "Experience (Month)", 
-    formItem: <InputNumber />, 
+  {
+    name: "employeeExperience",
+    label: "Experience (Month)",
+    formItem: <InputNumber />,
     rules: [{ required: true, }, { type: 'number', min: 0 }],
   },
-  { 
-    name: "salary", 
-    label: "Salary ($)", 
-    formItem: <InputNumber />, 
+  {
+    name: "salary",
+    label: "Salary ($)",
+    formItem: <InputNumber />,
     rules: [{ required: true, }, { type: 'number', min: 0 }], },
 ];
 
+// get data from DB for employeeView table
 export const Employees = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
@@ -66,6 +69,7 @@ export const Employees = () => {
     fetchData();
   }, []);
 
+// Add employee Popup and error handling
   const [newEmpDialogOpen, setNewEmpDialogOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
@@ -94,11 +98,11 @@ export const Employees = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Fail to add employee', 'Please check the form fields. ', 'warning');
+          popMessage('Failed to add employee', 'Please check the form fields. ', 'warning');
         } else {
           fetchData();
           setNewEmpDialogOpen(false);
-          popMessage('Success', `Employee added seccessfully!`, 'success');
+          popMessage('Success', `Employee added successfully!`, 'success');
           form.resetFields();
         }
       }, err => {
@@ -113,14 +117,15 @@ export const Employees = () => {
       });
   };
 
+// Render the Employees Page
   return (
     <>
       {contextHolder}
       <Row className='page-content' gutter={[16, 8]}>
         <Col span={24} style={{paddingTop: 16}}>
           <Space style={{float: 'right'}}>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               icon={<PlusOutlined />}
               onClick={() => setNewEmpDialogOpen(true)}
             >
@@ -151,7 +156,7 @@ export const Employees = () => {
         onCancel={() => setNewEmpDialogOpen(false)}
       >
         <Form
-          form={form} 
+          form={form}
           labelCol={{span: 8}}
           wrapperCol={{span: 16}}
           requiredMark="optional"
@@ -159,7 +164,7 @@ export const Employees = () => {
           onFinish={onFinish}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {newEmpFormFields.map(e => 
+          {newEmpFormFields.map(e =>
             <Form.Item
               name={e.name}
               label={e.label}
