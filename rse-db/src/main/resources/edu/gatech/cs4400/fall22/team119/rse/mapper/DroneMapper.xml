@@ -10,6 +10,11 @@
         <result column="swarm_tag" property="swarmTag"/>
     </resultMap>
     <select id="displayDrone" resultMap="DroneMap">
+<!--        SELECT id, tag, fuel, capacity, sales,-->
+<!--            IFNULL(flown_by,'n/a') as flown_by,-->
+<!--            IFNULL(swarm_id,'n/a') as swarm_id,-->
+<!--            IFNULL(swarm_tag, 'n/a') as swarm_tag-->
+<!--            FROM restaurant_supply_express.drones;-->
         SELECT * FROM restaurant_supply_express.drones;
     </select>
     <insert id="addDrone">

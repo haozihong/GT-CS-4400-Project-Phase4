@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
  * @author Zhaodong Kang
  */
@@ -12,4 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Worker {
     private String username;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private Date birthdate;
 }

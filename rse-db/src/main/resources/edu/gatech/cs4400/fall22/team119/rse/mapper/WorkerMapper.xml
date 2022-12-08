@@ -4,13 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="edu.gatech.cs4400.fall22.team119.rse.mapper.WorkerMapper">
-
+    <resultMap id="WorkerMap" type="edu.gatech.cs4400.fall22.team119.rse.pojo.Worker">
+        <result column="first_name" property="firstName"/>
+        <result column="last_name" property="lastName"/>
+    </resultMap>
     <insert id="addWorker" parameterType="String">
         call add_worker_role (#{username});
     </insert>
 
-    <select id="displayWorker" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Worker">
-        SELECT * FROM restaurant_supply_express.workers;
+    <select id="displayWorker" resultMap="WorkerMap">
+        SELECT * FROM restaurant_supply_express.workers natural join work_for natural join users;
     </select>
 
 </mapper>
