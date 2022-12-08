@@ -20,7 +20,7 @@ public class DroneController {
     public DroneController(DroneService droneService) {
         this.droneService = droneService;
     }
-    @GetMapping("/drones")
+    @GetMapping("/drones/view")
     public List<Drone> displayDrone(){
         return droneService.displayDrone();
     }

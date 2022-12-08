@@ -20,7 +20,7 @@ public class WorkerController {
     public WorkerController(WorkerService workerService) {
         this.workerService = workerService;
     }
-    @GetMapping("workers")
+    @GetMapping("workers/view")
     public List<Worker> displayWorker(){
         return workerService.displayWorker();
     }

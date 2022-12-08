@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
+import { format } from 'date-fns'
 
 const columns = [
+  { title: 'Username', dataIndex: 'username' },
   { title: 'Service ID', dataIndex: 'id' },
-  { title: 'Drone Tag', dataIndex: 'tag' },
-  { title: 'Fuel', dataIndex: 'fuel' },
-  { title: 'Capacity', dataIndex: 'capacity' },
-  { title: 'Sales', dataIndex: 'sales', render: e => `$${e}`, },
-  { title: 'Flown By', dataIndex: 'flownBy' },
-  { title: 'Location', dataIndex: 'hover' },
-  { title: 'Leader Drone Id', dataIndex: 'swarmId' },
-  { title: 'Leader Drone Tag', dataIndex: 'swarmTag' },
+  { title: 'Last Name', dataIndex: 'firstName' },
+  { title: 'Last Name', dataIndex: 'lastName' },
+  { title: 'Address', dataIndex: 'address' },
+  { title: 'Birthdate', dataIndex: 'birthdate', render: e => format(e, 'yyyy-MM-dd'), },
 ];
 
-export const Drones = () => {
+export const Workers = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const fetchData = () => {
     setLoading(true);
-    fetch(`/api/drones/view`)
+    fetch(`/api/workers/view`)
       .then((res) => res.json())
       .then((res) => {
+        res.forEach(e => { e.birthdate = new Date(e.birthdate); });
         setData(res);
         setLoading(false);
       });
@@ -32,11 +31,11 @@ export const Drones = () => {
   return (
     <Table
       columns={columns}
-      rowKey={(record) => record.id + record.tag}
+      rowKey={(record) => record.username + record.id}
       dataSource={data}
       loading={loading}
     />
   );
 }
 
-export default Drones
+export default Workers
