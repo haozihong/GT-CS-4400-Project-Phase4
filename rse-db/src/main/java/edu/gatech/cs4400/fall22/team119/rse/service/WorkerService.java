@@ -26,8 +26,8 @@ public class WorkerService {
     public List<Worker> displayWorker(){
         return workerMapper.displayWorker();
     }
-
-    public Integer addWorker(String username) {
-        return workerMapper.addWorker(username);
+    
+    public Integer addWorker(Worker worker) {
+        return workerMapper.addWorker(worker);
     }
 }

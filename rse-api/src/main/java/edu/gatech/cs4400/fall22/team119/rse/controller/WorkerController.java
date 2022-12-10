@@ -29,7 +29,7 @@ public class WorkerController {
         return workerService.displayWorker();
     }
     @PostMapping("/workers")
-    public Integer addWorker(@RequestBody String username) {
-        return workerService.addWorker(username);
+    public Integer addWorker(@RequestBody Worker worker) {
+        return workerService.addWorker(worker);
     }
 }
