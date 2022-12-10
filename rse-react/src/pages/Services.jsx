@@ -202,7 +202,7 @@ export const Services = () => {
   };
 
   const onFinishFireEmp = (values) => {            // ######################################## Added new onFinish
-    fetch('/api/employees/fire?username=' + inputUsername + "&id=" + inputId, {
+    fetch('/api/employees/fire?username=' + values.username + "&id=" + values.id, {
       method: 'DELETE',                            // ######################################## Set to DELETE method since deleting
     })
       .then(res => {

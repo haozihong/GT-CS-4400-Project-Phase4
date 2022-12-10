@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { format } from 'date-fns'
 
+// columns of employeeView table
 const columns = [
   { title: 'Username', dataIndex: 'username' },
   { title: 'Tax ID', dataIndex: 'taxID' },
@@ -17,6 +18,7 @@ const columns = [
   { title: 'Manager Status', dataIndex: 'managerStatus' },
 ];
 
+// fields in the addEmployee pop-up
 const newEmpFormFields = [
   { name: "username", label: "Username", formItem: <Input />, },
   { name: "firstName", label: "First Name", formItem: <Input />, },
@@ -49,6 +51,7 @@ const newEmpFormFields = [
     rules: [{ required: true, }, { type: 'number', min: 0 }], },
 ];
 
+// get data from DB for pilotView table
 export const Employees = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
@@ -66,6 +69,7 @@ export const Employees = () => {
     fetchData();
   }, []);
 
+// Add employee Popups and error handling
   const [newEmpDialogOpen, setNewEmpDialogOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
@@ -113,6 +117,7 @@ export const Employees = () => {
       });
   };
 
+  // Render the Employees Page
   return (
     <>
       {contextHolder}

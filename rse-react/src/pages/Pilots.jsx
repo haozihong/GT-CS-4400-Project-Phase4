@@ -28,6 +28,14 @@ const remPilFormFields = [
   { name: "username", label: "Username", formItem: <Input />, },
 ];
 
+// fields in the takeoverDrone pop-up
+const takeDroneFormFields = [
+  { name: "flownBy", label: "Pilot Username", formItem: <Input />, },
+  { name: "id", label: "Service ID", formItem: <Input />, },
+  { name: "tag", label: "Drone Tag", formItem: <InputNumber />, },
+];
+
+
 // get data from DB for pilotView table
 export const Pilots = () => {
   const [data, setData] = useState();
@@ -50,6 +58,7 @@ export const Pilots = () => {
       // Add pilot Popups and error handling
       const [newPilDialogOpen, setNewPilDialogOpen] = useState(false);
       const [remPilDialogOpen, setRemPilDialogOpen] = useState(false);
+      const [takeDroneDialogOpen, setTakeDroneDialogOpen] = useState(false);
       const [confirmLoading, setConfirmLoading] = useState(false);
       const [form] = Form.useForm();
       const [notificationApi, contextHolder] = notification.useNotification();
@@ -64,6 +73,10 @@ export const Pilots = () => {
         form.submit()
       };
       const remPilDialogOk = () => {
+        setConfirmLoading(true);
+        form.submit()
+      };
+      const takeDroneDialogOk = () => {
         setConfirmLoading(true);
         form.submit()
       };
@@ -130,6 +143,39 @@ export const Pilots = () => {
           });
       };
 
+      const onFinishTakeDrone = (values) => {
+        fetch('/api/drones', {
+          method: 'PUT',
+          body: JSON.stringify(values),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+          .then(res => {
+            if (!res.ok) return res.json().then(r => Promise.reject(r));
+            return res.json();
+          })
+          .then(data => {
+            if (data === 0) {
+              popMessage('Failed to takeover drone', 'Please check the form fields. ', 'warning');
+            } else {
+              fetchData();
+              setTakeDroneDialogOpen(false);
+              popMessage('Success', `Drone taken over successfully!`, 'success');
+              form.resetFields();
+            }
+          }, err => {
+            console.log('err', err);
+            popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
+          })
+          .catch((err) => {
+            popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
+          })
+          .finally(() => {
+            setConfirmLoading(false);
+          });
+      };
+
       // Render the Pilots Page
       return (
         <>
@@ -150,6 +196,12 @@ export const Pilots = () => {
                   onClick={() => setRemPilDialogOpen(true)}
                 >
                   Remove Pilot
+                </Button>
+                <Button
+                  type="default"
+                  onClick={() => setTakeDroneDialogOpen(true)}
+                >
+                  Takeover Drone
                 </Button>
                 <Tooltip title="refresh">
                   <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />
@@ -213,6 +265,34 @@ export const Pilots = () => {
               onFinishFailed={() => setConfirmLoading(false)}
             >
               {remPilFormFields.map(e =>
+                <Form.Item
+                  name={e.name}
+                  label={e.label}
+                  rules={e.rules || [{ required: true, },]}
+                >
+                  {e.formItem}
+                </Form.Item>
+              )}
+            </Form>
+          </Modal>
+          <Modal
+            title="Takeover Drone"
+            okText="Takeover Drone"
+            open={takeDroneDialogOpen}
+            onOk={takeDroneDialogOk}
+            confirmLoading={confirmLoading}
+            onCancel={() => setTakeDroneDialogOpen(false)}
+          >
+            <Form
+              form={form}
+              labelCol={{span: 8}}
+              wrapperCol={{span: 16}}
+              requiredMark="optional"
+              name="takeDroneForm"
+              onFinish={onFinishTakeDrone}
+              onFinishFailed={() => setConfirmLoading(false)}
+            >
+              {takeDroneFormFields.map(e =>
                 <Form.Item
                   name={e.name}
                   label={e.label}
