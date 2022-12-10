@@ -19,10 +19,14 @@ public class WorkerService {
         this.workerMapper = workerMapper;
     }
 
+    public List<Worker> displayWorkerView(){
+        return workerMapper.displayWorkerView();
+    }
+
     public List<Worker> displayWorker(){
         return workerMapper.displayWorker();
     }
-    
+
     public Integer addWorker(String username) {
         return workerMapper.addWorker(username);
     }

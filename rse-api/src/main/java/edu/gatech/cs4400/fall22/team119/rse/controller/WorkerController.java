@@ -21,6 +21,10 @@ public class WorkerController {
         this.workerService = workerService;
     }
     @GetMapping("workers/view")
+    public List<Worker> displayWorkerView(){
+        return workerService.displayWorkerView();
+    }
+    @GetMapping("workers")
     public List<Worker> displayWorker(){
         return workerService.displayWorker();
     }

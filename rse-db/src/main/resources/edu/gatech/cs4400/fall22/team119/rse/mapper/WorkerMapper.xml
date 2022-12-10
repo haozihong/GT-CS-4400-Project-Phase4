@@ -12,12 +12,16 @@
         call add_worker_role (#{username});
     </insert>
 
-    <select id="displayWorker" resultMap="WorkerMap">
+    <select id="displayWorkerView" resultMap="WorkerMap">
         SElECT * from
             (SELECT restaurant_supply_express.workers.username, id FROM restaurant_supply_express.workers
             left join work_for on
             restaurant_supply_express.workers.username = restaurant_supply_express.work_for.username)
             as temp natural join users;
+    </select>
+
+    <select id="displayWorker" resultMap="WorkerMap">
+        SElECT * from restaurant_supply_express.workers;
     </select>
 
 </mapper>

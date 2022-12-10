@@ -11,5 +11,7 @@ import java.util.List;
 @Mapper
 public interface WorkerMapper {
     Integer addWorker(String username);
+    List<Worker> displayWorkerView();
     List<Worker> displayWorker();
+
 }
