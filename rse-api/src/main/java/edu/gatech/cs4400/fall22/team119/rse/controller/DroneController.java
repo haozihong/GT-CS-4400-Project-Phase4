@@ -21,9 +21,14 @@ public class DroneController {
         this.droneService = droneService;
     }
     @GetMapping("/drones/view")
+    public List<Drone> displayDroneView(){
+        return droneService.displayDrone();
+    }
+    @GetMapping("/drones")
     public List<Drone> displayDrone(){
         return droneService.displayDrone();
     }
+
     @PostMapping("/drones")
     public Integer addDrone(@RequestBody Drone drone) {
 //        System.out.println(drone);

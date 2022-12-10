@@ -22,9 +22,14 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurants/view")
+    public List<Restaurant> displayRestaurantView(){
+        return restaurantService.displayRestaurant();
+    }
+    @GetMapping("/restaurants")
     public List<Restaurant> displayRestaurant(){
         return restaurantService.displayRestaurant();
     }
+
     @PostMapping("/restaurants")
     public Integer addRestaurant(@RequestBody Restaurant restaurant) {
 //        System.out.println(restaurant);
