@@ -129,7 +129,7 @@ export const Employees = () => {
               icon={<PlusOutlined />}
               onClick={() => setNewEmpDialogOpen(true)}
             >
-              Add Employee
+              Add
             </Button>
             <Tooltip title="refresh">
               <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />

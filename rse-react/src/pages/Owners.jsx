@@ -107,7 +107,7 @@ export const Owners = () => {
                 icon={<PlusOutlined />}
                 onClick={() => setNewOwnDialogOpen(true)}
               >
-                Add Owner
+                Add
               </Button>
               <Tooltip title="refresh">
                 <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />

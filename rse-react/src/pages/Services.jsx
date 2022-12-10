@@ -78,7 +78,10 @@ export const Services = () => {
   const [hireEmpDialogOpen, setHireEmpDialogOpen] = useState(false);  // #################################
   const [fireEmpDialogOpen, setFireEmpDialogOpen] = useState(false);  // #################################
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [form] = Form.useForm();
+  const [formNewServ] = Form.useForm();
+  const [formManageServ] = Form.useForm();
+  const [formHireEmp] = Form.useForm();
+  const [formFireEmp] = Form.useForm();
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
     notificationApi[type || 'open']({
@@ -88,19 +91,19 @@ export const Services = () => {
   };
   const newServDialogOk = () => {
     setConfirmLoading(true);
-    form.submit()
+    formNewServ.submit()
   };
   const manageServDialogOk = () => {       // ############################################################################
     setConfirmLoading(true);
-    form.submit()
+    formManageServ.submit()
   };
   const hireEmpDialogOk = () => {         // ############################################################################
     setConfirmLoading(true);
-    form.submit()
+    formHireEmp.submit()
   };
   const fireEmpDialogOk = () => {         // ############################################################################
     setConfirmLoading(true);
-    form.submit()
+    formFireEmp.submit()
   };
   const onFinish = (values) => {
     fetch('/api/services', {
@@ -116,12 +119,12 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to add service', 'Please check the form fields. ', 'warning');
+          popMessage('Failed to add service', 'Please check the formNewServ fields. ', 'warning');
         } else {
           fetchData();
           setNewServDialogOpen(false);
           popMessage('Success', `Service added successfully!`, 'success');
-          form.resetFields();
+          formNewServ.resetFields();
         }
       }, err => {
         console.log('err', err);
@@ -149,12 +152,12 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to manage service', 'Please check the form fields. ', 'warning');  //##########################
+          popMessage('Failed to manage service', 'Please check the formManageServ fields. ', 'warning');  //##########################
         } else {
           fetchData();
           setManageServDialogOpen(false);
           popMessage('Success', `Service managed successfully!`, 'success');            // ############################
-          form.resetFields();
+          formManageServ.resetFields();
         }
       }, err => {
         console.log('err', err);
@@ -182,12 +185,12 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to hire employee', 'Please check the form fields. ', 'warning');  //##########################
+          popMessage('Failed to hire employee', 'Please check the formHireEmp fields. ', 'warning');  //##########################
         } else {
           fetchData();
           setHireEmpDialogOpen(false);
           popMessage('Success', `Employee hired successfully!`, 'success');            // ############################
-          form.resetFields();
+          formHireEmp.resetFields();
         }
       }, err => {
         console.log('err', err);
@@ -211,12 +214,12 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to fire employee', 'Please check the form fields. ', 'warning');  //##########################
+          popMessage('Failed to fire employee', 'Please check the formFireEmp fields. ', 'warning');  //##########################
         } else {
           fetchData();
           setFireEmpDialogOpen(false);
           popMessage('Success', `Employee fired successfully!`, 'success');            // ############################
-          form.resetFields();
+          formFireEmp.resetFields();
         }
       }, err => {
         console.log('err', err);
@@ -287,7 +290,7 @@ return (
         onCancel={() => setNewServDialogOpen(false)}
       >
         <Form
-          form={form}
+          form={formNewServ}
           labelCol={{span: 8}}
           wrapperCol={{span: 16}}
           requiredMark="optional"
@@ -316,7 +319,7 @@ return (
         onCancel={() => setManageServDialogOpen(false)}
       >
         <Form
-          form={form}
+          form={formManageServ}
           labelCol={{span: 8}}
           wrapperCol={{span: 16}}
           requiredMark="optional"
@@ -344,7 +347,7 @@ return (
         onCancel={() => setHireEmpDialogOpen(false)}
       >
         <Form
-          form={form}
+          form={formHireEmp}
           labelCol={{span: 8}}
           wrapperCol={{span: 16}}
           requiredMark="optional"
@@ -372,7 +375,7 @@ return (
         onCancel={() => setFireEmpDialogOpen(false)}
       >
         <Form
-          form={form}
+          form={formFireEmp}
           labelCol={{span: 8}}
           wrapperCol={{span: 16}}
           requiredMark="optional"

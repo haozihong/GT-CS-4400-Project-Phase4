@@ -101,7 +101,7 @@ export const Workers = () => {
               icon={<PlusOutlined />}
               onClick={() => setNewWorkDialogOpen(true)}
             >
-              Add Worker
+              Add
             </Button>
             <Tooltip title="refresh">
               <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />

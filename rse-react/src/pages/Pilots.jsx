@@ -60,7 +60,9 @@ export const Pilots = () => {
       const [remPilDialogOpen, setRemPilDialogOpen] = useState(false);
       const [takeDroneDialogOpen, setTakeDroneDialogOpen] = useState(false);
       const [confirmLoading, setConfirmLoading] = useState(false);
-      const [form] = Form.useForm();
+      const [formAddPilot] = Form.useForm();
+      const [formRemovePilot] = Form.useForm();
+      const [formTakeDrone] = Form.useForm();
       const [notificationApi, contextHolder] = notification.useNotification();
       const popMessage = (message, description, type) => {
         notificationApi[type || 'open']({
@@ -70,15 +72,15 @@ export const Pilots = () => {
       };
       const newPilDialogOk = () => {
         setConfirmLoading(true);
-        form.submit()
+        formAddPilot.submit()
       };
       const remPilDialogOk = () => {
         setConfirmLoading(true);
-        form.submit()
+        formRemovePilot.submit()
       };
       const takeDroneDialogOk = () => {
         setConfirmLoading(true);
-        form.submit()
+        formTakeDrone.submit()
       };
 
       const onFinish = (values) => {
@@ -95,12 +97,12 @@ export const Pilots = () => {
           })
           .then(data => {
             if (data === 0) {
-              popMessage('Failed to add pilot', 'Please check the form fields. ', 'warning');
+              popMessage('Failed to add pilot', 'Please check the formAddPilot fields. ', 'warning');
             } else {
               fetchData();
               setNewPilDialogOpen(false);
               popMessage('Success', `Pilot added successfully!`, 'success');
-              form.resetFields();
+              formAddPilot.resetFields();
             }
           }, err => {
             console.log('err', err);
@@ -124,12 +126,12 @@ export const Pilots = () => {
           })
           .then(data => {
             if (data === 0) {
-              popMessage('Failed to remove pilot', 'Please check the form fields. ', 'warning');
+              popMessage('Failed to remove pilot', 'Please check the formRemovePilot fields. ', 'warning');
             } else {
               fetchData();
               setRemPilDialogOpen(false);
               popMessage('Success', `Pilot removed successfully!`, 'success');
-              form.resetFields();
+              formRemovePilot.resetFields();
             }
           }, err => {
             console.log('err', err);
@@ -157,12 +159,12 @@ export const Pilots = () => {
           })
           .then(data => {
             if (data === 0) {
-              popMessage('Failed to takeover drone', 'Please check the form fields. ', 'warning');
+              popMessage('Failed to takeover drone', 'Please check the formTakeDrone fields. ', 'warning');
             } else {
               fetchData();
               setTakeDroneDialogOpen(false);
               popMessage('Success', `Drone taken over successfully!`, 'success');
-              form.resetFields();
+              formTakeDrone.resetFields();
             }
           }, err => {
             console.log('err', err);
@@ -188,14 +190,14 @@ export const Pilots = () => {
                   icon={<PlusOutlined />}
                   onClick={() => setNewPilDialogOpen(true)}
                 >
-                  Add Pilot
+                  Add
                 </Button>
                 <Button
                   type="default"
                   icon={<MinusOutlined />}
                   onClick={() => setRemPilDialogOpen(true)}
                 >
-                  Remove Pilot
+                  Remove
                 </Button>
                 <Button
                   type="default"
@@ -228,7 +230,7 @@ export const Pilots = () => {
             onCancel={() => setNewPilDialogOpen(false)}
           >
             <Form
-              form={form}
+              form={formAddPilot}
               labelCol={{span: 8}}
               wrapperCol={{span: 16}}
               requiredMark="optional"
@@ -256,11 +258,11 @@ export const Pilots = () => {
             onCancel={() => setRemPilDialogOpen(false)}
           >
             <Form
-              form={form}
+              form={formRemovePilot}
               labelCol={{span: 8}}
               wrapperCol={{span: 16}}
               requiredMark="optional"
-              name="pilForm"
+              name="removePilotForm"
               onFinish={onFinishRemove}
               onFinishFailed={() => setConfirmLoading(false)}
             >
@@ -284,7 +286,7 @@ export const Pilots = () => {
             onCancel={() => setTakeDroneDialogOpen(false)}
           >
             <Form
-              form={form}
+              form={formTakeDrone}
               labelCol={{span: 8}}
               wrapperCol={{span: 16}}
               requiredMark="optional"

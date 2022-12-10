@@ -107,7 +107,7 @@ return (
               icon={<PlusOutlined />}
               onClick={() => setNewLocDialogOpen(true)}
             >
-              Add Location
+              Add
             </Button>
             <Tooltip title="refresh">
               <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />
