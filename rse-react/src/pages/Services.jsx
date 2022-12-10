@@ -119,7 +119,7 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to add service', 'Please check the formNewServ fields. ', 'warning');
+          popMessage('Failed to add service', 'Please check the form fields. ', 'warning');
         } else {
           fetchData();
           setNewServDialogOpen(false);
@@ -152,7 +152,7 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to manage service', 'Please check the formManageServ fields. ', 'warning');  //##########################
+          popMessage('Failed to manage service', 'Please check the form fields. ', 'warning');  //##########################
         } else {
           fetchData();
           setManageServDialogOpen(false);
@@ -185,7 +185,7 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to hire employee', 'Please check the formHireEmp fields. ', 'warning');  //##########################
+          popMessage('Failed to hire employee', 'Please check the form fields. ', 'warning');  //##########################
         } else {
           fetchData();
           setHireEmpDialogOpen(false);
@@ -214,7 +214,7 @@ export const Services = () => {
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to fire employee', 'Please check the formFireEmp fields. ', 'warning');  //##########################
+          popMessage('Failed to fire employee', 'Please check the form fields. ', 'warning');  //##########################
         } else {
           fetchData();
           setFireEmpDialogOpen(false);

@@ -97,7 +97,7 @@ export const Pilots = () => {
           })
           .then(data => {
             if (data === 0) {
-              popMessage('Failed to add pilot', 'Please check the formAddPilot fields. ', 'warning');
+              popMessage('Failed to add pilot', 'Please check the form fields. ', 'warning');
             } else {
               fetchData();
               setNewPilDialogOpen(false);
@@ -126,7 +126,7 @@ export const Pilots = () => {
           })
           .then(data => {
             if (data === 0) {
-              popMessage('Failed to remove pilot', 'Please check the formRemovePilot fields. ', 'warning');
+              popMessage('Failed to remove pilot', 'Please check the form fields. ', 'warning');
             } else {
               fetchData();
               setRemPilDialogOpen(false);
@@ -159,7 +159,7 @@ export const Pilots = () => {
           })
           .then(data => {
             if (data === 0) {
-              popMessage('Failed to takeover drone', 'Please check the formTakeDrone fields. ', 'warning');
+              popMessage('Failed to takeover drone', 'Please check the form fields. ', 'warning');
             } else {
               fetchData();
               setTakeDroneDialogOpen(false);
