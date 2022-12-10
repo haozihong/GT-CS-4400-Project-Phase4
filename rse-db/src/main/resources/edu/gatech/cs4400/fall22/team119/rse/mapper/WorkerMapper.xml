@@ -13,7 +13,11 @@
     </insert>
 
     <select id="displayWorker" resultMap="WorkerMap">
-        SELECT * FROM restaurant_supply_express.workers natural join work_for natural join users;
+        SElECT * from
+            (SELECT restaurant_supply_express.workers.username, id FROM restaurant_supply_express.workers
+            left join work_for on
+            restaurant_supply_express.workers.username = restaurant_supply_express.work_for.username)
+            as temp natural join users;
     </select>
 
 </mapper>
