@@ -13,7 +13,17 @@
 
 
     <select id="displayIngredientView" resultMap="IngredientMap">
-        SELECT * FROM restaurant_supply_express.display_ingredient_view;
+        SELECT
+            barcode,
+            iname as ingredient_name,
+            hover as location,
+            ifnull(sum(quantity), 0) as amount_available,
+            ifnull(min(price), 0) as low_price,
+            ifnull(max(price), 0) as high_price
+        from ingredients
+        natural left join payload
+        natural left join drones
+        group by barcode, hover;
     </select>
     <select id="displayIngredient" resultMap="IngredientMap">
         SELECT * FROM restaurant_supply_express.ingredients;
