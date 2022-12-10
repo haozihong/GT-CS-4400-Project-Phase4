@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Mapper
 public interface WorkerMapper {
-    Integer addWorker(String username);
+    Integer addWorker(Worker worker);
     List<Worker> displayWorkerView();
     List<Worker> displayWorker();
 

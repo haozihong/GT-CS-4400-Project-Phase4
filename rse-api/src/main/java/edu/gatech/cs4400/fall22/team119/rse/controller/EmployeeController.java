@@ -39,7 +39,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees/hire")
-    public Integer hireEmployee(@RequestParam String username, @RequestParam String id) {
+    public Integer hireEmployee(@RequestParam(name="username") String username, @RequestParam(name="id") String id) {
 //        System.out.println(username);
 //        System.out.println(id);
         return employeeService.hireEmployee(username, id);
