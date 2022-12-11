@@ -99,8 +99,8 @@ export const Services = () => {
       label: 'Manager Username',
       formItem: 
         <Select
-          placeholder='Select a worker'
-          options={workers.map(e => ({ label: e.username, value: e.username }))}
+          placeholder='Select an employee'
+          options={employees.map(e => ({ label: e.username, value: e.username }))}
         />,
     },
     {
