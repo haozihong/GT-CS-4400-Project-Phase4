@@ -5,53 +5,21 @@ import {
   Button,
   Col,
   Row,
-  Modal,
-  Form,
   Input,
   InputNumber,
+  Select,
   notification,
   Tooltip,
 } from "antd";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { FormModal } from "../components/FormModal";
 
-// print table
 const columns = [
   { title: "Name", dataIndex: "longName" },
-  { title: "Rating", dataIndex: "rating" }, //这个地方就是直接给数字是吗
+  { title: 'Rating', dataIndex: 'rating', render: e => `★${e}`, },
   { title: "Spent", dataIndex: "spent", render: (e) => `$${e}` },
   { title: "Funded By", dataIndex: "fundedBy" },
   { title: "Location", dataIndex: "location" },
-];
-
-// pop_form
-const newRestaurantFormFields = [
-  {
-    name: "longName",
-    label: "Restaurant name",
-    formItem: <Input />,
-  },
-  {
-    name: "rating",
-    label: "Rating",
-    formItem: <InputNumber />,
-    rules: [{ required: true }, { type: "number", min: 0 }],
-  },
-  {
-    name: "spent",
-    label: "Money Spend ($)",
-    formItem: <InputNumber />,
-    rules: [{ required: true }, { type: "number", min: 0 }],
-  },
-  // {
-  //   name: "fundedBy",
-  //   label: "Funded By",
-  //   formItem: <Input />,
-  // },
-  {
-    name: "location",
-    label: "Restaurant Location",
-    formItem: <Input />,
-  },
 ];
 
 export const Restaurants = () => {
@@ -67,21 +35,35 @@ export const Restaurants = () => {
       });
   };
 
-  useEffect(() => {
+  const [drones, setDrones] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [owners, setOwners] = useState([]);
+  const fetchDataBg = (url, setFn) => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setFn(res);
+      });
+  };
+
+  const fetchAllData = () => {
     fetchData();
+    fetchDataBg('/api/drones', setDrones);
+    fetchDataBg('/api/ingredients', setIngredients);
+    fetchDataBg('/api/locations', setLocations);
+    fetchDataBg('/api/restaurants', setRestaurants);
+    fetchDataBg('/api/owners', setOwners);
+  };
+    
+  useEffect(() => {
+    fetchAllData();
   }, []);
 
-  // add restaurant
   const [newRestaurDialogOpen, setNewRestaurDialogOpen] = useState(false);
-  const [formAdd] = Form.useForm();
-  //purchase ingredients
   const [purchaseIngredDialogOpen, setPurchseIngreDialogOpen] = useState(false);
-  const [formPurchase] = Form.useForm();
-  //start_funding
   const [startFundingDialogOpen, setStartFundingDialogOpen] = useState(false);
-  const [formFunding] = Form.useForm();
-  //loading
-  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
@@ -90,173 +72,134 @@ export const Restaurants = () => {
       description,
     });
   };
-  //Add new Restaurant
-  const newRestaurDialogOk = () => {
-    setConfirmLoading(true);
-    formAdd.submit();
-  };
 
-  //Purchase
-  const purchaseIngredDialogOk = () => {
-    setConfirmLoading(true);
-    formPurchase.submit();
-  };
-  //start funding
-  const startFundingDialogOk = () => {
-    setConfirmLoading(true);
-    formFunding.submit();
-  };
 
-  //Finish add restaurant
-  const onFinishRestaurant = (values) => {
-    console.log(JSON.stringify(values));
-    console.log("成功1");
-    fetch("/api/restaurants", {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "Content-type": "application/json; charset = UTF-8",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) return res.json().then((r) => Promise.reject(r));
-        return res.json();
-      })
-      .then(
-        (data) => {
-          if (data === 0) {
-            popMessage(
-              "Fail to add restaurant",
-              "Please check the form fields.",
-              "warning"
-            );
-          } else {
-            fetchData();
-            setNewRestaurDialogOpen(false);
-            popMessage("Success", `Restaurant added seccessfully!`, "success");
-            formAdd.resetFields();
-          }
-        },
-        (err) => {
-          console.log("err", err);
-          popMessage(
-            `Server error ${err.status}`,
-            `${err.error}${err.message}`,
-            "error"
-          );
-        }
-      )
-      .catch((err) => {
-        popMessage(
-          "Fetch Fail",
-          "There has been a problem with your fetch operation",
-          "error"
-        );
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
+  const addFormFields = [
+    { name: "longName", label: "Restaurant name", formItem: <Input />, },
+    {
+      name: "rating",
+      label: "Rating",
+      formItem: <InputNumber />,
+      rules: [{ required: true }, { type: "number", min: 1, max: 5 }],
+    },
+    {
+      name: "spent",
+      label: "Money Spent ($)",
+      formItem: <InputNumber />,
+      rules: [{ required: true }, { type: "number", min: 0 }],
+    },
+    {
+      name: "location",
+      label: "Restaurant Location",
+      formItem: 
+        <Select
+          placeholder='Select a location'
+          options={locations.map(e => ({ label: e.label, value: e.label }))}
+        />,
+    },
+  ];
 
-  // Finish purchase
-  const onFinishPurchase = (values) => {
-    fetch("/api/restaurants/purchase", {
-      method: "PUT",
-      body: new URLSearchParams(values),
-      //JSON.stringify(values),
-      headers: {
-        "Content-type": "application/x-www-form-urlencoded; charset = UTF-8",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) return res.json().then((r) => Promise.reject(r));
-        return res.json();
-      })
-      .then(
-        (data) => {
-          if (data === 0) {
-            popMessage(
-              "Fail to Purchase your target ingredients",
-              "Please check the form fields.",
-              "warning"
-            );
-          } else {
-            fetchData();
-            setPurchseIngreDialogOpen(false);
-            popMessage("Success", `Purchased seccessfully!`, "success");
-            formPurchase.resetFields();
-          }
-        },
-        (err) => {
-          console.log("err", err);
-          popMessage(
-            `Server error ${err.status}`,
-            `${err.error}${err.message}`,
-            "error"
-          );
-        }
-      )
-      .catch((err) => {
-        popMessage(
-          "Fetch Fail",
-          "There has been a problem with your fetch operation",
-          "error"
-        );
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
+  const purchaseFormFields = [
+    {
+      name: 'longName',
+      label: 'Restaurant name',
+      formItem: 
+        <Select
+          placeholder='Select a restaurant'
+          options={restaurants.map(e => ({ label: e.longName, value: e.longName }))}
+        />,
+    },
+    { name: 'id', formItem: <Input /> , hidden: true},
+    { name: 'tag', formItem: <InputNumber />, hidden: true },
+    {
+      name: 'droneFullId',
+      label: 'Drone',
+      formItem: 
+        <Select
+          placeholder='Select a drone'
+          options={drones.map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
+        />,
+      rules: [{ required: true }],
+    },
+    {
+      name: 'barcode',
+      label: 'Ingredient barcode',
+      formItem: 
+        <Select
+          placeholder='Select an ingredient'
+          options={ingredients.map(e => ({ label: `${e.iname} (${e.barcode})`, value: e.barcode }))}
+        />,
+    },
+    {
+      name: 'quantity',
+      label: 'Quantity',
+      formItem: <InputNumber />,
+      rules: [{ required: true }, { type: "number", min: 0 }],
+    },
+  ];
 
-  // Finish Funding
-  const onFinishFunding = (values) => {
-    console.log("成功进了！");
-    fetch("/api/restaurants", {
-      method: "PUT",
-      body: JSON.stringify(values),
-      headers: {
-        "content-type": "application/json; charset = UTF-8",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) return res.json().then((r) => Promise.reject(r));
-        return res.json();
-      })
-      .then(
-        (data) => {
-          if (data === 0) {
-            popMessage(
-              "Fail to Fund your target restaurant",
-              "Please check the form fields.",
-              "warning"
-            );
-          } else {
-            fetchData();
-            setStartFundingDialogOpen(false);
-            popMessage("Success", `Funding seccessfully!`, "success");
-            formFunding.resetFields();
-          }
-        },
-        (err) => {
-          console.log("err", err);
-          popMessage(
-            `Server error ${err.status}`,
-            `${err.error}${err.message}`,
-            "error"
-          );
-        }
-      )
-      .catch((err) => {
-        popMessage(
-          "Fetch Fail",
-          "There has been a problem with your fetch operation",
-          "error"
-        );
-      });
-    console.log("loading").finally(() => {
-      setConfirmLoading(false);
-    });
-  };
+  const fundingFormFields = [
+    {
+      name: 'longName',
+      label: 'Restaurant name',
+      formItem: 
+        <Select
+          placeholder='Select a restaurant'
+          options={restaurants.map(e => ({ label: e.longName, value: e.longName }))}
+        />,
+    },
+    {
+      name: 'fundedBy',
+      label: 'Owner Username',
+      formItem: 
+        <Select
+          placeholder='Select a owner'
+          options={owners.map(e => ({ label: e.username, value: e.username }))}
+        />,
+    },
+  ];
+
+  const addFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/restaurants`, 
+      {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: { "Content-type": "application/json; charset = UTF-8", },
+      }
+    ]),
+    setDialogOpen: setNewRestaurDialogOpen,
+    succDecs: 'Restaurant added seccessfully!',
+    failMsg: 'Fail to add restaurant',
+  }
+
+  const purchaseFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/restaurants/purchase`, 
+      {
+        method: "PUT",
+        body: new URLSearchParams(values),
+        headers: { "Content-type": "application/x-www-form-urlencoded; charset = UTF-8", },
+      }
+    ]),
+    setDialogOpen: setPurchseIngreDialogOpen,
+    succDecs: 'Purchased seccessfully!',
+    failMsg: 'Fail to purchase the ingredients',
+  }
+
+  const fundingFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/restaurants`, 
+      {
+        method: "PUT",
+        body: JSON.stringify(values),
+        headers: { "content-type": "application/json; charset = UTF-8", },
+      }
+    ]),
+    setDialogOpen: setStartFundingDialogOpen,
+    succDecs: 'Funding seccessfully!',
+    failMsg: 'Fail to Fund the restaurant',
+  }
 
   return (
     <>
@@ -264,27 +207,15 @@ export const Restaurants = () => {
       <Row className="page-content" gutter={[16, 8]}>
         <Col span={24} style={{ paddingTop: 16 }}>
           <Space style={{ float: "right" }}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setNewRestaurDialogOpen(true)}
-            >
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => setNewRestaurDialogOpen(true)}>
               Add
             </Button>
 
-            <Button
-              type="default"
-              icon={<PlusOutlined />}
-              onClick={() => setPurchseIngreDialogOpen(true)}
-            >
+            <Button icon={<PlusOutlined />} onClick={() => setPurchseIngreDialogOpen(true)}>
               Purchase Ingredient
             </Button>
 
-            <Button
-              type="default"
-              icon={<PlusOutlined />}
-              onClick={() => setStartFundingDialogOpen(true)}
-            >
+            <Button icon={<PlusOutlined />} onClick={() => setStartFundingDialogOpen(true)}>
               Start Funding
             </Button>
 
@@ -302,134 +233,42 @@ export const Restaurants = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            rowKey={(record) => record.longName} // 我觉得是这里的问题，是需要用PK嘛
+            rowKey={(record) => record.longName}
             dataSource={data}
             loading={loading}
           />
         </Col>
       </Row>
 
-      {/* ADD Restaurant */}
-      <Modal
-        title="New Restaurant"
-        okText="Add Restaurant"
-        open={newRestaurDialogOpen}
-        onOk={newRestaurDialogOk}
-        confirmLoading={confirmLoading}
-        onCancel={() => setNewRestaurDialogOpen(false)}
-      >
-        <Form
-          form={formAdd}
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          requiredMark="optional"
-          name="empForm"
-          onFinish={onFinishRestaurant}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          {newRestaurantFormFields.map((e) => (
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true }]}
-            >
-              {e.formItem}
-            </Form.Item>
-          ))}
-        </Form>
-      </Modal>
+      <FormModal
+        dialogOpenState={[newRestaurDialogOpen, setNewRestaurDialogOpen]}
+        formFields={addFormFields}
+        formFinishArgs={addFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='New Restaurant'
+        okText='Add Restaurant'
+      />
 
-      {/* Purchase Ingredients */}
-      <Modal
-        title="Purchase Ingredients"
-        okText="Purchase Ingredients"
-        open={purchaseIngredDialogOpen}
-        onOk={purchaseIngredDialogOk}
-        confirmLoading={confirmLoading}
-        onCancel={() => setPurchseIngreDialogOpen(false)}
-      >
-        <Form
-          form={formPurchase}
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          requiredMark="optional"
-          name="empForm"
-          onFinish={onFinishPurchase}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          <Form.Item
-            name="longName"
-            label="Restaurant name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
+      <FormModal
+        dialogOpenState={[purchaseIngredDialogOpen, setPurchseIngreDialogOpen]}
+        formFields={purchaseFormFields}
+        formFinishArgs={purchaseFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='Purchase Ingredients'
+        okText='Purchase Ingredients'
+      />
 
-          <Form.Item
-            name="id"
-            label="Delivery Services ID"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="tag"
-            label="Drone's Tag"
-            rules={[{ required: true }, { type: "number", min: 0 }]}
-          >
-            <InputNumber />
-          </Form.Item>
-
-          <Form.Item
-            name="barcode"
-            label="Ingredient barcode"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="quantity"
-            label="Quantity"
-            rules={[{ required: true }, { type: "number", min: 0 }]}
-          >
-            <InputNumber />
-          </Form.Item>
-        </Form>
-      </Modal>
-
-      {/* Start Funding */}
-      <Modal
-        title="Start Funding"
-        okText="Start Funding"
-        open={startFundingDialogOpen}
-        onOk={startFundingDialogOk}
-        confirmLoading={confirmLoading}
-        onCancel={() => setStartFundingDialogOpen(false)}
-      >
-        <Form
-          form={formFunding}
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          requiredMark="optional"
-          name="empForm"
-          onFinish={onFinishFunding}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          <Form.Item
-            name="longName"
-            label="Restaurant name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item name="fundedBy" label="Owner" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <FormModal
+        dialogOpenState={[startFundingDialogOpen, setStartFundingDialogOpen]}
+        formFields={fundingFormFields}
+        formFinishArgs={fundingFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='Start Funding'
+        okText='Start Funding'
+      />
     </>
   );
 };
