@@ -22,7 +22,7 @@ export const FormModal = ({ dialogOpenState, formFields, formFinishArgs, refresh
           popMessage(args.failMsg || 'Failed', args.failDecs || 'Please check the form fields.', 'warning');
         } else {
           refreshFn();
-          args.setDialogOpen(false);
+          dialogOpenState[1](false);
           popMessage(args.succMsg || 'Success', args.succDecs || 'Operation success!', 'success');
           form.resetFields();
         }
