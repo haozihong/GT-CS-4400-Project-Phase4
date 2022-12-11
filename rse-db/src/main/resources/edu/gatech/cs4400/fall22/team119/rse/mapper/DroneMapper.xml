@@ -44,7 +44,7 @@
     <update id="leaveSwarm">
         call leave_swarm(
         #{id},
-        #{swarmTag});
+        #{tag});
     </update>
 
     <delete id="removeDrone">
