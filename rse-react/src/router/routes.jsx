@@ -7,12 +7,14 @@ import Drones from "../pages/Drones";
 import Locations from "../pages/Locations";
 import Restaurants from "../pages/Restaurants";
 import Ingredients from "../pages/Ingredients";
+import Home from "../pages/Home";
 
 function getRoute(label, url, page) {
   return { label, url, page };
 }
 
 const routes = [
+  getRoute('Home', '/', <Home />),
   getRoute('Users', '/u'),
   getRoute('Employees', '/u/employees', <Employees />),
   getRoute('Workers', '/u/workers', <Workers />),
