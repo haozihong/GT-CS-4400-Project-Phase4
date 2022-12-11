@@ -96,7 +96,7 @@ const App = () => {
         <Footer
           style={{ textAlign: 'center', }}
         >
-          Restaurant Supply Express ©2022 Created by Team 119
+          Restaurant Supply Express ©2022 Created by Group 19
         </Footer>
       </Layout>
     </Layout>
