@@ -25,7 +25,7 @@
         natural left join drones
         group by barcode, hover;
     </select>
-    <select id="displayIngredient" resultMap="IngredientMap">
+    <select id="displayIngredient" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
         SELECT * FROM restaurant_supply_express.ingredients;
     </select>
 
