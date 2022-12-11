@@ -9,6 +9,7 @@ import {
   Form,
   Input,
   InputNumber,
+  Select,
   notification,
   Tooltip,
 } from 'antd';
@@ -61,6 +62,14 @@ function FormModal({ dialogOpenState, formFields, formFinishArgs, refreshFn, pop
       });
   };
 
+  const onValuesChangeFillDrone = (values, allValues) => {
+    if ('droneFullId' in values) {
+      const [id, tag] = values.droneFullId.split('$');
+      form.setFieldValue('id', id);
+      form.setFieldValue('tag', tag);
+    }
+  };
+
   return (
     <Modal
       open={dialogOpenState[0]}
@@ -77,12 +86,14 @@ function FormModal({ dialogOpenState, formFields, formFinishArgs, refreshFn, pop
         name='form'
         onFinish={v => onFinish(v, formFinishArgs)}
         onFinishFailed={() => setConfirmLoading(false)}
+        onValuesChange={onValuesChangeFillDrone}
       >
         {formFields.map((e) => (
           <Form.Item
             name={e.name}
             label={e.label}
             rules={e.rules || [{ required: true }]}
+            hidden={e.hidden || false}
           >
             {e.formItem}
           </Form.Item>
@@ -156,15 +167,37 @@ export const Drones = () => {
     });
   };
 
-  const loadDroneFormFields = [
-    { name: 'id', label: 'Drone Id', formItem: <Input /> },
+  const singleDroneFormFields = [
+    { name: 'id', label: 'Delivery Service ID', formItem: <Input /> , hidden: true},
     {
       name: 'tag',
       label: 'Drone Tag',
       formItem: <InputNumber />,
-      rules: [{ required: true }, { type: 'number', min: 0 }],
+      hidden: true
     },
-    { name: 'barcode', label: 'Ingredient Barcode', formItem: <Input /> },
+    {
+      name: 'droneFullId',
+      label: 'Drone',
+      formItem: 
+        <Select
+          placeholder='Select a drone'
+          options={drones.map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
+        />,
+      rules: [{ required: true }],
+    },
+  ];
+  
+  const loadDroneFormFields = [
+    ...singleDroneFormFields,
+    { 
+      name: 'barcode', 
+      label: 'Ingredient Barcode', 
+      formItem: 
+        <Select 
+          placeholder='Select a ingredient'
+          options={ingredients.map(e => ({ label: e.barcode, value: e.barcode }))}
+        />
+    },
     {
       name: 'morePackages',
       label: 'new Package Amount',
@@ -180,13 +213,7 @@ export const Drones = () => {
   ];
   
   const refuelDroneFormFields = [
-    { name: 'id', label: 'Drone Id', formItem: <Input /> },
-    {
-      name: 'tag',
-      label: 'Drone Tag',
-      formItem: <InputNumber />,
-      rules: [{ required: true }, { type: 'number', min: 0 }],
-    },
+    ...singleDroneFormFields,
     {
       name: 'moreFuel',
       label: 'Refuel Amount',
@@ -196,44 +223,37 @@ export const Drones = () => {
   ];
   
   const flyDroneFormFields = [
-    { name: 'id', label: 'Drone Id', formItem: <Input /> },
-    {
-      name: 'tag',
-      label: 'Drone Tag',
-      formItem: <InputNumber />,
-      rules: [{ required: true }, { type: 'number', min: 0 }],
-    },
-    { name: 'destination', label: 'Destination', formItem: <Input />, },
-  ];
-  
-  const singleDroneFormFields = [
-    { name: 'id', label: 'Drone Id', formItem: <Input /> },
-    {
-      name: 'tag',
-      label: 'Drone Tag',
-      formItem: <InputNumber />,
-      rules: [{ required: true }, { type: 'number', min: 0 }],
+    ...singleDroneFormFields,
+    { 
+      name: 'destination', 
+      label: 'Destination', 
+      formItem: 
+        <Select
+          placeholder='Select a location'
+          options={locations.map(e => ({ label: e.label, value: e.label }))}
+        />, 
     },
   ];
   
+
   const joinSwarmFormFields = [
-    { name: 'id', label: 'Drone Id', formItem: <Input /> },
-    {
-      name: 'tag',
-      label: 'Drone Tag',
-      formItem: <InputNumber />,
-      rules: [{ required: true }, { type: 'number', min: 0 }],
-    },
+    ...singleDroneFormFields,
     { 
       name: 'swarmTag', 
       label: 'Leader Drone Tag', 
-      formItem: <InputNumber />,
+      formItem: 
+        <Select
+          placeholder='Select a drone tage'
+          options={
+            Array.from(new Set(drones.map(e => e.tag))).sort((a, b) => a-b).map(e => ({ label: e, value: e }))
+          }
+        />,
       rules: [{ required: true }, { type: 'number', min: 0 }],
     },
   ];
   
   const droneFormFields = [
-    { name: 'id', label: 'Drone Id', formItem: <Input /> },
+    { name: 'id', label: 'Delivery Service ID', formItem: <Input /> },
     {
       name: 'tag',
       label: 'Drone Tag',
@@ -258,7 +278,15 @@ export const Drones = () => {
       formItem: <InputNumber />,
       rules: [{ required: true }, { type: 'number', min: 0 }],
     },
-    { name: 'flownBy', label: 'Flown By', formItem: <Input /> },
+    { 
+      name: 'flownBy', 
+      label: 'Flown By', 
+      formItem: 
+        <Select
+          placeholder='Select a pilot'
+          options={pilots.map(e => ({ label: e.username, value: e.username }))}
+        />
+    },
   ];
   
 
