@@ -26,8 +26,9 @@ const columns = [
   { title: "Leader Drone Id", dataIndex: "swarmId" },
   { title: "Leader Drone Tag", dataIndex: "swarmTag" },
 ];
+
 const loadDroneFormFields = [
-  { name: "droneId", label: "Drone Id", formItem: <Input /> },
+  { name: "id", label: "Drone Id", formItem: <Input /> },
   {
     name: "tag",
     label: "Drone Tag",
@@ -36,13 +37,13 @@ const loadDroneFormFields = [
   },
   { name: "barcode", label: "Ingredient Barcode", formItem: <Input /> },
   {
-    name: "more package",
+    name: "morePackages",
     label: "new Package Amount",
     formItem: <InputNumber />,
     rules: [{ required: true }, { type: "number", min: 0 }],
   },
   {
-    name: "Price",
+    name: "price",
     label: "Price ($)",
     formItem: <InputNumber />,
     rules: [{ required: true }, { type: "number", min: 0 }],
@@ -50,7 +51,7 @@ const loadDroneFormFields = [
 ];
 
 const refuelDroneFormFields = [
-  { name: "droneId", label: "Drone Id", formItem: <Input /> },
+  { name: "id", label: "Drone Id", formItem: <Input /> },
   {
     name: "tag",
     label: "Drone Tag",
@@ -58,7 +59,7 @@ const refuelDroneFormFields = [
     rules: [{ required: true }, { type: "number", min: 0 }],
   },
   {
-    name: "Refuel",
+    name: "moreFuel",
     label: "Refuel Amount",
     formItem: <InputNumber />,
     rules: [{ required: true }, { type: "number", min: 0 }],
@@ -66,7 +67,7 @@ const refuelDroneFormFields = [
 ];
 
 const droneFormFields = [
-  { name: "droneId", label: "Drone Id", formItem: <Input /> },
+  { name: "id", label: "Drone Id", formItem: <Input /> },
   {
     name: "tag",
     label: "Drone Tag",
@@ -74,7 +75,7 @@ const droneFormFields = [
     rules: [{ required: true }, { type: "number", min: 0 }],
   },
   {
-    name: "Fuel",
+    name: "fuel",
     label: "Fuel Amount",
     formItem: <InputNumber />,
     rules: [{ required: true }, { type: "number", min: 0 }],
@@ -92,15 +93,6 @@ const droneFormFields = [
     rules: [{ required: true }, { type: "number", min: 0 }],
   },
   { name: "flownBy", label: "Flown By", formItem: <Input /> },
-  { name: "HeaderDroneId", label: "Header Drone Id", formItem: <Input /> },
-  {
-    name: "HeaderDroneTag",
-    label: "Header Drone Tag",
-    formItem: <InputNumber />,
-    rules: [{ required: true }, { type: "number", min: 0 }],
-  },
-  { name: "hover", label: "Hover", formItem: <Input /> },
-  { name: "destination", label: "Destination", formItem: <Input /> },
 ];
 
 export const Drones = () => {
@@ -211,11 +203,11 @@ export const Drones = () => {
 
   // Finish Load Drone
   const onFinishLoad = (values) => {
-    fetch("/api/drones/loading/{id}/{tag}", {
+    fetch(`/api/drones/loading/${values.id}/${values.tag}`, {
       method: "PUT",
-      body: JSON.stringify(values),
+      body: new URLSearchParams(values),
       headers: {
-        "Content-type": "application/json; charset=UTF-8",
+        "Content-type": "application/x-www-form-urlencoded; charset = UTF-8",
       },
     })
       .then((res) => {
@@ -264,11 +256,11 @@ export const Drones = () => {
 
   // Finish Refuel Drone
   const onFinishRefuel = (values) => {
-    fetch("/api/drones/loading/{id}/{tag}", {
+    fetch(`/api/drones/fuel/${values.id}/${values.tag}`, {
       method: "PUT",
-      body: JSON.stringify(values),
+      body: new URLSearchParams(values),
       headers: {
-        "Content-type": "application/json; charset=UTF-8",
+        "Content-type": "application/x-www-form-urlencoded; charset = UTF-8",
       },
     })
       .then((res) => {
@@ -529,7 +521,8 @@ export const Drones = () => {
   };
   // Finish remove Drone:
   const onFinishRemove = (values) => {
-    fetch("/api/drones/{id}/{tag}", {
+    console.log(values);
+    fetch(`/api/drones/${values.id}/${values.tag}`, {
       method: "DELETE",
       body: JSON.stringify(values),
       headers: {
@@ -711,7 +704,7 @@ export const Drones = () => {
         onCancel={() => setRefuelDroneDialogOpen(false)}
       >
         <Form
-          form={formLoad}
+          form={formRefuel}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           requiredMark="optional"
@@ -741,7 +734,7 @@ export const Drones = () => {
         onCancel={() => setFlyDroneDialogOpen(false)}
       >
         <Form
-          form={formLoad}
+          form={formFly}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           requiredMark="optional"
@@ -749,15 +742,23 @@ export const Drones = () => {
           onFinish={onFinishFly}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {droneFormFields.map((e) => (
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true }]}
-            >
-              {e.formItem}
-            </Form.Item>
-          ))}
+          <Form.Item name="id" label="Drone ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="tag"
+            label="Drone Tag"
+            rules={[{ required: true }, { type: "number", min: 0 }]}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item
+            name="destination"
+            label="Destination"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -771,7 +772,7 @@ export const Drones = () => {
         onCancel={() => setLeaveSwarmDialogOpen(false)}
       >
         <Form
-          form={formLoad}
+          form={formLeave}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           requiredMark="optional"
@@ -779,15 +780,16 @@ export const Drones = () => {
           onFinish={onFinishLeave}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {droneFormFields.map((e) => (
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true }]}
-            >
-              {e.formItem}
-            </Form.Item>
-          ))}
+          <Form.Item name="id" label="Drone ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="tag"
+            label="Swarm Tag"
+            rules={[{ required: true }, { type: "number", min: 0 }]}
+          >
+            <InputNumber />
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -801,7 +803,7 @@ export const Drones = () => {
         onCancel={() => setJoinSwarmDialogOpen(false)}
       >
         <Form
-          form={formLoad}
+          form={formJoin}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           requiredMark="optional"
@@ -809,15 +811,23 @@ export const Drones = () => {
           onFinish={onFinishJoin}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {droneFormFields.map((e) => (
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true }]}
-            >
-              {e.formItem}
-            </Form.Item>
-          ))}
+          <Form.Item name="id" label="Drone ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="tag"
+            label="Drone Tag"
+            rules={[{ required: true }, { type: "number", min: 0 }]}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item
+            name="swarmTag"
+            label="Leader Drone Tag"
+            rules={[{ required: true }, { type: "number", min: 0 }]}
+          >
+            <InputNumber />
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -861,7 +871,7 @@ export const Drones = () => {
         onCancel={() => setRemoveDroneDialogOpen(false)}
       >
         <Form
-          form={formAdd}
+          form={formRemove}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           requiredMark="optional"
@@ -869,11 +879,7 @@ export const Drones = () => {
           onFinish={onFinishRemove}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          <Form.Item
-            name="drone_Id"
-            label="Drone Id"
-            rules={[{ required: true }]}
-          >
+          <Form.Item name="id" label="Drone ID" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item
