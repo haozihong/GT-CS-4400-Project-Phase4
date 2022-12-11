@@ -5,8 +5,6 @@ import {
   Button,
   Col,
   Row,
-  Modal,
-  Form,
   Input,
   InputNumber,
   Select,
@@ -14,6 +12,7 @@ import {
   Tooltip,
 } from 'antd';
 import { PlusOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { FormModal } from "../components/FormModal";
 
 const columns = [
   { title: 'Service ID', dataIndex: 'id' },
@@ -26,82 +25,6 @@ const columns = [
   { title: 'Leader Drone Id', dataIndex: 'swarmId' },
   { title: 'Leader Drone Tag', dataIndex: 'swarmTag' },
 ];
-
-function FormModal({ dialogOpenState, formFields, formFinishArgs, refreshFn, popMessage, ...props }) {
-  const [form] = Form.useForm();
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const formDialogOk = (form) => {
-    setConfirmLoading(true);
-    form.submit()
-  };
-  const onFinish = (values, args) => {
-    fetch(...args.fetchConfig(values))
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage(args.failMsg || 'Failed', args.failDecs || 'Please check the form fields.', 'warning');
-        } else {
-          refreshFn();
-          args.setDialogOpen(false);
-          popMessage(args.succMsg || 'Success', args.succDecs || 'Operation success!', 'success');
-          form.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        console.log(err);
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
-
-  const onValuesChangeFillDrone = (values, allValues) => {
-    if ('droneFullId' in values) {
-      const [id, tag] = values.droneFullId.split('$');
-      form.setFieldValue('id', id);
-      form.setFieldValue('tag', tag);
-    }
-  };
-
-  return (
-    <Modal
-      open={dialogOpenState[0]}
-      onOk={() => { formDialogOk(form) }}
-      confirmLoading={confirmLoading}
-      onCancel={() => dialogOpenState[1](false)}
-      {...props}
-    >
-      <Form
-        form={form}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        requiredMark='optional'
-        name='form'
-        onFinish={v => onFinish(v, formFinishArgs)}
-        onFinishFailed={() => setConfirmLoading(false)}
-        onValuesChange={onValuesChangeFillDrone}
-      >
-        {formFields.map((e) => (
-          <Form.Item
-            name={e.name}
-            label={e.label}
-            rules={e.rules || [{ required: true }]}
-            hidden={e.hidden || false}
-          >
-            {e.formItem}
-          </Form.Item>
-        ))}
-      </Form>
-    </Modal>
-  );
-}
 
 export const Drones = () => {
   const [data, setData] = useState();
@@ -233,7 +156,6 @@ export const Drones = () => {
     },
   ];
   
-
   const joinSwarmFormFields = [
     { name: 'id', formItem: <Input /> , hidden: true },
     { name: 'tag', formItem: <InputNumber />, hidden: true },
