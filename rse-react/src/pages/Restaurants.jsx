@@ -168,7 +168,6 @@ export const Restaurants = () => {
         headers: { "Content-type": "application/json; charset = UTF-8", },
       }
     ]),
-    setDialogOpen: setNewRestaurDialogOpen,
     succDecs: 'Restaurant added seccessfully!',
     failMsg: 'Fail to add restaurant',
   }
@@ -182,7 +181,6 @@ export const Restaurants = () => {
         headers: { "Content-type": "application/x-www-form-urlencoded; charset = UTF-8", },
       }
     ]),
-    setDialogOpen: setPurchseIngreDialogOpen,
     succDecs: 'Purchased seccessfully!',
     failMsg: 'Fail to purchase the ingredients',
   }
@@ -196,7 +194,6 @@ export const Restaurants = () => {
         headers: { "content-type": "application/json; charset = UTF-8", },
       }
     ]),
-    setDialogOpen: setStartFundingDialogOpen,
     succDecs: 'Funding seccessfully!',
     failMsg: 'Fail to Fund the restaurant',
   }

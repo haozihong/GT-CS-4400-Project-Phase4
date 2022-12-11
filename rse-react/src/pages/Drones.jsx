@@ -252,7 +252,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/x-www-form-urlencoded; charset = UTF-8', },
       }
     ]),
-    setDialogOpen: setLoadDroneDialogOpen,
     succMsg: 'Success',
     succDecs: 'This Drone was loaded seccessfully!',
     failMsg: 'Fail to load drone',
@@ -268,7 +267,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/x-www-form-urlencoded; charset = UTF-8', },
       }
     ]),
-    setDialogOpen: setRefuelDroneDialogOpen,
     succDecs: 'This Drone was refuel seccessfully!',
     failMsg: 'Fail to refuel drone',
   }
@@ -282,7 +280,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setFlyDroneDialogOpen,
     succDecs: 'This Drone has Flied away already!',
     failMsg: 'Cannot make this drone flying',
   }
@@ -296,7 +293,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setLeaveSwarmDialogOpen,
     succDecs: 'This Drone has left swarm already!',
     failMsg: 'Cannot leave the swarm',
   }
@@ -310,7 +306,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setJoinSwarmDialogOpen,
     succDecs: 'This Drone was joined swarm seccessfully!',
     failMsg: 'Cannot join the swarm',
   }
@@ -324,7 +319,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setAddDroneDialogOpen,
     succDecs: 'New Drone was added seccessfully!',
     failMsg: 'Fail to add drone',
   }
@@ -338,7 +332,6 @@ export const Drones = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setRemoveDroneDialogOpen,
     succDecs: 'New Drone was removed seccessfully!',
     failMsg: 'Fail to remove drone',
   }
