@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Input, InputNumber, notification, Tooltip } from 'antd';
+import { Table, Space, Button, Col, Row, Modal, Form, Select, notification, Tooltip } from 'antd';
 import {
   PlusOutlined,
   ReloadOutlined,
@@ -14,11 +14,6 @@ const columns = [
   { title: 'Last Name', dataIndex: 'lastName' },
   { title: 'Address', dataIndex: 'address' },
   { title: 'Birthdate', dataIndex: 'birthdate', render: e => format(e, 'yyyy-MM-dd'), },
-];
-
-// fields in the addWorker pop-up
-const newWorkFormFields = [
-  { name: "username", label: "Username", formItem: <Input />, },
 ];
 
 // get data from DB for workerView table
@@ -36,11 +31,24 @@ export const Workers = () => {
       });
   };
 
-  useEffect(() => {
+  const [employees, setEmployees] = useState([]);
+  const fetchDataBg = (url, setFn) => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setFn(res);
+      });
+  };
+
+  const fetchAllData = () => {
     fetchData();
+    fetchDataBg('/api/employees', setEmployees);
+  };
+    
+  useEffect(() => {
+    fetchAllData();
   }, []);
-
-
+  
   // Add Worker Popup and error handling
   const [newWorkDialogOpen, setNewWorkDialogOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -104,7 +112,7 @@ export const Workers = () => {
               Add
             </Button>
             <Tooltip title="refresh">
-              <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />
+              <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchAllData()} />
             </Tooltip>
           </Space>
         </Col>
@@ -136,15 +144,17 @@ export const Workers = () => {
           onFinish={onFinish}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {newWorkFormFields.map(e =>
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
+          <Form.Item
+            name="username"
+            label="Username"
+            rules={[{ required: true, },]}
+          >
+            <Select
+              placeholder='Select an employee'
+              options={employees.map(e => ({ label: e.username, value: e.username }))}
+            />
+          </Form.Item>
+
         </Form>
       </Modal>
     </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Input, InputNumber, notification, Tooltip  } from 'antd';
+import { Table, Space, Button, Col, Row, Modal, Form, Input, Select, notification, Tooltip  } from 'antd';
 import {
   PlusOutlined,
   ReloadOutlined,
@@ -17,46 +17,42 @@ const columns = [
   { title: 'Weight Carried', dataIndex: 'weightCarried' },
 ];
 
-// fields in the addService pop-up
-const newServFormFields = [
-  { name: "id", label: "ID", formItem: <Input />,
-   rules: [{ required: true, }], },
-  { name: "longName", label: "Long Name", formItem: <Input />,
-   rules: [{ required: true, }], },
-  { name: "homeBase", label: "Home Base", formItem: <Input />,
-   rules: [{ required: true, }], },
-  { name: "manager", label: "Manager", formItem: <Input />,
-   rules: [{ required: true, }], },
-];
+const newServFetchConfig = values => ([
+  `/api/services`,
+  {
+    method: 'POST',
+    body: JSON.stringify(values),
+    headers: { 'Content-type': 'application/json; charset=UTF-8', },
+  }
+]);
 
-// fields in the manageService pop-up
-const manageServFormFields = [                            // #################################
-  { name: "manager", label: "Manager Username", formItem: <Input />,
-     rules: [{ required: true, }], },
-  { name: "id", label: "Service ID", formItem: <Input />,
-     rules: [{ required: true, }], },
-];
+const manageServFetchConfig = values => ([
+  `/api/services`,
+  {
+    method: 'PUT',                            // ######################################## Set to PUT method since updating, not creating
+    body: JSON.stringify(values),
+    headers: { 'Content-type': 'application/json; charset=UTF-8', },
+  }
+]);
 
-// fields in the hireEmp pop-up
-const hireEmpFormFields = [                               // #################################
-  { name: "username", label: "Employee Username", formItem: <Input />,
-     rules: [{ required: true, }], },
-  { name: "id", label: "Service ID", formItem: <Input />,
-     rules: [{ required: true, }], },
-];
+const hireEmpFetchConfig = values => ([
+  `/api/employees/hire?username=${values.username}&id=${values.id}`,
+  {
+    method: 'POST',                            // ######################################## Set to POST method since adding
+    body: JSON.stringify(values),
+    headers: { 'Content-type': 'application/json; charset=UTF-8', },
+  }
+]);
 
-// fields in the fireEmp pop-up
-const fireEmpFormFields = [                               // #################################
-  { name: "username", label: "Employee Username", formItem: <Input />,
-     rules: [{ required: true, }], },
-  { name: "id", label: "Service ID", formItem: <Input />,
-     rules: [{ required: true, }], },
-];
+const fireEmpFetchConfig = values => ([
+  `/api/employees/fire?username=${values.username}&id=${values.id}`,
+  { method: 'DELETE', }
+]);
 
-// get data from DB for serviceView table
 export const Services = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  // get data from DB for serviceView table
   const fetchData = () => {
     setLoading(true);
     fetch(`/api/services/view`)
@@ -67,10 +63,29 @@ export const Services = () => {
       });
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [employees, setEmployees] = useState([]);
+  const [workers, setWorkers] = useState([]);
+  const [services, setServices] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const fetchDataBg = (url, setFn) => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setFn(res);
+      });
+  };
 
+  const fetchAllData = () => {
+    fetchData();
+    fetchDataBg('/api/employees', setEmployees);
+    fetchDataBg('/api/workers', setWorkers);
+    fetchDataBg('/api/services', setServices);
+    fetchDataBg('/api/locations', setLocations);
+  };
+    
+  useEffect(() => {
+    fetchAllData();
+  }, []);
 
 // Add service Popups and error handling
   const [newServDialogOpen, setNewServDialogOpen] = useState(false);
@@ -89,48 +104,32 @@ export const Services = () => {
       description,
     });
   };
-  const newServDialogOk = () => {
+  const formDialogOk = (form) => {
     setConfirmLoading(true);
-    formNewServ.submit()
+    form.submit()
   };
-  const manageServDialogOk = () => {       // ############################################################################
-    setConfirmLoading(true);
-    formManageServ.submit()
-  };
-  const hireEmpDialogOk = () => {         // ############################################################################
-    setConfirmLoading(true);
-    formHireEmp.submit()
-  };
-  const fireEmpDialogOk = () => {         // ############################################################################
-    setConfirmLoading(true);
-    formFireEmp.submit()
-  };
-  const onFinish = (values) => {
-    fetch('/api/services', {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
+
+  const onFinish = (values, fetchConfig, setDialogOpen, form, succMsg, failMsg) => {
+    fetch(...fetchConfig(values))
       .then(res => {
         if (!res.ok) return res.json().then(r => Promise.reject(r));
         return res.json();
       })
       .then(data => {
         if (data === 0) {
-          popMessage('Failed to add service', 'Please check the form fields. ', 'warning');
+          popMessage('Failed', failMsg || 'Please check the form fields. ', 'warning');
         } else {
-          fetchData();
-          setNewServDialogOpen(false);
-          popMessage('Success', `Service added successfully!`, 'success');
-          formNewServ.resetFields();
+          fetchAllData();
+          setDialogOpen(false);
+          popMessage('Success', succMsg || 'Operation success!', 'success');
+          form.resetFields();
         }
       }, err => {
         console.log('err', err);
         popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
       })
       .catch((err) => {
+        console.log(err);
         popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
       })
       .finally(() => {
@@ -138,103 +137,8 @@ export const Services = () => {
       });
   };
 
-  const onFinishManage = (values) => {            // ######################################## Added new onFinish
-    fetch('/api/services', {
-      method: 'PUT',                            // ######################################## Set to PUT method since updating, not creating
-      body: JSON.stringify(values),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Failed to manage service', 'Please check the form fields. ', 'warning');  //##########################
-        } else {
-          fetchData();
-          setManageServDialogOpen(false);
-          popMessage('Success', `Service managed successfully!`, 'success');            // ############################
-          formManageServ.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
-
-  const onFinishHireEmp = (values) => {            // ######################################## Added new onFinish
-    fetch('/api/employees/hire?username=' + values.username + "&id=" + values.id, {
-      method: 'POST',                            // ######################################## Set to POST method since adding
-      body: JSON.stringify(values),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Failed to hire employee', 'Please check the form fields. ', 'warning');  //##########################
-        } else {
-          fetchData();
-          setHireEmpDialogOpen(false);
-          popMessage('Success', `Employee hired successfully!`, 'success');            // ############################
-          formHireEmp.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
-
-  const onFinishFireEmp = (values) => {            // ######################################## Added new onFinish
-    fetch('/api/employees/fire?username=' + values.username + "&id=" + values.id, {
-      method: 'DELETE',                            // ######################################## Set to DELETE method since deleting
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Failed to fire employee', 'Please check the form fields. ', 'warning');  //##########################
-        } else {
-          fetchData();
-          setFireEmpDialogOpen(false);
-          popMessage('Success', `Employee fired successfully!`, 'success');            // ############################
-          formFireEmp.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
-
-// Render the Services Page
-return (
+  // Render the Services Page
+  return (
     <>
       {contextHolder}
       <Row className='content' gutter={[16, 8]}>
@@ -266,7 +170,7 @@ return (
               Add Service
             </Button>
             <Tooltip title="refresh">
-              <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchData()} />
+              <Button type='text' shape='circle' icon={<ReloadOutlined />} onClick={() => fetchAllData()} />
             </Tooltip>
           </Space>
         </Col>
@@ -285,7 +189,7 @@ return (
         title="New Service"
         okText="Add Service"
         open={newServDialogOpen}
-        onOk={newServDialogOk}
+        onOk={() => {formDialogOk(formNewServ)}}
         confirmLoading={confirmLoading}
         onCancel={() => setNewServDialogOpen(false)}
       >
@@ -295,18 +199,43 @@ return (
           wrapperCol={{span: 16}}
           requiredMark="optional"
           name="servForm"
-          onFinish={onFinish}
+          onFinish={v => onFinish(v, newServFetchConfig, setNewServDialogOpen, formNewServ, 'Service added successfully!')}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {newServFormFields.map(e =>
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
+          <Form.Item
+            name="id"
+            label="Service ID"
+            required
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="longName"
+            label="Long Name"
+            required
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="homeBase"
+            label="Home Base"
+            required
+          >
+            <Select
+              placeholder='Select a location'
+              options={locations.map(e => ({ label: e.label, value: e.label }))}
+            />
+          </Form.Item>
+          <Form.Item
+            name="manager"
+            label="Manager"
+            required
+          >
+            <Select
+              placeholder='Select a worker'
+              options={workers.map(e => ({ label: e.username, value: e.username }))}
+            />
+          </Form.Item>
         </Form>
       </Modal>
 
@@ -314,7 +243,7 @@ return (
         title="Manage Service"
         okText="Manage Service"
         open={manageServDialogOpen}
-        onOk={manageServDialogOk}
+        onOk={() => {formDialogOk(formManageServ)}}
         confirmLoading={confirmLoading}
         onCancel={() => setManageServDialogOpen(false)}
       >
@@ -324,25 +253,36 @@ return (
           wrapperCol={{span: 16}}
           requiredMark="optional"
           name="manageServForm"
-          onFinish={onFinishManage}
+          onFinish={v => onFinish(v, manageServFetchConfig, setManageServDialogOpen, formManageServ, 'Set service manager successfully!')}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {manageServFormFields.map(e =>
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
+          <Form.Item
+            name="manager"
+            label="Manager Username"
+            required
+          >
+            <Select
+              placeholder='Select a worker'
+              options={workers.map(e => ({ label: e.username, value: e.username }))}
+            />
+          </Form.Item>
+          <Form.Item
+            name="id"
+            label="Service ID"
+            required
+          >
+            <Select
+              placeholder='Select a delivery service'
+              options={services.map(e => ({ label: `${e.longName} (${e.id})`, value: e.id }))}
+            />
+          </Form.Item>
         </Form>
       </Modal>
       <Modal                            // ################################ Added entire new Modal for hire employee
         title="Hire Employee"
         okText="Hire Employee"
         open={hireEmpDialogOpen}
-        onOk={hireEmpDialogOk}
+        onOk={() => {formDialogOk(formHireEmp)}}
         confirmLoading={confirmLoading}
         onCancel={() => setHireEmpDialogOpen(false)}
       >
@@ -352,25 +292,36 @@ return (
           wrapperCol={{span: 16}}
           requiredMark="optional"
           name="hireEmpForm"
-          onFinish={onFinishHireEmp}
+          onFinish={v => onFinish(v, hireEmpFetchConfig, setHireEmpDialogOpen, formHireEmp, 'Employee hired successfully!')}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {hireEmpFormFields.map(e =>
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
+          <Form.Item
+            name="username"
+            label="Employee Username"
+            required
+          >
+            <Select
+              placeholder='Select an employee'
+              options={employees.map(e => ({ label: e.username, value: e.username }))}
+            />
+          </Form.Item>
+          <Form.Item
+            name="id"
+            label="Service ID"
+            required
+          >
+            <Select
+              placeholder='Select a delivery service'
+              options={services.map(e => ({ label: `${e.longName} (${e.id})`, value: e.id }))}
+            />
+          </Form.Item>
         </Form>
       </Modal>
       <Modal                            // ################################ Added entire new Modal for fire employee
         title="Fire Employee"
         okText="Fire Employee"
         open={fireEmpDialogOpen}
-        onOk={fireEmpDialogOk}
+        onOk={() => {formDialogOk(formFireEmp)}}
         confirmLoading={confirmLoading}
         onCancel={() => setFireEmpDialogOpen(false)}
       >
@@ -380,18 +331,29 @@ return (
           wrapperCol={{span: 16}}
           requiredMark="optional"
           name="fireEmpForm"
-          onFinish={onFinishFireEmp}
+          onFinish={v => onFinish(v, fireEmpFetchConfig, setFireEmpDialogOpen, formFireEmp, 'Employee fired successfully!')}
           onFinishFailed={() => setConfirmLoading(false)}
         >
-          {fireEmpFormFields.map(e =>
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
+          <Form.Item
+            name="username"
+            label="Employee Username"
+            required
+          >
+            <Select
+              placeholder='Select an employee'
+              options={employees.map(e => ({ label: e.username, value: e.username }))}
+            />
+          </Form.Item>
+          <Form.Item
+            name="id"
+            label="Service ID"
+            required
+          >
+            <Select
+              placeholder='Select a delivery service'
+              options={services.map(e => ({ label: `${e.longName} (${e.id})`, value: e.id }))}
+            />
+          </Form.Item>
         </Form>
       </Modal>
 
