@@ -47,7 +47,7 @@ function FormModal({ dialogOpenState, formFields, formFinishArgs, refreshFn, pop
           refreshFn();
           args.setDialogOpen(false);
           popMessage(args.succMsg || 'Success', args.succDecs || 'Operation success!', 'success');
-          args.form.resetFields();
+          form.resetFields();
         }
       }, err => {
         console.log('err', err);
@@ -151,14 +151,6 @@ export const Drones = () => {
   const [addDroneDialogOpen, setAddDroneDialogOpen] = useState(false);
   const [removeDroneDialogOpen, setRemoveDroneDialogOpen] = useState(false);
   
-  const [formLoad] = Form.useForm();
-  const [formRefuel] = Form.useForm();
-  const [formLeave] = Form.useForm();
-  const [formJoin] = Form.useForm();
-  const [formFly] = Form.useForm();
-  const [formAdd] = Form.useForm();
-  const [formRemove] = Form.useForm();
-
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
     notificationApi[type || 'open']({
@@ -168,13 +160,8 @@ export const Drones = () => {
   };
 
   const singleDroneFormFields = [
-    { name: 'id', label: 'Delivery Service ID', formItem: <Input /> , hidden: true},
-    {
-      name: 'tag',
-      label: 'Drone Tag',
-      formItem: <InputNumber />,
-      hidden: true
-    },
+    { name: 'id', formItem: <Input /> , hidden: true},
+    { name: 'tag', formItem: <InputNumber />, hidden: true },
     {
       name: 'droneFullId',
       label: 'Drone',
@@ -223,7 +210,18 @@ export const Drones = () => {
   ];
   
   const flyDroneFormFields = [
-    ...singleDroneFormFields,
+    { name: 'id', formItem: <Input /> , hidden: true },
+    { name: 'tag', formItem: <InputNumber />, hidden: true },
+    {
+      name: 'droneFullId',
+      label: 'Drone',
+      formItem: 
+        <Select
+          placeholder='Select a drone'
+          options={drones.filter(e=>e.flownBy).map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
+        />,
+      rules: [{ required: true }],
+    },
     { 
       name: 'destination', 
       label: 'Destination', 
@@ -237,7 +235,18 @@ export const Drones = () => {
   
 
   const joinSwarmFormFields = [
-    ...singleDroneFormFields,
+    { name: 'id', formItem: <Input /> , hidden: true },
+    { name: 'tag', formItem: <InputNumber />, hidden: true },
+    {
+      name: 'droneFullId',
+      label: 'Drone',
+      formItem: 
+        <Select
+          placeholder='Select a drone'
+          options={drones.filter(e=>e.flownBy).map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
+        />,
+      rules: [{ required: true }],
+    },
     { 
       name: 'swarmTag', 
       label: 'Leader Drone Tag', 
@@ -251,9 +260,32 @@ export const Drones = () => {
       rules: [{ required: true }, { type: 'number', min: 0 }],
     },
   ];
+
+  const leaveSwarmFormFields = [
+    { name: 'id', formItem: <Input /> , hidden: true },
+    { name: 'tag', formItem: <InputNumber />, hidden: true },
+    {
+      name: 'droneFullId',
+      label: 'Drone',
+      formItem: 
+        <Select
+          placeholder='Select a drone'
+          options={drones.filter(e=>e.swarmId).map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
+        />,
+      rules: [{ required: true }],
+    },
+  ];
   
   const droneFormFields = [
-    { name: 'id', label: 'Delivery Service ID', formItem: <Input /> },
+    { 
+      name: 'id', 
+      label: 'Delivery Service ID', 
+      formItem: 
+        <Select
+          placeholder='Select a delivery service'
+          options={services.map(e => ({ label: `${e.longName} (${e.id})`, value: e.id }))}
+        />
+    },
     {
       name: 'tag',
       label: 'Drone Tag',
@@ -288,7 +320,6 @@ export const Drones = () => {
         />
     },
   ];
-  
 
   const loadFormFinishArgs = {
     fetchConfig: values => ([
@@ -300,7 +331,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setLoadDroneDialogOpen,
-    form: formLoad, 
     succMsg: 'Success',
     succDecs: 'This Drone was loaded seccessfully!',
     failMsg: 'Fail to load drone',
@@ -317,7 +347,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setRefuelDroneDialogOpen,
-    form: formRefuel, 
     succDecs: 'This Drone was refuel seccessfully!',
     failMsg: 'Fail to refuel drone',
   }
@@ -332,7 +361,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setFlyDroneDialogOpen,
-    form: formFly, 
     succDecs: 'This Drone has Flied away already!',
     failMsg: 'Cannot make this drone flying',
   }
@@ -347,7 +375,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setLeaveSwarmDialogOpen,
-    form: formLeave, 
     succDecs: 'This Drone has left swarm already!',
     failMsg: 'Cannot leave the swarm',
   }
@@ -362,7 +389,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setJoinSwarmDialogOpen,
-    form: formJoin, 
     succDecs: 'This Drone was joined swarm seccessfully!',
     failMsg: 'Cannot join the swarm',
   }
@@ -377,7 +403,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setAddDroneDialogOpen,
-    form: formAdd, 
     succDecs: 'New Drone was added seccessfully!',
     failMsg: 'Fail to add drone',
   }
@@ -392,7 +417,6 @@ export const Drones = () => {
       }
     ]),
     setDialogOpen: setRemoveDroneDialogOpen,
-    form: formRemove, 
     succDecs: 'New Drone was removed seccessfully!',
     failMsg: 'Fail to remove drone',
   }
@@ -485,7 +509,7 @@ export const Drones = () => {
 
       <FormModal
         dialogOpenState={[leaveSwarmDialogOpen, setLeaveSwarmDialogOpen]}
-        formFields={singleDroneFormFields}
+        formFields={leaveSwarmFormFields}
         formFinishArgs={leaveFormFinishArgs}
         refreshFn={fetchAllData}
         popMessage={popMessage}
