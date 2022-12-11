@@ -8,8 +8,8 @@ import {
   Modal,
   Form,
   Input,
-  //DatePicker,
   InputNumber,
+  Select,
   notification,
   Tooltip,
 } from "antd";
@@ -18,6 +18,7 @@ import { PlusOutlined, MinusOutlined, ReloadOutlined } from "@ant-design/icons";
 //print table
 const columns = [
   { title: "Ingredient Name", dataIndex: "iname" },
+  { title: "Barcode", dataIndex: "barcode" },
   { title: "Location", dataIndex: "location" },
   { title: "Amount Available", dataIndex: "amountAvailable" },
   { title: "Low Price", dataIndex: "lowPrice" },
@@ -57,8 +58,22 @@ const App = () => {
       });
   };
 
-  useEffect(() => {
+  const [ingredients, setIngredients] = useState([]);
+  const fetchDataBg = (url, setFn) => {
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+        setFn(res);
+      });
+  };
+
+  const fetchAllData = () => {
     fetchData();
+    fetchDataBg('/api/ingredients', setIngredients);
+  };
+    
+  useEffect(() => {
+    fetchAllData();
   }, []);
 
   //add_操作和variables:
@@ -105,7 +120,7 @@ const App = () => {
             );
           } else {
             // 成功添加，给出成功信息
-            fetchData();
+            fetchAllData();
             setNewIngredDialogOpen(false);
             popMessage(
               "Success",
@@ -164,7 +179,7 @@ const App = () => {
             );
           } else {
             // 成功添加，给出成功信息
-            fetchData();
+            fetchAllData();
             setNewIngredDialogOpen(false);
             popMessage(
               "Success",
@@ -224,7 +239,7 @@ const App = () => {
                 type="text"
                 shape="circle"
                 icon={<ReloadOutlined />}
-                onClick={() => fetchData()}
+                onClick={() => fetchAllData()}
               />
             </Tooltip>
           </Space>
@@ -296,7 +311,10 @@ const App = () => {
             label="Ingredient Barcode"
             rules={[{ required: true }]}
           >
-            <Input />
+            <Select 
+              placeholder='Select a ingredient'
+              options={ingredients.map(e => ({ label: e.barcode, value: e.barcode }))}
+            />
           </Form.Item>
         </Form>
       </Modal>
