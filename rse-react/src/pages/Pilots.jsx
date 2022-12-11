@@ -76,6 +76,8 @@ export const Pilots = () => {
           options={employees.map(e => ({ label: e.username, value: e.username }))}
         />,
     },
+    { name: 'licenseID', label: 'License ID', formItem: <Input />, },
+    { name: 'experience', label: 'Experience', formItem: <InputNumber />, },
   ];
 
   const removePilotFormFields = [
@@ -100,7 +102,7 @@ export const Pilots = () => {
           options={pilots.map(e => ({ label: e.username, value: e.username }))}
         />,
     },
-    { name: 'id', formItem: <Input /> , hidden: true},
+    { name: 'id', formItem: <Input />, hidden: true},
     { name: 'tag', formItem: <InputNumber />, hidden: true },
     {
       name: 'droneFullId',
@@ -124,7 +126,6 @@ export const Pilots = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setAddPilDialogOpen,
     succDecs: 'Pilot added successfully!',
     failMsg: 'Failed to add pilot',
   }
@@ -134,7 +135,6 @@ export const Pilots = () => {
       `/api/pilots/role/${values.username}`,
       { method: 'DELETE' }
     ]),
-    setDialogOpen: setRemPilDialogOpen,
     succDecs: 'Pilot removed successfully!',
     failMsg: 'Failed to remove pilot',
   }
@@ -148,7 +148,6 @@ export const Pilots = () => {
         headers: { 'Content-type': 'application/json; charset=UTF-8', },
       }
     ]),
-    setDialogOpen: setTakeDroneDialogOpen,
     succDecs: 'Drone taken over successfully!',
     failMsg: 'Failed to taken over pilot',
   }
