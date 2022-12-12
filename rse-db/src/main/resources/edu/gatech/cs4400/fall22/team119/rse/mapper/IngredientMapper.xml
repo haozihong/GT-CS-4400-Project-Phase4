@@ -21,8 +21,8 @@
             ifnull(min(price), 0) as low_price,
             ifnull(max(price), 0) as high_price
         from ingredients
-        natural left join payload
-        natural left join drones
+        natural join payload
+        natural join drones
         group by barcode, hover;
     </select>
     <select id="displayIngredient" resultType="edu.gatech.cs4400.fall22.team119.rse.pojo.Ingredient">
