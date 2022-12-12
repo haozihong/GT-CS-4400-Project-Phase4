@@ -233,6 +233,7 @@ export const Restaurants = () => {
             rowKey={(record) => record.longName}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>

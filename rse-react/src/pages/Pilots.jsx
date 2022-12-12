@@ -180,6 +180,7 @@ export const Pilots = () => {
             rowKey={(record) => record.username}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>

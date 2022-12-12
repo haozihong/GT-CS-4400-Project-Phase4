@@ -143,6 +143,7 @@ export const Employees = () => {
             rowKey={(record) => record.username}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>

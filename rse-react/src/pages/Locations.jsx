@@ -121,6 +121,7 @@ return (
             rowKey={(record) => record.label}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>

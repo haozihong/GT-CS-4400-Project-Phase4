@@ -122,6 +122,7 @@ export const Workers = () => {
             rowKey={(record) => record.username}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>
@@ -153,7 +154,6 @@ export const Workers = () => {
               options={employees.map(e => ({ label: e.username, value: e.username }))}
             />
           </Form.Item>
-
         </Form>
       </Modal>
     </>

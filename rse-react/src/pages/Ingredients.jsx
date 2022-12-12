@@ -251,6 +251,7 @@ const App = () => {
             rowKey={(record) => record.iname}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>
