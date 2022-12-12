@@ -1,9 +1,25 @@
 # GT-CS-4400-Project
 CS 4400 (Fall 2022) Project Phase 4 - Group 19
 
-# Current Progress:
+### Work Distribution
 
-Finished **Employee view** and **Add Employee** form. 
+#### Zihong Hao
+- Build and Deploy: Set up project framework, building pipline, and deployment. 
+- Backend: MyBatis (SQL), POJO, API. 
+- Frontend: Page routing, displaying tables, and forms to request backend. 
+- Test: testing all APIs, pages, and procedures. 
+
+#### Zhaodong Kang
+- Backend: Mybatis (SQL), POJO, API. 
+- Test: testing all APIs, pages, and procedures. 
+
+#### Geoffrey Y Zhang
+- Frontend: Forms to request backend. 
+- Test: testing all APIs, pages, and procedures. 
+
+#### Tingyue He
+- Frontend: Forms to request backend. 
+- Test: testing all APIs, pages, and procedures. 
 
 
 # Visit
@@ -17,7 +33,7 @@ Also deployed on [https://cs4400rse.onrender.com](https://cs4400rse.onrender.com
    | :---        |    :----:   |   
    | Frontend  | React 16, Ant Design  | 
    | Backend   | Spring Boot 2.7.5, Java 17 |
-   | Database | MySQL 8.0 |
+   | Database | MySQL 8.0, MyBatis 3.5.9 |
    | Build| Gradle 7.4, Docker |
 
 
@@ -47,7 +63,7 @@ docker build . -t 'rse'
 docker run -d -p <PORT>:8080 -e MYSQLDBURL2=<url_to_database> rse
 ```
 
-# Option 2: Run Locally
+# Option 2: Run Locally (for development)
 ### Prerequisite Installation
 - Gradle 7.4
 - Java 17
