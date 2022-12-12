@@ -128,7 +128,7 @@ export const Pilots = () => {
     ]),
     succDecs: 'Pilot added successfully!',
     failMsg: 'Failed to add pilot',
-  }
+  };
 
   const removePilotFormFinishArgs = {
     fetchConfig: values => ([
@@ -137,7 +137,7 @@ export const Pilots = () => {
     ]),
     succDecs: 'Pilot removed successfully!',
     failMsg: 'Failed to remove pilot',
-  }
+  };
 
   const takeDroneFormFinishArgs = {
     fetchConfig: values => ([
@@ -150,7 +150,7 @@ export const Pilots = () => {
     ]),
     succDecs: 'Drone taken over successfully!',
     failMsg: 'Failed to taken over pilot',
-  }
+  };
 
   // Render the Pilots Page
   return (

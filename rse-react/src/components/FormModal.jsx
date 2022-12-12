@@ -71,6 +71,7 @@ export const FormModal = ({ dialogOpenState, formFields, formFinishArgs, refresh
             label={e.label}
             rules={e.rules || [{ required: true }]}
             hidden={e.hidden || false}
+            key={e.name}
           >
             {e.formItem}
           </Form.Item>

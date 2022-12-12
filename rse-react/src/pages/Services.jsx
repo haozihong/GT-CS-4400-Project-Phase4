@@ -167,7 +167,7 @@ export const Services = () => {
     ]),
     succDecs: 'Service added successfully!',
     failMsg: 'Fail to add service',
-  }
+  };
 
   const manageServFormFinishArgs = {
     fetchConfig: values => ([
@@ -180,7 +180,7 @@ export const Services = () => {
     ]),
     succDecs: 'Set service manager successfully!',
     failMsg: 'Fail to set service manager',
-  }
+  };
 
   const hireEmpFormFinishArgs = {
     fetchConfig: values => ([
@@ -193,7 +193,7 @@ export const Services = () => {
     ]),
     succDecs: 'Employee hired successfully!',
     failMsg: 'Fail to hire the employee',
-  }
+  };
 
   const fireEmpFormFinishArgs = {
     fetchConfig: values => ([
@@ -202,7 +202,7 @@ export const Services = () => {
     ]),
     succDecs: 'Employee fired successfully!',
     failMsg: 'Fail to fire the employee',
-  }
+  };
 
   // Render the Services Page
   return (
@@ -232,7 +232,7 @@ export const Services = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            rowKey={(record) => record.username}
+            rowKey={(record) => record.id}
             dataSource={data}
             loading={loading}
             pagination={{ showSizeChanger: true }}

@@ -88,7 +88,7 @@ const App = () => {
     ]),
     succDecs: 'Your Ingredients was added seccessfully!',
     failMsg: 'Fail to add ingredients',
-  }
+  };
 
   const removeIngredFormFinishArgs = {
     fetchConfig: values => ([
@@ -97,7 +97,7 @@ const App = () => {
     ]),
     succDecs: 'Your Ingredients was removed seccessfully!',
     failMsg: 'Fail to remove ingredients',
-  }
+  };
 
   return (
     <>
@@ -127,7 +127,7 @@ const App = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            rowKey={(record) => record.iname}
+            rowKey={(record) => `${record.barcode}$${record.location}`}
             dataSource={data}
             loading={loading}
             pagination={{ showSizeChanger: true }}

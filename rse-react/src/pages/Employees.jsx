@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Input, DatePicker, InputNumber, notification, Tooltip } from 'antd';
+import { Table, Space, Button, Col, Row, Input, DatePicker, InputNumber, notification, Tooltip } from 'antd';
 import {
   PlusOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
 import { format } from 'date-fns'
+import { FormModal } from "../components/FormModal";
 
 // columns of employeeView table
 const columns = [
@@ -18,43 +19,10 @@ const columns = [
   { title: 'Manager Status', dataIndex: 'managerStatus' },
 ];
 
-// fields in the addEmployee pop-up
-const newEmpFormFields = [
-  { name: "username", label: "Username", formItem: <Input />, },
-  { name: "firstName", label: "First Name", formItem: <Input />, },
-  { name: "lastName", label: "Last Name", formItem: <Input />, },
-  { name: "address", label: "Address", formItem: <Input />, },
-  { name: "birthdate", label: "Birthdate", formItem: <DatePicker />, },
-  { 
-    name: "taxID", 
-    label: "Tax ID", 
-    formItem: <Input />,
-    rules: [
-      { required: true, }, 
-      { 
-        pattern: /^\d{3}-\d{2}-\d{4}$/, 
-        message: 'Tax ID should be in "xxx-xx-xxxx" format'
-      }, 
-    ],
-  },
-  { name: "hired", label: "Hired Date", formItem: <DatePicker />, },
-  { 
-    name: "employeeExperience", 
-    label: "Experience (Month)", 
-    formItem: <InputNumber />, 
-    rules: [{ required: true, }, { type: 'number', min: 0 }],
-  },
-  { 
-    name: "salary", 
-    label: "Salary ($)", 
-    formItem: <InputNumber />, 
-    rules: [{ required: true, }, { type: 'number', min: 0 }], },
-];
-
-// get data from DB for pilotView table
 export const Employees = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  // get data from DB for pilotView table
   const fetchData = () => {
     setLoading(true);
     fetch(`/api/employees/view`)
@@ -65,14 +33,17 @@ export const Employees = () => {
         setLoading(false);
       });
   };
-  useEffect(() => {
+
+  const fetchAllData = () => {
     fetchData();
+  };
+    
+  useEffect(() => {
+    fetchAllData();
   }, []);
 
 // Add employee Popups and error handling
   const [newEmpDialogOpen, setNewEmpDialogOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [form] = Form.useForm();
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
     notificationApi[type || 'open']({
@@ -80,43 +51,53 @@ export const Employees = () => {
       description,
     });
   };
-  const newEmpDialogOk = () => {
-    setConfirmLoading(true);
-    form.submit()
-  };
-  const onFinish = (values) => {
-    fetch('/api/employees', {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Fail to add employee', 'Please check the form fields. ', 'warning');
-        } else {
-          fetchData();
-          setNewEmpDialogOpen(false);
-          popMessage('Success', `Employee added seccessfully!`, 'success');
-          form.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
-  };
 
+  const newEmpFormFields = [
+    { name: "username", label: "Username", formItem: <Input />, },
+    { name: "firstName", label: "First Name", formItem: <Input />, },
+    { name: "lastName", label: "Last Name", formItem: <Input />, },
+    { name: "address", label: "Address", formItem: <Input />, },
+    { name: "birthdate", label: "Birthdate", formItem: <DatePicker />, },
+    { 
+      name: "taxID", 
+      label: "Tax ID", 
+      formItem: <Input />,
+      rules: [
+        { required: true, }, 
+        { 
+          pattern: /^\d{3}-\d{2}-\d{4}$/, 
+          message: 'Tax ID should be in "xxx-xx-xxxx" format'
+        }, 
+      ],
+    },
+    { name: "hired", label: "Hired Date", formItem: <DatePicker />, },
+    { 
+      name: "employeeExperience", 
+      label: "Experience (Month)", 
+      formItem: <InputNumber />, 
+      rules: [{ required: true, }, { type: 'number', min: 0 }],
+    },
+    { 
+      name: "salary", 
+      label: "Salary ($)", 
+      formItem: <InputNumber />, 
+      rules: [{ required: true, }, { type: 'number', min: 0 }],
+    },
+  ]; 
+  
+  const newEmpFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/employees`,
+      {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      }
+    ]),
+    succDecs: 'Employee added seccessfully!',
+    failMsg: 'Fail to add service',
+  };
+  
   // Render the Employees Page
   return (
     <>
@@ -148,34 +129,15 @@ export const Employees = () => {
         </Col>
       </Row>
 
-      <Modal
-        title="New Employee"
-        okText="Add Employee"
-        open={newEmpDialogOpen}
-        onOk={newEmpDialogOk}
-        confirmLoading={confirmLoading}
-        onCancel={() => setNewEmpDialogOpen(false)}
-      >
-        <Form
-          form={form} 
-          labelCol={{span: 8}}
-          wrapperCol={{span: 16}}
-          requiredMark="optional"
-          name="empForm"
-          onFinish={onFinish}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          {newEmpFormFields.map(e => 
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
-        </Form>
-      </Modal>
+      <FormModal
+        dialogOpenState={[newEmpDialogOpen, setNewEmpDialogOpen]}
+        formFields={newEmpFormFields}
+        formFinishArgs={newEmpFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='New Employee'
+        okText='Add Employee'
+      />
     </>
   );
 }

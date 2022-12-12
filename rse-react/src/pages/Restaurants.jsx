@@ -170,7 +170,7 @@ export const Restaurants = () => {
     ]),
     succDecs: 'Restaurant added seccessfully!',
     failMsg: 'Fail to add restaurant',
-  }
+  };
 
   const purchaseFormFinishArgs = {
     fetchConfig: values => ([
@@ -183,7 +183,7 @@ export const Restaurants = () => {
     ]),
     succDecs: 'Purchased seccessfully!',
     failMsg: 'Fail to purchase the ingredients',
-  }
+  };
 
   const fundingFormFinishArgs = {
     fetchConfig: values => ([
@@ -196,7 +196,7 @@ export const Restaurants = () => {
     ]),
     succDecs: 'Funding seccessfully!',
     failMsg: 'Fail to Fund the restaurant',
-  }
+  };
 
   return (
     <>
