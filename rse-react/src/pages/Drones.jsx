@@ -1,16 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Table,
-  Space,
-  Button,
-  Col,
-  Row,
-  Input,
-  InputNumber,
-  Select,
-  notification,
-  Tooltip,
-} from 'antd';
+import { Table, Space, Button, Col, Row, Input, InputNumber, Select, notification, Tooltip } from 'antd';
 import { PlusOutlined, MinusOutlined, ReloadOutlined } from '@ant-design/icons';
 import { FormModal } from "../components/FormModal";
 
@@ -93,7 +82,6 @@ export const Drones = () => {
           placeholder='Select a drone'
           options={drones.map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
         />,
-      rules: [{ required: true }],
     },
   ];
   
@@ -143,7 +131,6 @@ export const Drones = () => {
           placeholder='Select a drone'
           options={drones.filter(e=>e.flownBy).map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
         />,
-      rules: [{ required: true }],
     },
     { 
       name: 'destination', 
@@ -167,7 +154,6 @@ export const Drones = () => {
           placeholder='Select a drone'
           options={drones.filter(e=>e.flownBy).map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
         />,
-      rules: [{ required: true }],
     },
     { 
       name: 'swarmTag', 
@@ -194,7 +180,6 @@ export const Drones = () => {
           placeholder='Select a drone'
           options={drones.filter(e=>e.swarmId).map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
         />,
-      rules: [{ required: true }],
     },
   ];
   
@@ -256,7 +241,7 @@ export const Drones = () => {
     succDecs: 'This Drone was loaded seccessfully!',
     failMsg: 'Fail to load drone',
     failDecs: 'Please check the form fields.', 
-  }
+  };
 
   const refuelFormFinishArgs = {
     fetchConfig: values => ([
@@ -269,7 +254,7 @@ export const Drones = () => {
     ]),
     succDecs: 'This Drone was refuel seccessfully!',
     failMsg: 'Fail to refuel drone',
-  }
+  };
 
   const flyFormFinishArgs = {
     fetchConfig: values => ([
@@ -282,7 +267,7 @@ export const Drones = () => {
     ]),
     succDecs: 'This Drone has Flied away already!',
     failMsg: 'Cannot make this drone flying',
-  }
+  };
 
   const leaveFormFinishArgs = {
     fetchConfig: values => ([
@@ -295,7 +280,7 @@ export const Drones = () => {
     ]),
     succDecs: 'This Drone has left swarm already!',
     failMsg: 'Cannot leave the swarm',
-  }
+  };
 
   const joinFormFinishArgs = {
     fetchConfig: values => ([
@@ -308,7 +293,7 @@ export const Drones = () => {
     ]),
     succDecs: 'This Drone was joined swarm seccessfully!',
     failMsg: 'Cannot join the swarm',
-  }
+  };
 
   const addFormFinishArgs = {
     fetchConfig: values => ([
@@ -321,7 +306,7 @@ export const Drones = () => {
     ]),
     succDecs: 'New Drone was added seccessfully!',
     failMsg: 'Fail to add drone',
-  }
+  };
 
   const removeFormFinishArgs = {
     fetchConfig: values => ([
@@ -334,7 +319,7 @@ export const Drones = () => {
     ]),
     succDecs: 'New Drone was removed seccessfully!',
     failMsg: 'Fail to remove drone',
-  }
+  };
 
   return (
     <>
@@ -342,35 +327,27 @@ export const Drones = () => {
       <Row className='page-content' gutter={[16, 8]}>
         <Col span={24} style={{ paddingTop: 16 }}>
           <Space style={{ float: 'right' }}>
-            {/* Load button */}
             <Button icon={<PlusOutlined />} onClick={() => setLoadDroneDialogOpen(true)}>
               Load Drone
             </Button>
-
             <Button icon={<PlusOutlined />} onClick={() => setRefuelDroneDialogOpen(true)}>
               Refuel Drone
             </Button>
-
             <Button icon={<PlusOutlined />} onClick={() => setFlyDroneDialogOpen(true)}>
               Fly Drone
             </Button>
-
             <Button type='primary' icon={<PlusOutlined />} onClick={() => setAddDroneDialogOpen(true)}>
               Add Drone
             </Button>
-
             <Button icon={<MinusOutlined />} onClick={() => setRemoveDroneDialogOpen(true)}>
               Remove Drone
             </Button>
-
             <Button icon={<PlusOutlined />} onClick={() => setLeaveSwarmDialogOpen(true)}>
               Leave Swarm
             </Button>
-
             <Button icon={<PlusOutlined />} onClick={() => setJoinSwarmDialogOpen(true)}>
               Join Swarm
             </Button>
-
             <Tooltip title='refresh'>
               <Button
                 type='text'
@@ -385,7 +362,7 @@ export const Drones = () => {
         <Col span={24}>
           <Table
             columns={columns}
-            rowKey={(record) => record.username}
+            rowKey={(record) => `${record.id}$${record.tag}`}
             dataSource={data}
             loading={loading}
             pagination={{ showSizeChanger: true }}

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Select, notification, Tooltip } from 'antd';
+import { Table, Space, Button, Col, Row, Select, notification, Tooltip } from 'antd';
 import {
   PlusOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
 import { format } from 'date-fns'
+import { FormModal } from "../components/FormModal";
 
 // columns of workerViewTable
 const columns = [
@@ -15,10 +16,10 @@ const columns = [
   { title: 'Birthdate', dataIndex: 'birthdate', render: e => format(e, 'yyyy-MM-dd'), },
 ];
 
-// get data from DB for workerView table
 export const Workers = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  // get data from DB for workerView table
   const fetchData = () => {
     setLoading(true);
     fetch(`/api/workers/view`)
@@ -49,9 +50,7 @@ export const Workers = () => {
   }, []);
   
   // Add Worker Popup and error handling
-  const [newWorkDialogOpen, setNewWorkDialogOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [form] = Form.useForm();
+  const [addWorkerDialogOpen, setAddWorkerDialogOpen] = useState(false);
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
     notificationApi[type || 'open']({
@@ -59,41 +58,30 @@ export const Workers = () => {
       description,
     });
   };
-  const newWorkDialogOk = () => {
-    setConfirmLoading(true);
-    form.submit()
-  };
-  const onFinish = (values) => {
-    fetch('/api/workers', {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Failed to add worker', 'Please check the form fields. ', 'warning');
-        } else {
-          fetchData();
-          setNewWorkDialogOpen(false);
-          popMessage('Success', `Worker added successfully!`, 'success');
-          form.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
+
+  const addWorkerFormFields = [
+    {
+      name: 'username',
+      label: 'Username',
+      formItem: 
+        <Select
+          placeholder='Select an employee'
+          options={employees.map(e => ({ label: e.username, value: e.username }))}
+        />,
+    },
+  ];
+
+  const addWorkerFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/workers`, 
+      {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      }
+    ]),
+    succDecs: 'Worker role added successfully!',
+    failMsg: 'Failed to add worker role',
   };
 
   // Render the Workers Page
@@ -103,11 +91,7 @@ export const Workers = () => {
       <Row className='content' gutter={[16, 8]}>
         <Col span={24} style={{paddingTop: 16}}>
           <Space style={{float: 'right'}}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setNewWorkDialogOpen(true)}
-            >
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddWorkerDialogOpen(true)}>
               Add
             </Button>
             <Tooltip title="refresh">
@@ -126,36 +110,16 @@ export const Workers = () => {
           />
         </Col>
       </Row>
-
-      <Modal
-        title="New Worker"
-        okText="Add Worker"
-        open={newWorkDialogOpen}
-        onOk={newWorkDialogOk}
-        confirmLoading={confirmLoading}
-        onCancel={() => setNewWorkDialogOpen(false)}
-      >
-        <Form
-          form={form}
-          labelCol={{span: 8}}
-          wrapperCol={{span: 16}}
-          requiredMark="optional"
-          name="workForm"
-          onFinish={onFinish}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          <Form.Item
-            name="username"
-            label="Username"
-            rules={[{ required: true, },]}
-          >
-            <Select
-              placeholder='Select an employee'
-              options={employees.map(e => ({ label: e.username, value: e.username }))}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      
+      <FormModal
+        dialogOpenState={[addWorkerDialogOpen, setAddWorkerDialogOpen]}
+        formFields={addWorkerFormFields}
+        formFinishArgs={addWorkerFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='New Worker'
+        okText='Add Worker'
+      />
     </>
   );
 }
