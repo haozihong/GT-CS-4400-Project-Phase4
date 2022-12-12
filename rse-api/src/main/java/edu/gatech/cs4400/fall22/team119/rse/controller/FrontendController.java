@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class FrontendController {
-    @RequestMapping(value = { "/{x:^(?!api|index\\.html$).*}" })
+    @RequestMapping(value = { "/", "/{x:^(?!api|index\\.html$).*}", "/{x:^(?!api$).*$}/*/{y:[\\w\\-]+}", "/error" })
     public String getIndex() {
         return "/index.html";
     }
