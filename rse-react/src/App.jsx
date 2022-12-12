@@ -10,7 +10,8 @@ import {
   SmileOutlined,
   UserOutlined,
   ShopOutlined,
-  SolutionOutlined
+  SolutionOutlined,
+  UserSwitchOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import 'antd/dist/reset.css';
@@ -28,6 +29,7 @@ const items = [
     getItem(<Link to='/u/employees'>Employees</Link>, '/u/employees', <TeamOutlined />),
     getItem(<Link to='/u/workers'>Workers</Link>, '/u/workers', <UserOutlined />),
     getItem(<Link to='/u/pilots'>Pilots</Link>, '/u/pilots', <SendOutlined />),
+    getItem(<Link to='/u/work_for'>Work For</Link>, '/u/work_for', <UserSwitchOutlined />),
     getItem(<Link to='/u/owners'>Owners</Link>, '/u/owners', <SmileOutlined />)
   ]),
   getItem(<Link to='/services'>Services</Link>, '/services', <PieChartOutlined />),

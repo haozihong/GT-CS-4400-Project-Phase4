@@ -9,8 +9,7 @@ import { format } from 'date-fns'
 // columns of workerViewTable
 const columns = [
   { title: 'Username', dataIndex: 'username' },
-  { title: 'Service ID', dataIndex: 'id' },
-  { title: 'Last Name', dataIndex: 'firstName' },
+  { title: 'First Name', dataIndex: 'firstName' },
   { title: 'Last Name', dataIndex: 'lastName' },
   { title: 'Address', dataIndex: 'address' },
   { title: 'Birthdate', dataIndex: 'birthdate', render: e => format(e, 'yyyy-MM-dd'), },
