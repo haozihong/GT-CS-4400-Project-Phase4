@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Zhaodong Kang
@@ -24,4 +25,9 @@ public class WorkForService {
     public List<WorkFor> displayWorkFor(){
         return workForMapper.displayWorkFor();
     }
+
+    public List<Map<String, Object>> displayWorkForView(){
+        return workForMapper.displayWorkForView();
+    }
+
 }
