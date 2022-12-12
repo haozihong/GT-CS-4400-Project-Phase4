@@ -140,21 +140,21 @@ export const Restaurants = () => {
 
   const fundingFormFields = [
     {
-      name: 'longName',
-      label: 'Restaurant name',
-      formItem: 
-        <Select
-          placeholder='Select a restaurant'
-          options={restaurants.map(e => ({ label: e.longName, value: e.longName }))}
-        />,
-    },
-    {
       name: 'fundedBy',
       label: 'Owner Username',
       formItem: 
         <Select
           placeholder='Select a owner'
           options={owners.map(e => ({ label: e.username, value: e.username }))}
+        />,
+    },
+    {
+      name: 'longName',
+      label: 'Restaurant name',
+      formItem: 
+        <Select
+          placeholder='Select a restaurant'
+          options={restaurants.map(e => ({ label: e.longName, value: e.longName }))}
         />,
     },
   ];
