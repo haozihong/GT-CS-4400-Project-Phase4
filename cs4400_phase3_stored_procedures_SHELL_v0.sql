@@ -419,10 +419,6 @@ delimiter //
 create procedure leave_swarm (in ip_id varchar(40), in ip_tag integer)
 sp_main: begin
     -- ensure that the selected drone is owned by the service and flying in a swarm
-	
-    -- Declare variables to store pilot of current swarm
-    DECLARE leaderDroneTag integer;
-    DECLARE swarmPilot varchar(40);
     
     -- check that selected drone is owned by the service
     IF NOT EXISTS(SELECT 1 FROM drones WHERE id = ip_id AND tag = ip_tag) THEN
@@ -438,12 +434,12 @@ sp_main: begin
 	END IF;
     
     -- initialize variables to store pilot of current swarm
-    SELECT swarm_tag into leaderDroneTag FROM drones WHERE id = ip_id AND tag = ip_tag;
-    SELECT flown_by into swarmPilot FROM drones WHERE id = ip_id AND tag = leaderDroneTag;
+    SET @leaderDroneTag = (SELECT swarm_tag FROM drones WHERE id = ip_id AND tag = ip_tag);
+    SET @swarmPilot = (SELECT flown_by FROM drones WHERE id = ip_id AND tag = @leaderDroneTag);
     
     -- All necessary conditions met, let drone leave the swarm and be directly controlled by the same swarm pilot
     UPDATE drones 
-    SET flown_by = swarmPilot, swarm_id = NULL, swarm_tag = NULL
+    SET flown_by = @swarmPilot, swarm_id = NULL, swarm_tag = NULL
     WHERE id = ip_id AND tag = ip_tag;
     
 end //
@@ -477,8 +473,9 @@ sp_main: begin
         exists (select 1 from ingredients where barcode = ip_barcode)
     ) then leave sp_main; end if;
     
-    select hover, capacity into @hover, @capa from drones where (id, tag) = (ip_id, ip_tag);
-    select coalesce(sum(quantity), 0) into @loads from payload where (id, tag) = (ip_id, ip_tag);
+    set @hover = (select hover from drones where (id, tag) = (ip_id, ip_tag));
+    set @capa = (select capacity from drones where (id, tag) = (ip_id, ip_tag));
+    set @loads = (select coalesce(sum(quantity), 0) from payload where (id, tag) = (ip_id, ip_tag));
     if not (
         @hover = (select home_base from delivery_services where id = ip_id) and
 		ip_more_packages > 0 and
@@ -546,15 +543,6 @@ sp_main: begin
     -- ensure that the drone/swarm has enough fuel to reach the destination and (then) home base
     -- ensure that the drone/swarm has enough space at the destination for the flight
     
-    -- Declare variables to store locations and amount of fuel needed to go to destination and then back to home base
-    DECLARE current_location varchar(40);
-    DECLARE home_location varchar(40);
-	DECLARE fuel_needed integer;
-    
-    -- Declare variable to store available number of drones in swarm
-    DECLARE swarm_size integer;
-    DECLARE space_available integer;
-    
     -- check that lead drone is directly controlled by a pilot and is owned by delivery service
     IF NOT EXISTS(SELECT flown_by from drones WHERE id = ip_id AND tag = ip_tag) OR (SELECT flown_by from drones WHERE id = ip_id AND tag = ip_tag) IS NULL THEN
 		LEAVE sp_main;
@@ -571,37 +559,37 @@ sp_main: begin
 	END IF;
     
     -- initialize the location variables
-    SELECT hover into current_location from drones WHERE id = ip_id AND tag = ip_tag;
-    SELECT home_base into home_location from delivery_services WHERE id = ip_id;
-    SET fuel_needed = fuel_required(current_location, ip_destination) + fuel_required(ip_destination, home_location);
+    SET @current_location = (SELECT hover from drones WHERE id = ip_id AND tag = ip_tag);
+    SET @home_location = (SELECT home_base from delivery_services WHERE id = ip_id);
+    SET @fuel_needed = fuel_required(@current_location, ip_destination) + fuel_required(ip_destination, @home_location);
     
     -- check that all drones in swarm have enough fuel to go to destination and then back to home base
-    IF (SELECT MIN(fuel) FROM drones WHERE id = ip_id AND tag = ip_tag) < fuel_needed THEN
+    IF (SELECT MIN(fuel) FROM drones WHERE id = ip_id AND tag = ip_tag) < @fuel_needed THEN
 		LEAVE sp_main;
     
-    ELSEIF (SELECT MIN(fuel) FROM drones WHERE swarm_id = ip_id AND swarm_tag = ip_tag) < fuel_needed THEN
+    ELSEIF (SELECT MIN(fuel) FROM drones WHERE swarm_id = ip_id AND swarm_tag = ip_tag) < @fuel_needed THEN
 		LEAVE sp_main;
 	END IF;
     
-    -- initialize the swarm_size variable
-    SELECT COUNT(*) + 1 INTO swarm_size FROM drones WHERE swarm_id = ip_id AND swarm_tag = ip_tag;
+    -- initialize the @swarm_size variable
+    SET @swarm_size = (SELECT COUNT(*) + 1 FROM drones WHERE swarm_id = ip_id AND swarm_tag = ip_tag);
     
-    -- initialize the space_available variable
-    SELECT space INTO space_available FROM locations WHERE label = ip_destination;
+    -- initialize the @space_available variable
+    SET @space_available = (SELECT space FROM locations WHERE label = ip_destination);
     
     -- check that destination has enough space for all drones in swarm
-    IF swarm_size > space_available THEN
+    IF @swarm_size > @space_available THEN
 		LEAVE sp_main;
 	END IF;
     
     -- All necessary conditions met, let swarm move to destination location, decrease fuel for each drone
     UPDATE drones 
-    SET hover = ip_destination, fuel = fuel - fuel_required(current_location, ip_destination) 
+    SET hover = ip_destination, fuel = fuel - fuel_required(@current_location, ip_destination) 
     WHERE id = ip_id AND tag = ip_tag OR swarm_id = ip_id AND swarm_tag = ip_tag;
     
     -- Decrease space for destination location and increase space for current location
-    UPDATE locations SET space = space - swarm_size WHERE label = ip_destination;
-    UPDATE locations SET space = space + swarm_size WHERE label = current_location;
+    UPDATE locations SET space = space - @swarm_size WHERE label = ip_destination;
+    UPDATE locations SET space = space + @swarm_size WHERE label = @current_location;
     
 end //
 delimiter ;
@@ -632,7 +620,7 @@ sp_main: begin
 		    = (select location from restaurants where long_name = ip_long_name) and
         exists (select 1 from payload where (id, tag) = (ip_id, ip_tag) and barcode = ip_barcode and quantity >= ip_quantity)
 	then 
-		select price * ip_quantity INTO @total_price from payload where (id, tag) = (ip_id, ip_tag) and barcode = ip_barcode;
+		set @total_price = (select price * ip_quantity from payload where (id, tag) = (ip_id, ip_tag) and barcode = ip_barcode);
 		update payload
 			set quantity = quantity - ip_quantity
 			where (id, tag) = (ip_id, ip_tag) and barcode = ip_barcode;
@@ -813,8 +801,8 @@ select
     ifnull(min(price), 0) as low_price, 
     ifnull(max(price), 0) as high_price
 from ingredients
-natural left join payload
-natural left join drones
+natural join payload
+natural join drones
 group by barcode, hover;
 
 -- [29] display_service_view()
