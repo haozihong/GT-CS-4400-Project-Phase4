@@ -9,4 +9,15 @@
         SELECT * FROM restaurant_supply_express.work_for;
     </select>
 
+    <select id="displayWorkForView" resultType="Map">
+        SELECT
+            *, 
+            (username in (select username from workers)) as is_worker,
+            (username in (select username from pilots)) as is_pilot
+        FROM restaurant_supply_express.work_for
+        natural join restaurant_supply_express.delivery_services
+        natural join restaurant_supply_express.employees
+        natural join restaurant_supply_express.users;
+    </select>
+
 </mapper>

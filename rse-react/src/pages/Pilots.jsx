@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Input, InputNumber, Select, notification, Tooltip } from 'antd';
+import { Table, Space, Button, Col, Row, Input, InputNumber, Select, notification, Tooltip } from 'antd';
 import {
   PlusOutlined,
   MinusOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
+import { FormModal } from "../components/FormModal";
 
 
 // columns of pilotView table
@@ -16,33 +17,10 @@ const columns = [
   { title: 'Num of Locations', dataIndex: 'numLocations' },
 ];
 
-const addPilotFetchConfig = values => ([
-  `/api/pilots`,
-  {
-    method: 'POST',
-    body: JSON.stringify(values),
-    headers: { 'Content-type': 'application/json; charset=UTF-8', },
-  }
-]);
-
-const removeFetchConfig = values => ([
-  `/api/pilots/role/${values.username}`,
-  { method: 'DELETE' }
-]);
-
-const takeDroneFetchConfig = values => ([
-  `/api/drones`,
-  {
-    method: 'PUT',
-    body: JSON.stringify(values),
-    headers: { 'Content-type': 'application/json; charset=UTF-8', },
-  }
-]);
-
-// get data from DB for pilotView table
 export const Pilots = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  // get data from DB for pilotView table
   const fetchData = () => {
     setLoading(true);
     fetch(`/api/pilots/view`)
@@ -75,15 +53,11 @@ export const Pilots = () => {
     fetchAllData();
   }, []);
 
-
   // Add pilot Popups and error handling
-  const [newPilDialogOpen, setNewPilDialogOpen] = useState(false);
+  const [addPilDialogOpen, setAddPilDialogOpen] = useState(false);
   const [remPilDialogOpen, setRemPilDialogOpen] = useState(false);
   const [takeDroneDialogOpen, setTakeDroneDialogOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [formAddPilot] = Form.useForm();
-  const [formRemovePilot] = Form.useForm();
-  const [formTakeDrone] = Form.useForm();
+  
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
     notificationApi[type || 'open']({
@@ -91,37 +65,91 @@ export const Pilots = () => {
       description,
     });
   };
-  const formDialogOk = (form) => {
-    setConfirmLoading(true);
-    form.submit()
+
+  const addPilotFormFields = [
+    {
+      name: 'username',
+      label: 'Employee Username',
+      formItem: 
+        <Select
+          placeholder='Select an employee'
+          options={employees.map(e => ({ label: e.username, value: e.username }))}
+        />,
+    },
+    { name: 'licenseID', label: 'License ID', formItem: <Input />, },
+    { name: 'experience', label: 'Experience', formItem: <InputNumber />, },
+  ];
+
+  const removePilotFormFields = [
+    {
+      name: 'username',
+      label: 'Pilot Username',
+      formItem: 
+        <Select
+          placeholder='Select a pilot'
+          options={pilots.map(e => ({ label: e.username, value: e.username }))}
+        />,
+    },
+  ];
+
+  const takeDroneFormFields = [
+    {
+      name: 'flownBy',
+      label: 'Pilot Username',
+      formItem: 
+        <Select
+          placeholder='Select a pilot'
+          options={pilots.map(e => ({ label: e.username, value: e.username }))}
+        />,
+    },
+    { name: 'id', formItem: <Input />, hidden: true},
+    { name: 'tag', formItem: <InputNumber />, hidden: true },
+    {
+      name: 'droneFullId',
+      label: 'Drone',
+      formItem: 
+        <Select
+          placeholder='Select a drone'
+          options={drones.map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
+        />,
+      rules: [{ required: true }],
+    },
+  ];
+
+  // onFinish arguments for forms
+  const addPilotFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/pilots`,
+      {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      }
+    ]),
+    succDecs: 'Pilot added successfully!',
+    failMsg: 'Failed to add pilot',
   };
 
-  const onFinish = (values, fetchConfig, setDialogOpen, form, succMsg, failMsg) => {
-    fetch(...fetchConfig(values))
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Failed', failMsg || 'Please check the form fields. ', 'warning');
-        } else {
-          fetchAllData();
-          setDialogOpen(false);
-          popMessage('Success', succMsg || 'Operation success!', 'success');
-          form.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        console.log(err);
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
+  const removePilotFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/pilots/role/${values.username}`,
+      { method: 'DELETE' }
+    ]),
+    succDecs: 'Pilot removed successfully!',
+    failMsg: 'Failed to remove pilot',
+  };
+
+  const takeDroneFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/drones`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(values),
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      }
+    ]),
+    succDecs: 'Drone taken over successfully!',
+    failMsg: 'Failed to taken over pilot',
   };
 
   // Render the Pilots Page
@@ -131,24 +159,13 @@ export const Pilots = () => {
       <Row className='page-content' gutter={[16, 8]}>
         <Col span={24} style={{paddingTop: 16}}>
           <Space style={{float: 'right'}}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setNewPilDialogOpen(true)}
-            >
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddPilDialogOpen(true)}>
               Add
             </Button>
-            <Button
-              type="default"
-              icon={<MinusOutlined />}
-              onClick={() => setRemPilDialogOpen(true)}
-            >
+            <Button icon={<MinusOutlined />} onClick={() => setRemPilDialogOpen(true)}>
               Remove
             </Button>
-            <Button
-              type="default"
-              onClick={() => setTakeDroneDialogOpen(true)}
-            >
+            <Button onClick={() => setTakeDroneDialogOpen(true)}>
               Takeover Drone
             </Button>
             <Tooltip title="refresh">
@@ -163,150 +180,40 @@ export const Pilots = () => {
             rowKey={(record) => record.username}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>
+      
+      <FormModal
+        dialogOpenState={[addPilDialogOpen, setAddPilDialogOpen]}
+        formFields={addPilotFormFields}
+        formFinishArgs={addPilotFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='New Pilot'
+        okText='Add Pilot'
+      />
 
-      <Modal
-        title="New Pilot"
-        okText="Add Pilot"
-        open={newPilDialogOpen}
-        onOk={() => {formDialogOk(formAddPilot)}}
-        confirmLoading={confirmLoading}
-        onCancel={() => setNewPilDialogOpen(false)}
-      >
-        <Form
-          form={formAddPilot}
-          labelCol={{span: 8}}
-          wrapperCol={{span: 16}}
-          requiredMark="optional"
-          name="pilForm"
-          onFinish={values => {
-            onFinish(
-              values,
-              addPilotFetchConfig,
-              setNewPilDialogOpen, 
-              formAddPilot,
-              'Pilot added successfully!',
-              'Failed to add pilot')
-          }}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          <Form.Item
-            name="username"
-            label="Employee Username"
-            rules={[{ required: true, },]}
-          >
-            <Select
-              placeholder='Select an employee'
-              options={employees.map(e => ({ label: e.username, value: e.username }))}
-            />
-          </Form.Item>
-          <Form.Item
-            name="licenseID"
-            label="License ID"
-            rules={[{ required: true, },]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="experience"
-            label="Experience"
-            rules={[{ required: true, },]}
-          >
-            <InputNumber />
-          </Form.Item>
-        </Form>
-      </Modal>
-      <Modal
-        title="Remove Pilot"
-        okText="Remove Pilot"
-        open={remPilDialogOpen}
-        onOk={() => {formDialogOk(formRemovePilot)}}
-        confirmLoading={confirmLoading}
-        onCancel={() => setRemPilDialogOpen(false)}
-      >
-        <Form
-          form={formRemovePilot}
-          labelCol={{span: 8}}
-          wrapperCol={{span: 16}}
-          requiredMark="optional"
-          name="removePilotForm"
-          onFinish={v => onFinish(v, removeFetchConfig, setRemPilDialogOpen, formRemovePilot, 'Pilot removed successfully!')}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          <Form.Item
-            name="username"
-            label="Pilot Username"
-            rules={[{ required: true, },]}
-          >
-            <Select
-              placeholder='Select a pilot'
-              options={pilots.map(e => ({ label: e.username, value: e.username }))}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
-      <Modal
-        title="Takeover Drone"
-        okText="Takeover Drone"
-        open={takeDroneDialogOpen}
-        onOk={() => {formDialogOk(formTakeDrone)}}
-        confirmLoading={confirmLoading}
-        onCancel={() => setTakeDroneDialogOpen(false)}
-      >
-        <Form
-          form={formTakeDrone}
-          labelCol={{span: 8}}
-          wrapperCol={{span: 16}}
-          requiredMark="optional"
-          name="takeDroneForm"
-          onFinish={v => onFinish(v, takeDroneFetchConfig, setTakeDroneDialogOpen, formTakeDrone, 'Drone taken over successfully!')}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          <Form.Item
-            name="flownBy"
-            label="Pilot Username"
-            rules={[{ required: true, },]}
-          >
-            <Select
-              placeholder='Select a pilot'
-              options={pilots.map(e => ({ label: e.username, value: e.username }))}
-            />
-          </Form.Item>
-          <Form.Item
-            name="id"
-            label="Service ID"
-            required
-            hidden
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="tag"
-            label="Drone Tag"
-            required
-            hidden
-          >
-            <InputNumber />
-          </Form.Item>
-          <Form.Item
-            name="_"
-            label="Drone"
-            required
-          >
-            <Select
-              placeholder='Select a drone'
-              options={drones.map(e => ({ label: `${e.id} ${e.tag}`, value: `${e.id}$${e.tag}` }))}
-              onChange={(value) => {
-                const [id, tag] = value.split('$');
-                formTakeDrone.setFieldValue('id', id);
-                formTakeDrone.setFieldValue('tag', tag);
-              }}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <FormModal
+        dialogOpenState={[remPilDialogOpen, setRemPilDialogOpen]}
+        formFields={removePilotFormFields}
+        formFinishArgs={removePilotFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='Remove Pilot'
+        okText='Remove Pilot'
+      />
+      
+      <FormModal
+        dialogOpenState={[takeDroneDialogOpen, setTakeDroneDialogOpen]}
+        formFields={takeDroneFormFields}
+        formFinishArgs={takeDroneFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='Takeover Drone'
+        okText='Takeover Drone'
+      />
     </>
   );
 }

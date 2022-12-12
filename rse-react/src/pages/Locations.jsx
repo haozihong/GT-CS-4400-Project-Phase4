@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Col, Row, Modal, Form, Input, InputNumber, notification, Tooltip  } from 'antd';
+import { Table, Space, Button, Col, Row, Input, InputNumber, notification, Tooltip  } from 'antd';
 import {
   PlusOutlined,
   ReloadOutlined,
 } from '@ant-design/icons';
+import { FormModal } from "../components/FormModal";
 
 // columns of locationView table
 const columns = [
@@ -15,23 +16,10 @@ const columns = [
   { title: 'Num of Drones', dataIndex: 'numDrone' },
 ];
 
-// fields in the addLocation pop-up
-const newLocFormFields = [
-  { name: "label", label: "Label", formItem: <Input />,
-   rules: [{ required: true, }], },
-  { name: "xcoord", label: "X Coord", formItem: <InputNumber />,
-   rules: [{ required: true, }, { type: 'number' }], },
-  { name: "ycoord", label: "Y Coord", formItem: <InputNumber />,
-   rules: [{ required: true, }, { type: 'number' }], },
-  { name: "space", label: "Space", formItem: <InputNumber />,
-   rules: [{ required: true, }, { type: 'number', min: 0 }], },
-];
-
-
-// get data from DB for locationView table
 export const Locations = () => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
+  // get data from DB for locationView table
   const fetchData = () => {
     setLoading(true);
     fetch(`/api/locations/view`)
@@ -42,15 +30,17 @@ export const Locations = () => {
       });
   };
 
-  useEffect(() => {
+  const fetchAllData = () => {
     fetchData();
+  };
+    
+  useEffect(() => {
+    fetchAllData();
   }, []);
 
 
 // Add location Popup and error handling
   const [newLocDialogOpen, setNewLocDialogOpen] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
-  const [form] = Form.useForm();
   const [notificationApi, contextHolder] = notification.useNotification();
   const popMessage = (message, description, type) => {
     notificationApi[type || 'open']({
@@ -58,41 +48,30 @@ export const Locations = () => {
       description,
     });
   };
-  const newLocDialogOk = () => {
-    setConfirmLoading(true);
-    form.submit()
-  };
-  const onFinish = (values) => {
-    fetch('/api/locations', {
-      method: 'POST',
-      body: JSON.stringify(values),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then(res => {
-        if (!res.ok) return res.json().then(r => Promise.reject(r));
-        return res.json();
-      })
-      .then(data => {
-        if (data === 0) {
-          popMessage('Failed to add location', 'Please check the form fields. ', 'warning');
-        } else {
-          fetchData();
-          setNewLocDialogOpen(false);
-          popMessage('Success', `Location added successfully!`, 'success');
-          form.resetFields();
-        }
-      }, err => {
-        console.log('err', err);
-        popMessage(`Server error ${err.status}`, `${err.error}${err.message}`, 'error');
-      })
-      .catch((err) => {
-        popMessage('Fetch Fail', 'There has been a problem with your fetch operation', 'error');
-      })
-      .finally(() => {
-        setConfirmLoading(false);
-      });
+
+  const addLocFormFields = [
+    { name: "label", label: "Label", formItem: <Input />, },
+    { name: "xcoord", label: "X Coord", formItem: <InputNumber />, },
+    { name: "ycoord", label: "Y Coord", formItem: <InputNumber />, },
+    { 
+      name: "space", 
+      label: "Space", 
+      formItem: <InputNumber />,
+      rules: [{ required: true, }, { type: 'number', min: 0 }], 
+    },
+  ];
+
+  const addLocFormFinishArgs = {
+    fetchConfig: values => ([
+      `/api/locations`, 
+      {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-type': 'application/json; charset=UTF-8', },
+      }
+    ]),
+    succDecs: 'Location added successfully!',
+    failMsg: 'Failed to add location',
   };
 
 // Render the Locations Page
@@ -121,38 +100,20 @@ return (
             rowKey={(record) => record.label}
             dataSource={data}
             loading={loading}
+            pagination={{ showSizeChanger: true }}
           />
         </Col>
       </Row>
 
-      <Modal
-        title="New Location"
-        okText="Add Location"
-        open={newLocDialogOpen}
-        onOk={newLocDialogOk}
-        confirmLoading={confirmLoading}
-        onCancel={() => setNewLocDialogOpen(false)}
-      >
-        <Form
-          form={form}
-          labelCol={{span: 8}}
-          wrapperCol={{span: 16}}
-          requiredMark="optional"
-          name="locForm"
-          onFinish={onFinish}
-          onFinishFailed={() => setConfirmLoading(false)}
-        >
-          {newLocFormFields.map(e =>
-            <Form.Item
-              name={e.name}
-              label={e.label}
-              rules={e.rules || [{ required: true, },]}
-            >
-              {e.formItem}
-            </Form.Item>
-          )}
-        </Form>
-      </Modal>
+      <FormModal
+        dialogOpenState={[newLocDialogOpen, setNewLocDialogOpen]}
+        formFields={addLocFormFields}
+        formFinishArgs={addLocFormFinishArgs}
+        refreshFn={fetchAllData}
+        popMessage={popMessage}
+        title='New Location'
+        okText='Add Location'
+      />
     </>
   );
 }

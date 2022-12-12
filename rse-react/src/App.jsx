@@ -10,7 +10,8 @@ import {
   SmileOutlined,
   UserOutlined,
   ShopOutlined,
-  SolutionOutlined
+  SolutionOutlined,
+  UserSwitchOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu } from 'antd';
 import 'antd/dist/reset.css';
@@ -25,16 +26,17 @@ function getItem(label, key, icon, children) {
 }
 const items = [
   getItem('Users', 'sub1', <SolutionOutlined />, [
-    getItem(<Link to='/u/employees'>Employees</Link>, '1', <TeamOutlined />),
-    getItem(<Link to='/u/workers'>Workers</Link>, '2', <UserOutlined />),
-    getItem(<Link to='/u/pilots'>Pilots</Link>, '3', <SendOutlined />),
-    getItem(<Link to='/u/owners'>Owners</Link>, '4', <SmileOutlined />)
+    getItem(<Link to='/u/employees'>Employees</Link>, '/u/employees', <TeamOutlined />),
+    getItem(<Link to='/u/workers'>Workers</Link>, '/u/workers', <UserOutlined />),
+    getItem(<Link to='/u/pilots'>Pilots</Link>, '/u/pilots', <SendOutlined />),
+    getItem(<Link to='/u/work_for'>Work For</Link>, '/u/work_for', <UserSwitchOutlined />),
+    getItem(<Link to='/u/owners'>Owners</Link>, '/u/owners', <SmileOutlined />)
   ]),
-  getItem(<Link to='/services'>Services</Link>, '10', <PieChartOutlined />),
-  getItem(<Link to='/drones'>Drones</Link>, '11', <RocketOutlined />),
-  getItem(<Link to='/locations'>Locations</Link>, '12', <PushpinOutlined />),
-  getItem(<Link to='/restaurants'>Restaurants</Link>, '13', <ShopOutlined />),
-  getItem(<Link to='/ingredients'>Ingredients</Link>, '14', <GoldOutlined />),
+  getItem(<Link to='/services'>Services</Link>, '/services', <PieChartOutlined />),
+  getItem(<Link to='/drones'>Drones</Link>, '/drones', <RocketOutlined />),
+  getItem(<Link to='/locations'>Locations</Link>, '/locations', <PushpinOutlined />),
+  getItem(<Link to='/restaurants'>Restaurants</Link>, '/restaurants', <ShopOutlined />),
+  getItem(<Link to='/ingredients'>Ingredients</Link>, '/ingredients', <GoldOutlined />),
 ];
 
 let breadcrumbNameMap = Object.fromEntries(routes.map(({ label, url, page }) => [url, label]));
@@ -66,7 +68,7 @@ const App = () => {
         <Menu
           theme="dark"
           defaultOpenKeys={['sub1']}
-          defaultSelectedKeys={['1']}
+          selectedKeys={location.pathname}
           mode="inline" 
           items={items}
         />
@@ -96,7 +98,7 @@ const App = () => {
         <Footer
           style={{ textAlign: 'center', }}
         >
-          Restaurant Supply Express ©2022 Created by Team 119
+          Restaurant Supply Express ©2022 Created by Group 19
         </Footer>
       </Layout>
     </Layout>
