@@ -1,29 +1,8 @@
-# GT-CS-4400-Project
+# Restaurant Supply Express
 CS 4400 (Fall 2022) Project Phase 4 - Group 19
 
-### Work Distribution
-
-#### Zihong Hao
-- Build and Deploy: Set up project framework, building pipline, and deployment. 
-- Backend: MyBatis (SQL), POJO, API. 
-- Frontend: Page routing, displaying tables, and forms to request backend. 
-- Test: testing all APIs, pages, and procedures. 
-
-#### Zhaodong Kang
-- Backend: Mybatis (SQL), POJO, API. 
-- Test: testing all APIs, pages, and procedures. 
-
-#### Geoffrey Y Zhang
-- Frontend: Forms to request backend. 
-- Test: testing all APIs, pages, and procedures. 
-
-#### Tingyue He
-- Frontend: Forms to request backend. 
-- Test: testing all APIs, pages, and procedures. 
-
-
 # Visit
-Deployed on [http://45.17.163.14](http://45.17.163.14). 
+Deployed on [http://45.17.163.14:16080](http://45.17.163.14:16080). 
 
 Also deployed on [https://cs4400rse.onrender.com](https://cs4400rse.onrender.com). Please wait for 1.5 minutes for the server to start. 
 
@@ -85,3 +64,23 @@ npm install
 npm run start
 ```
 Then the frontend page should be available on [http://localhost:3000](http://localhost:3000). 
+
+# Work Distribution
+
+#### Zihong Hao
+- Build and Deploy: Set up project framework, building pipline, and deployment. 
+- Backend: MyBatis (SQL), POJO, API. 
+- Frontend: Page routing, displaying tables, and forms to request backend. 
+- Test: testing all APIs, pages, and procedures. 
+
+#### Zhaodong Kang
+- Backend: Mybatis (SQL), POJO, API. 
+- Test: testing all APIs, pages, and procedures. 
+
+#### Geoffrey Y Zhang
+- Frontend: Forms to request backend. 
+- Test: testing all APIs, pages, and procedures. 
+
+#### Tingyue He
+- Frontend: Forms to request backend. 
+- Test: testing all APIs, pages, and procedures. 
